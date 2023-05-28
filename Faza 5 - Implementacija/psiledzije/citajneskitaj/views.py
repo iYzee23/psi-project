@@ -136,6 +136,7 @@ def logout_req(request: HttpRequest):
 
 def knjiga(request: HttpRequest, knjiga_id: str):
     try:
+        # messages.clear(request)
         form = RecenzijaForm(data=request.POST or None)
         editForm = RecenzijaEditForm(data=request.POST or None)
         knjiga = Knjiga.objects.get(isbn=knjiga_id)
@@ -144,43 +145,64 @@ def knjiga(request: HttpRequest, knjiga_id: str):
         for napisanije in napisanija:
             autori += napisanije.idautor.imeprezime + ', '
         autori = autori[0:-2]
-
+        errorTekst=None
         recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga_id)
+
+        imaUkolekciji=False
+        korisnik = Uloga.objects.get(username=request.user.get_username())
+        tmpKolekcije=Kolekcija.objects.filter(isbn=knjiga).filter(korime=korisnik)
+
+        if(tmpKolekcije.count()!=0):
+            imaUkolekciji=True
 
         #if Recenzija.objects.get(iddavalac=request.user):
            # TODO @ljubica IZBACI GRESKU - ne mogu da dam dve recenzije na nesto!
 
+        if "dodajUkolekciju" in request.POST:
+            kolekcija = Kolekcija(isbn=knjiga, korime=korisnik)
+            kolekcija.save()
+            imaUkolekciji = True
+
+        if "brisiIzKolekcije" in request.POST:
+            tmpKolekcije.delete()
+            imaUkolekciji = False
     except Knjiga.DoesNotExist:
         raise Http404("Ne postoji knjiga sa tim ID :(")
     except Recenzija.DoesNotExist:
         raise Http404("Ne postoji knjiga sa tim ID :(")
 
     if form.is_valid():
+
+
         if "postavi" in request.POST:
             datum = datetime.now()
             ocena = form.cleaned_data["ocena"]
             tekst = form.cleaned_data["tekst"]
             # TODO @ljubica ovde moze samo user
-            davalac = Uloga.objects.get(username=request.user.get_username())
+            # ne znam na sta mislis
 
-            # TODO @ljubica mozemo da promenimo model da polje bude models.AutoField i onda auto generise
-            poslRec = Recenzija.objects.last()
-            poslId = 0
-            if (poslRec):
-                poslId = poslRec.idrec
-            novId = poslId + 1
-            novaRec = Recenzija(idrec=novId, ocena=ocena, datumobjave=datum, tekst=tekst, iddavalac=davalac,
-                                idprimalacknjiga=knjiga)
-            novaRec.save()
-            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga_id)
-            sumaOcena = 0
-            for rec in recenzije:
-                sumaOcena = sumaOcena + rec.ocena
+            rec = Recenzija.objects.filter(idprimalacknjiga=knjiga).filter(iddavalac=korisnik)
+            if(rec.count()==0):
+                # TODO @ljubica mozemo da promenimo model da polje bude models.AutoField i onda auto generise
+                poslRec = Recenzija.objects.last()
+                poslId = 0
+                if (poslRec):
+                    poslId = poslRec.idrec
+                novId = poslId + 1
+                novaRec = Recenzija(idrec=novId, ocena=ocena, datumobjave=datum, tekst=tekst, iddavalac=korisnik,
+                                    idprimalacknjiga=knjiga)
+                novaRec.save()
+                recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga)
+                sumaOcena = 0
+                for rec in recenzije:
+                    sumaOcena = sumaOcena + rec.ocena
 
-            prosecnaOcena = sumaOcena / recenzije.count()
+                prosecnaOcena = sumaOcena / recenzije.count()
 
-            knjiga.prosecnaocena = round(prosecnaOcena, 2)
-            knjiga.save()
+                knjiga.prosecnaocena = round(prosecnaOcena, 2)
+                knjiga.save()
+            else:
+                errorTekst= 'Ne mozete upisati više od 1 recenzije!'
     if editForm.is_valid():
         if "izmeni" in request.POST:
             ocena = form.cleaned_data["ocena"]
@@ -191,7 +213,7 @@ def knjiga(request: HttpRequest, knjiga_id: str):
             novaRec.datumobjave = datetime.now()
             novaRec.tekst = tekst
             novaRec.save()
-            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga_id)
+            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga)
             sumaOcena = 0
             for rec in recenzije:
                 sumaOcena = sumaOcena + rec.ocena
@@ -204,7 +226,7 @@ def knjiga(request: HttpRequest, knjiga_id: str):
             idRec = request.POST.get('hiddenIdRec')
             novaRec = Recenzija.objects.get(idrec=idRec)
             novaRec.delete()
-            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga_id)
+            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga)
             sumaOcena = 0
             for rec in recenzije:
                 sumaOcena = sumaOcena + rec.ocena
@@ -220,8 +242,13 @@ def knjiga(request: HttpRequest, knjiga_id: str):
         'recenzije': recenzije,
         'forma': form,
         'editForma': editForm,
-        'pretragaForm': SearchForm()
+        'pretragaForm': SearchForm(),
+        'errorTekst':errorTekst,
+        'imaUkolekciji':imaUkolekciji,
     }
+
+
+
     return render(request, 'entities/knjiga.html', context)
 
 

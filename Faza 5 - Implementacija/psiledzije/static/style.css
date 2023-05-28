@@ -298,3 +298,10 @@ body{
     /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);*/
 
 }
+.profilLink{
+    color:black;
+
+}
+.profilLink:hover{
+    color: #772121;
+}
