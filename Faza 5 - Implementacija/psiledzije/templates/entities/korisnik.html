@@ -35,7 +35,7 @@
                         {% endfor %}
                     </div>
                     {% if uloga == user %}
-                        <div class="col-sm-6" style="display: flex; justify-content: space-between">
+                        <div class="col-sm-12" style="display: flex; justify-content: space-between">
                             <form action="{% url "dodajObjavu" %}" method="POST">
                                 {% csrf_token %}
                                 <button class="katalogbtn">Dodaj objavu</button>
@@ -48,6 +48,16 @@
                                 {% csrf_token %}
                                 <button class="katalogbtn">Promena informacija o profilu</button>
                             </form>
+                            {% if uloga.is_superuser %}
+                                <form action="{% url "admResetujLozinku" %}" method="POST">
+                                    {% csrf_token %}
+                                    <button class="katalogbtn">Admin - Resetuj zaboravljenu lozinku</button>
+                                </form>
+                                <form action="{% url "admBanujNalog" %}" method="POST">
+                                    {% csrf_token %}
+                                    <button class="katalogbtn">Admin - Banuj nalog</button>
+                                </form>
+                            {% endif %}
                         </div>
                     {% endif %}
                 </div>

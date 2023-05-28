@@ -1,7 +1,4 @@
-
-
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
-
 from django.forms import *
 from .models import *
 from django import forms
@@ -92,13 +89,13 @@ class PromenaInfoKucaForm(ModelForm):
         model = IzdavackaKuca
         fields = ["email", "naziv", "slika", "istorija", "adresa", "lokacije"]
 
+
 class RecenzijaForm(Form):
-
-
     tekst = forms.CharField(label='Review', widget=forms.Textarea,max_length=1000, required=False)
     # forms.IntegerField(widget=forms.TextInput(attrs={'type': 'range'})
     ocena=  forms.IntegerField(widget=forms.TextInput(attrs={'type': 'range', 'min': '1', 'max': '5'}))
     # ocena = forms.ChoiceField(label='Grade', choices=GRADE_CHOICES, widget=forms.RadioSelect)
+
 
 class RecenzijaEditForm(Form):
     tekst = forms.CharField(label='Review', widget=forms.Textarea(attrs={'id':'editTeksta'}), max_length=1000, required=False)
@@ -107,3 +104,14 @@ class RecenzijaEditForm(Form):
     # ocena = forms.ChoiceField(label='Grade', choices=GRADE_CHOICES, widget=forms.RadioSelect)
     hiddenIdRec = forms.CharField(widget=forms.HiddenInput(attrs={'id':'hiddenIdRec'}))
 
+
+class AdminResetForm(Form):
+    username = CharField(label='Korisničko ime')
+    email = EmailField(label="Email")
+    sifra = CharField(label="Generisana šifra", disabled=True, required=False, widget=TextInput(attrs={"style": "background-color: lightgray"}))
+
+
+class AdminBanForm(Form):
+    username = CharField(label='Korisničko ime')
+    email = EmailField(label="Email")
+    tekst = CharField(label="Razlog banovanja", widget=Textarea())

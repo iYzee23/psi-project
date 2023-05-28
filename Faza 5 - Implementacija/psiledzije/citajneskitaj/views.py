@@ -1,11 +1,16 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login, authenticate, update_session_auth_hash
 from django.contrib.auth.models import Group
+from django.db.models import Q
 from django.http import HttpRequest, Http404, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import *
 from datetime import datetime
+import random
+import string
+from django.core.mail import send_mail
+
 
 
 # Create your views here.
@@ -346,5 +351,69 @@ def promeniInfo(request: HttpRequest):
                 "lokacije": lokacije
             })
     return render(request, "entities/promenaInfo.html", {
+        "form": form
+    })
+
+
+def generate_random_string(length):
+    letters = string.ascii_letters + string.digits
+    random_string = ''.join(random.choice(letters) for _ in range(length))
+    return random_string
+
+
+def posaljiMejlLozinka(lozinka, primalac):
+    subject = "[Čitaj, ne skitaj] Vaša lozinka je uspešno resetovana"
+    message = "Nova privremena lozinka: " + lozinka
+    recipient_list = [primalac]
+    from_email = "pp200023d@student.etf.bg.ac.rs"
+    send_mail(subject, message, from_email, recipient_list)
+
+
+def posaljiMejlBanovan(tekst, primalac):
+    subject = "[Čitaj, ne skitaj] Nažalost, morali smo da onesposobimo Vaš nalog"
+    message = "Zbog narušene politike našeg sajta, suspendovani ste sa istog.\n\n" + tekst
+    recipient_list = [primalac]
+    from_email = "pp200023d@student.etf.bg.ac.rs"
+    send_mail(subject, message, from_email, recipient_list)
+
+
+def admResetujLozinku(request: HttpRequest):
+    form = AdminResetForm(request.POST or None)
+    if form.is_valid():
+        username = form.cleaned_data["username"]
+        email = form.cleaned_data["email"]
+        uloga: Uloga = Uloga.objects.filter(Q(email=email) & Q(username=username)).first()
+        if uloga:
+            str = generate_random_string(10)
+            uloga.set_password(str)
+            uloga.save()
+            form = AdminResetForm(initial={
+                "username": username,
+                "email": email,
+                "sifra": str
+            })
+            # posaljiMejlLozinka(str, email)
+    else:
+        form = AdminResetForm()
+    return render(request, "entities/adminPanel.html", {
+        "form": form
+    })
+
+
+def admBanujNalog(request: HttpRequest):
+    form = AdminBanForm(request.POST or None)
+    if form.is_valid():
+        username = form.cleaned_data["username"]
+        email = form.cleaned_data["email"]
+        uloga: Uloga = Uloga.objects.filter(Q(email=email) & Q(username=username)).first()
+        if uloga:
+            uloga.is_active = 0
+            uloga.banovan = 1
+            uloga.save()
+            # posaljiMejlBanovan(form.cleaned_data["tekst"], email)
+            return redirect("mojProfil")
+    else:
+        form = AdminBanForm()
+    return render(request, "entities/adminPanel.html", {
         "form": form
     })

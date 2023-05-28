@@ -149,3 +149,16 @@ AUTH_USER_MODEL = "citajneskitaj.Uloga"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# SMTP email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'pp200023d@student.etf.bg.ac.rs'
+EMAIL_HOST_PASSWORD = '1404001710106'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+# Default email address settings
+DEFAULT_FROM_EMAIL = 'pp200023d@student.etf.bg.ac.rs'
+SERVER_EMAIL = 'pp200023d@student.etf.bg.ac.rs'
