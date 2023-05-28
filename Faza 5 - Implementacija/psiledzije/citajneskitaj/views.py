@@ -255,15 +255,26 @@ def knjiga(request: HttpRequest, knjiga_id: str):
 def profil(request: HttpRequest, profil_id: str):
     try:
         uloga = Uloga.objects.get(pk=profil_id)
+        flag=0
         recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
         objave = Objava.objects.filter(korime=uloga)
 
+
+        if(Uloga.objects.filter(pk=request.user.pk).first()):
+            user=Uloga.objects.get(pk=request.user.pk)
+            if(user.is_authenticated and user!=uloga):
+                if(Prati.objects.filter(idpracen=uloga, idpratilac=user).exists()):
+                    flag=2
+                else:
+                    flag=1
         context = {
             'uloga': uloga,
             'recenzije': recenzije,
             'objave': objave,
-            'pretragaForm': SearchForm()
+            'pretragaForm': SearchForm(),
+            'flag':flag
         }
+
 
         if uloga.tip == 'A':
             context['profil'] = Autor.objects.get(pk=profil_id)
@@ -391,7 +402,6 @@ def promeniInfo(request: HttpRequest):
         'pretragaForm': SearchForm()
     })
 
-
 def generate_random_string(length):
     letters = string.ascii_letters + string.digits
     random_string = ''.join(random.choice(letters) for _ in range(length))
@@ -402,7 +412,7 @@ def posaljiMejlLozinka(lozinka, primalac):
     subject = "[Čitaj, ne skitaj] Vaša lozinka je uspešno resetovana"
     message = "Nova privremena lozinka: " + lozinka
     recipient_list = [primalac]
-    from_email = "pp200023d@student.etf.bg.ac.rs"
+    from_email = "nl2000370d@student.etf.bg.ac.rs"
     send_mail(subject, message, from_email, recipient_list)
 
 
@@ -410,7 +420,7 @@ def posaljiMejlBanovan(tekst, primalac):
     subject = "[Čitaj, ne skitaj] Nažalost, morali smo da onesposobimo Vaš nalog"
     message = "Zbog narušene politike našeg sajta, suspendovani ste sa istog.\n\n" + tekst
     recipient_list = [primalac]
-    from_email = "pp200023d@student.etf.bg.ac.rs"
+    from_email = "nl2000370d@student.etf.bg.ac.rs"
     send_mail(subject, message, from_email, recipient_list)
 
 
@@ -511,3 +521,62 @@ def pretraga(request: HttpRequest):
         })
     else:
         return redirect(request.META.get("HTTP_REFERER"))
+@login_required(login_url="login")
+def prijaviSe(request: HttpRequest):
+    if(request.method == 'POST'):
+        form = PretplataForm(request.POST)
+        if form.is_valid():
+            uloga = request.POST.get('uloga')
+            user = request.POST.get('user')
+            role:Uloga=Uloga.objects.get(pk=uloga)
+            korisnik: Uloga = Uloga.objects.get(pk=user)
+            role.brpratilaca+=1
+            role.save()
+            instance=Prati(idpracen=role, idpratilac=korisnik)
+            instance.save()
+            recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
+            context = {
+                'uloga': role,
+                'recenzije': recenzije,
+                'flag':2
+            }
+            if role.tip == 'A':
+                context['profil'] = Autor.objects.get(pk=uloga)
+                return render(request, 'entities/autor.html', context)
+            elif role.tip == 'K':
+                context['profil'] = Korisnik.objects.get(pk=uloga)
+                return render(request, 'entities/korisnik.html', context)
+            else:
+                context['profil'] = IzdavackaKuca.objects.get(pk=uloga)
+                return render(request, 'entities/izdavackakuca.html', context)
+    return redirect('home')
+
+def odjaviSe(request:HttpRequest):
+    if (request.method == 'POST'):
+        form = PretplataForm(request.POST)
+        if form.is_valid():
+            uloga = request.POST.get('uloga')
+            user = request.POST.get('user')
+            role: Uloga = Uloga.objects.get(pk=uloga)
+            korisnik: Uloga=Uloga.objects.get(pk=user)
+            role.brpratilaca -= 1
+            role.save()
+            instance = Prati.objects.get(idpracen=role, idpratilac=korisnik)
+            instance.delete()
+            recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
+            context = {
+                'uloga': role,
+                'recenzije': recenzije,
+                'flag': 1
+            }
+            if role.tip == 'A':
+                context['profil'] = Autor.objects.get(pk=uloga)
+                return render(request, 'entities/autor.html', context)
+            elif role.tip == 'K':
+                context['profil'] = Korisnik.objects.get(pk=uloga)
+                return render(request, 'entities/korisnik.html', context)
+            else:
+                context['profil'] = IzdavackaKuca.objects.get(pk=uloga)
+                return render(request, 'entities/izdavackakuca.html', context)
+
+    return redirect('home')

@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'citajneskitaj.apps.CitajneskitajConfig',
+    'citajneskitaj.apps.CitajneskitajConfig'
 ]
 
 MIDDLEWARE = [
@@ -48,7 +48,8 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+
 ]
 
 ROOT_URLCONF = 'psiledzije.urls'
@@ -81,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'baza',
         'USER': 'root',
-        'PASSWORD': 'Cicko234!',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306'
     }
@@ -118,18 +119,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-# SMTP email configuration
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp-mail.outlook.com'  # e.g., 'smtp.gmail.com'
-EMAIL_PORT = 587  # the port used by your SMTP server
-EMAIL_HOST_USER = 'ma200282d@student.etf.bg.ac.rs'  # your email address
-EMAIL_HOST_PASSWORD = ''  # your email password or app-specific password
-EMAIL_USE_TLS = True  # use TLS encryption for secure connection
-EMAIL_USE_SSL = False  # use SSL encryption for secure connection (if required)
 
-# Default email address settings
-DEFAULT_FROM_EMAIL = 'ma200282d@student.etf.bg.ac.rs'
-SERVER_EMAIL = 'ma200282d@student.etf.bg.ac.rs'
 
 
 
@@ -154,11 +144,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp-mail.outlook.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'pp200023d@student.etf.bg.ac.rs'
-EMAIL_HOST_PASSWORD = '1404001710106'
+EMAIL_HOST_USER = 'nl2000370d@student.etf.bg.ac.rs'
+EMAIL_HOST_PASSWORD = '1011000710089'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
 # Default email address settings
-DEFAULT_FROM_EMAIL = 'pp200023d@student.etf.bg.ac.rs'
-SERVER_EMAIL = 'pp200023d@student.etf.bg.ac.rs'
+DEFAULT_FROM_EMAIL = 'nl200370d@student.etf.bg.ac.rs'
+SERVER_EMAIL = 'nl200370d@student.etf.bg.ac.rs'

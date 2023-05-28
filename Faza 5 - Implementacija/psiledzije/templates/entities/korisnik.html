@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block title %}
     {{ uloga.username }}
 {% endblock %}
@@ -13,10 +12,24 @@
                         <img class="profilnaU" src="{% if uloga.slika %}{{ uloga.slika.url }}{% endif %}" alt="No image :(">
                     </div>
                     <div class="col-sm-8">
-                        <h1 style="font-weight: bold">{{ profil.imeprezime }}</h1>
-                        <h3 style="margin-bottom: 5%;"><b>Broj pratilaca:</b> {{ profil.brpratilaca }}</h3>
-                        {% if user.is_authenticated %}
-                            <button type="button" class="katalogbtn">Pretplati se</button>
+                        <h1 style="font-weight: bold">{{ uloga.imeprezime }}</h1>
+                        <h3 style="margin-bottom: 5%;"><b>Broj pratilaca:</b> {{ uloga.brpratilaca }}</h3>
+
+
+                        {% if flag == 1%}
+                            <form action="{% url 'prijaviSe' %}" method="post">
+                              {% csrf_token %}
+                              <input type="hidden" name="uloga" value="{{ uloga }}">
+                              <input type="hidden" name="user" value="{{ request.user }}">
+                              <button class="katalogbtn" type="submit">Pretplati se</button>
+                            </form>
+                        {% elif  flag == 2 %}
+                            <form action="{% url 'odjaviSe' %}" method="post">
+                              {% csrf_token %}
+                              <input type="hidden" name="uloga" value="{{ uloga }}">
+                              <input type="hidden" name="user" value="{{ request.user }}">
+                              <button class="katalogbtn" type="submit">Otplati se</button>
+                            </form>
                         {% endif %}
                     </div>
                 </div>

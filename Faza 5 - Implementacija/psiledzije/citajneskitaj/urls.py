@@ -20,5 +20,7 @@ urlpatterns = [
     path('promeniInfo/', promeniInfo, name="promeniInfo"),
     path('resetujLozinku/', admResetujLozinku, name="admResetujLozinku"),
     path('banojNalog/', admBanujNalog, name="admBanujNalog"),
-    path('pretraga/', pretraga, name="pretraga")
+    path('pretraga/', pretraga, name="pretraga"),
+    path('prijaviSe', prijaviSe, name="prijaviSe"),
+    path('odjaviSe', odjaviSe, name="odjaviSe"),
 ]

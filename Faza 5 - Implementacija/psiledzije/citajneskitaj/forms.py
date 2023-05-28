@@ -123,3 +123,6 @@ class SearchForm(Form):
     naziv = fields.CharField(widget=TextInput(attrs={"style": "float:left; height:38px;", "placeholder": "Pretraga..."}))
     tip = fields.ChoiceField(choices=tipChoices, widget=Select(attrs={"class": "form-select", "style": "width:fit-content; float:left;"}))
     filter = fields.ChoiceField(choices=filterChoices, widget=Select(attrs={"class": "form-select", "style": "width:fit-content; float:left; height:fit-content;"}))
+class PretplataForm(Form):
+    uloga= forms.CharField(widget=forms.HiddenInput(), max_length=1000)
+    user= forms.CharField(widget=forms.HiddenInput(), max_length=1000)
