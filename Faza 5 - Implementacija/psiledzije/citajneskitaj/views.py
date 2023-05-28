@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login, authenticate, update_session_auth_hash
 from django.contrib.auth.models import Group
-from django.http import HttpRequest, Http404
+from django.http import HttpRequest, Http404, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import *
@@ -9,8 +9,31 @@ from datetime import datetime
 
 # Create your views here.
 def index(request: HttpRequest):
-    return render(request, 'index.html', {})
+    knjige = [Knjiga.objects.get(pk=naj.idocenjenog) for naj in NajpopularnijiMesec.objects.filter(tip='K').order_by('-prosecnaocena')]
+    autori = [Autor.objects.get(username=naj.idocenjenog) for naj in NajpopularnijiMesec.objects.filter(tip='A').order_by('-prosecnaocena')]
+    kuce = [IzdavackaKuca.objects.get(username=naj.idocenjenog) for naj in NajpopularnijiMesec.objects.filter(tip='I').order_by('-prosecnaocena')]
+    context = {
+        'knjige': knjige,
+        'autori': autori,
+        'kuce': kuce
+    }
+    return render(request, 'index.html', context)
 
+def generisiMesec(request: HttpRequest):
+
+    NajpopularnijiMesec.objects.all().delete()
+
+    for k in Knjiga.objects.all().order_by('-prosecnaocena')[0:3]:
+        NajpopularnijiMesec.objects.create(idocenjenog=k.isbn, prosecnaocena=k.prosecnaocena, tip='K')
+
+    for a in Autor.objects.all().order_by('-prosecnaocena')[0:3]:
+        NajpopularnijiMesec.objects.create(idocenjenog=a.username, prosecnaocena=a.prosecnaocena, tip='A')
+
+    for i in IzdavackaKuca.objects.all().order_by('-prosecnaocena')[0:3]:
+        NajpopularnijiMesec.objects.create(idocenjenog=i.username, prosecnaocena=i.prosecnaocena, tip='I')
+
+
+    return HttpResponse("Generisano <3")
 
 def reg(request: HttpRequest):
     if request.user.is_authenticated:

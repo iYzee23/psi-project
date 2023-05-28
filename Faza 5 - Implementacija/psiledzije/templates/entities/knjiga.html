@@ -10,7 +10,7 @@
             <div class=" col-sm-8 main" id="levi">
                 <div class="row col-sm-12" id="infoKnjiga" style="margin-bottom:10px;">
                     <div class="col-sm-4">
-                        <img class="profilnaKnj" src="{{ knjiga.slika.url }}">
+                        <img class="profilnaKnj" src="{% if knjiga.slika %}{{ knjiga.slika.url }}{% endif %}">
                     </div>
                     <div class="col-sm-8">
                         <h1 style="font-weight: bold">{{ knjiga.naziv }}</h1>

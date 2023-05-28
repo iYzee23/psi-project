@@ -6,165 +6,59 @@
 
 {% block body %}
     <div class="container-fluid" style="padding:0; margin:0;">
-        <div class="row" style="margin:0;" >
-            <div class=" col-sm-8 main" id="levi">
-                <div class="row col-sm-12" style="margin-bottom: 15px;">
-                    <h1>Najbolje ocenjena dela</h1>
-                    <div class="col-sm-3">
-                        <div class="card">
-                            <div class="card-img-top">
-                                <a href="oKnjizi.html" class="link-secondary">
-                                    <img src="../../static/slike/placeholder.jpg" alt="" style="width: 100%;">
+        <div class="row" style="margin:0;">
+            <!-- Najbolje knjige -->
+            <div class="row col-sm-12 main" style="margin-bottom: 15px;">
+                <h1><b>Najbolje ocenjene knjige</b></h1>
+                {% for knjiga in knjige %}
+                    <div class="col-sm-4">
+                        <div class="card" style="width: fit-content;">
+                            <div class="card-img-top" >
+                                <a href="/knjiga/{{ knjiga.isbn }}" class="link-secondary">
+                                    <img src="{% if knjiga.slika %}{{ knjiga.slika.url }}{% endif %}" alt="Nema slike :(" style="height: 500px; width: 350px">
                                 </a>
                             </div>
                             <div class="card-body">
-                                <h4 class="card-title">Knjiga</h4>
+                                <h4 class="card-title">⭐{{ knjiga.prosecnaocena }} - {{ knjiga.naziv }}</h4>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-3">
-                        <div class="card">
-                            <div class="card-img-top">
-                                <a href="oKnjizi.html" class="link-secondary">
-                                    <img src="../../static/slike/placeholder.jpg" alt="" style="width: 100%;">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Knjiga</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="card">
-                            <div class="card-img-top">
-                                <a href="oKnjizi.html" class="link-secondary">
-                                    <img src="../../static/slike/placeholder.jpg" alt="" style="width: 100%;">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Knjiga</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="card">
-                            <div class="card-img-top">
-                                <a href="oKnjizi.html" class="link-secondary">
-                                    <img src="../../static/slike/placeholder.jpg" alt="" style="width: 100%;">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Knjiga</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row col-sm-12" style="margin-bottom: 15px;">
-                    <h1>Najbolje ocenjeni autori</h1>
-                    <div class="col-sm-3">
-                        <div class="card">
-                            <div class="card-img-top">
-                                <a href="oAutoru.html" class="link-secondary">
-                                    <img src="../../static/slike/placeholder.jpg" alt="" style="width: 100%;">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Autor</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="card">
-                            <div class="card-img-top">
-                                <a href="oAutoru.html" class="link-secondary">
-                                    <img src="../../static/slike/placeholder.jpg" alt="" style="width: 100%;">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Autor</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="card">
-                            <div class="card-img-top">
-                                <a href="oAutoru.html" class="link-secondary">
-                                    <img src="../../static/slike/placeholder.jpg" alt="" style="width: 100%;">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Autor</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="card">
-                            <div class="card-img-top">
-                                <a href="oAutoru.html" class="link-secondary">
-                                    <img src="../../static/slike/placeholder.jpg" alt="" style="width: 100%;">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Autor</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row col-sm-12" style="margin-bottom: 15px;">
-                    <h1>Najbolje ocenjene izdavačke kuće</h1>
-                    <div class="col-sm-3">
-                        <div class="card">
-                            <div class="card-img-top">
-                                <a href="oKuci.html" class="link-secondary">
-                                    <img src="../../static/slike/placeholder.jpg" alt="" style="width: 100%;">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Izdavačka Kuća</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="card">
-                            <div class="card-img-top">
-                                <a href="oKuci.html" class="link-secondary">
-                                    <img src="../../static/slike/placeholder.jpg" alt="" style="width: 100%;">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Izdavačka Kuća</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="card">
-                            <div class="card-img-top">
-                                <a href="oKuci.html" class="link-secondary">
-                                    <img src="../../static/slike/placeholder.jpg" alt="" style="width: 100%;">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Izdavačka Kuća</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="card">
-                            <div class="card-img-top">
-                                <a href="oKuci.html" class="link-secondary">
-                                    <img src="../../static/slike/placeholder.jpg" alt="" style="width: 100%;">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Izdavačka Kuća</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
-            <div class="col-sm-4 ">
-                <div id="desno">
-                </div>
+            <div class="row col-sm-12 main" style="margin-bottom: 15px;">
+                <h1><b>Najbolje ocenjeni autori</b></h1>
+                {% for autor in autori %}
+                    <div class="col-sm-4">
+                        <div class="card" style="width: fit-content;">
+                            <div class="card-img-top" >
+                                <a href="/profil/{{ autor.username }}" class="link-secondary">
+                                    <img src="{% if autor.slika %}{{ autor.slika.url }}{% endif %}" alt="Nema slike :(" style="height: 500px; width: 350px">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">⭐{{ autor.prosecnaocena }} - {{ autor.imeprezime }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row col-sm-12 main" style="margin-bottom: 15px;">
+                <h1><b>Najbolje ocenjene izdavačke kuće</b></h1>
+                {% for kuca in kuce %}
+                    <div class="col-sm-4">
+                        <div class="card" style="width: fit-content;">
+                            <div class="card-img-top" >
+                                <a href="/profil/{{ kuca.username }}" class="link-secondary">
+                                    <img src="{% if kuca.slika %}{{ kuca.slika.url }}{% endif %}" alt="Nema slike :(" style="height: 500px; width: 350px">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">⭐{{ kuca.prosecnaocena }} - {{ kuca.naziv }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
             </div>
         </div>
     </div>

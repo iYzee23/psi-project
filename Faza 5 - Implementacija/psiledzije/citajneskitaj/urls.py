@@ -12,6 +12,7 @@ urlpatterns = [
     path('logout/', logout_req, name="logout"),
     path('knjiga/<str:knjiga_id>', knjiga, name="knjiga"),
     path('profil/<str:profil_id>', profil, name="profil"),
+    path('generisiMesec', generisiMesec, name="generisiMesec"),
     path('profil/', mojProfil, name="mojProfil"),
     path('mojProfil/', mojProfil, name="mojProfil"),
     path('dodajObjavu/', dodajObjavu, name="dodajObjavu"),
