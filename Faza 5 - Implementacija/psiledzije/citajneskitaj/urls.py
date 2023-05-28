@@ -19,5 +19,6 @@ urlpatterns = [
     path('promeniSifru/', promeniSifru, name="promeniSifru"),
     path('promeniInfo/', promeniInfo, name="promeniInfo"),
     path('resetujLozinku/', admResetujLozinku, name="admResetujLozinku"),
-    path('banojNalog/', admBanujNalog, name="admBanujNalog")
+    path('banojNalog/', admBanujNalog, name="admBanujNalog"),
+    path('pretraga/', pretraga, name="pretraga")
 ]

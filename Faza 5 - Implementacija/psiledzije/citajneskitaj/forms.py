@@ -115,3 +115,11 @@ class AdminBanForm(Form):
     username = CharField(label='Korisničko ime')
     email = EmailField(label="Email")
     tekst = CharField(label="Razlog banovanja", widget=Textarea())
+
+
+class SearchForm(Form):
+    tipChoices = [("Knjiga", "Knjiga"), ("Korisnik", "Korisnik"), ("Kuća", "Kuća"), ("Autor", "Autor")]
+    filterChoices = [("Ocena opadajuće", "Ocena opadajuće"), ("Ocena rastuće", "Ocena rastuće")]
+    naziv = fields.CharField(widget=TextInput(attrs={"style": "float:left; height:38px;", "placeholder": "Pretraga..."}))
+    tip = fields.ChoiceField(choices=tipChoices, widget=Select(attrs={"class": "form-select", "style": "width:fit-content; float:left;"}))
+    filter = fields.ChoiceField(choices=filterChoices, widget=Select(attrs={"class": "form-select", "style": "width:fit-content; float:left; height:fit-content;"}))

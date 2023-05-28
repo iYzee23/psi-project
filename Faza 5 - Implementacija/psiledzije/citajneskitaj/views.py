@@ -12,7 +12,6 @@ import string
 from django.core.mail import send_mail
 
 
-
 # Create your views here.
 def index(request: HttpRequest):
     knjige = [Knjiga.objects.get(pk=naj.idocenjenog) for naj in
@@ -24,7 +23,8 @@ def index(request: HttpRequest):
     context = {
         'knjige': knjige,
         'autori': autori,
-        'kuce': kuce
+        'kuce': kuce,
+        'pretragaForm': SearchForm()
     }
     return render(request, 'index.html', context)
 
@@ -47,7 +47,9 @@ def generisiMesec(request: HttpRequest):
 def reg(request: HttpRequest):
     if request.user.is_authenticated:
         return redirect('home')
-    return render(request, 'registration/reg.html', {})
+    return render(request, 'registration/reg.html', {
+        'pretragaForm': SearchForm()
+    })
 
 
 def regKorisnik(request: HttpRequest):
@@ -63,7 +65,8 @@ def regKorisnik(request: HttpRequest):
         login(request, user)
         return redirect('home')
     return render(request, 'registration/regKorisnik.html', {
-        'form': form
+        'form': form,
+        'pretragaForm': SearchForm()
     })
 
 
@@ -81,7 +84,8 @@ def regAutor(request: HttpRequest):
         login(request, user)
         return redirect('home')
     return render(request, 'registration/regAutor.html', {
-        'form': form
+        'form': form,
+        'pretragaForm': SearchForm()
     })
 
 
@@ -103,7 +107,8 @@ def regKuca(request: HttpRequest):
         login(request, user)
         return redirect('home')
     return render(request, 'registration/regKuca.html', {
-        'form': form
+        'form': form,
+        'pretragaForm': SearchForm()
     })
 
 
@@ -119,7 +124,8 @@ def login_req(request: HttpRequest):
             login(request, user)
             return redirect("home")
     return render(request, "registration/login.html", {
-        "form": form
+        "form": form,
+        'pretragaForm': SearchForm()
     })
 
 
@@ -214,6 +220,7 @@ def knjiga(request: HttpRequest, knjiga_id: str):
         'recenzije': recenzije,
         'forma': form,
         'editForma': editForm,
+        'pretragaForm': SearchForm()
     }
     return render(request, 'entities/knjiga.html', context)
 
@@ -227,7 +234,8 @@ def profil(request: HttpRequest, profil_id: str):
         context = {
             'uloga': uloga,
             'recenzije': recenzije,
-            'objave': objave
+            'objave': objave,
+            'pretragaForm': SearchForm()
         }
 
         if uloga.tip == 'A':
@@ -272,7 +280,8 @@ def promeniSifru(request: HttpRequest):
         form = PromenaSifreForm()
     return render(request, "entities/promenaLozinke.html", {
         "form": form,
-        "message": message
+        "message": message,
+        'pretragaForm': SearchForm()
     })
 
 
@@ -351,7 +360,8 @@ def promeniInfo(request: HttpRequest):
                 "lokacije": lokacije
             })
     return render(request, "entities/promenaInfo.html", {
-        "form": form
+        "form": form,
+        'pretragaForm': SearchForm()
     })
 
 
@@ -396,7 +406,8 @@ def admResetujLozinku(request: HttpRequest):
     else:
         form = AdminResetForm()
     return render(request, "entities/adminPanel.html", {
-        "form": form
+        "form": form,
+        'pretragaForm': SearchForm()
     })
 
 
@@ -415,5 +426,61 @@ def admBanujNalog(request: HttpRequest):
     else:
         form = AdminBanForm()
     return render(request, "entities/adminPanel.html", {
-        "form": form
+        "form": form,
+        'pretragaForm': SearchForm()
     })
+
+
+def pretraga(request: HttpRequest):
+    form = SearchForm(request.POST or None)
+    if form.is_valid():
+        naziv = form.cleaned_data["naziv"]
+        tip = form.cleaned_data["tip"]
+        znak = ("-" if form.cleaned_data["filter"] == "Ocena opadajuće" else "")
+        objekti = []
+        if tip == "Knjiga":
+            objektiz = Knjiga.objects.filter(Q(naziv__icontains=naziv)).order_by(znak + 'prosecnaocena')
+            for obj in objektiz:
+                objekti.append({
+                    "tip": "knjiga",
+                    "id": obj.isbn,
+                    "slika": obj.slika,
+                    "prosecnaocena": obj.prosecnaocena,
+                    "naziv": obj.naziv
+                })
+        elif tip == "Korisnik":
+            objektiz = Korisnik.objects.filter(Q(imeprezime__icontains=naziv)).order_by(znak + 'prosecnaocena')
+            for obj in objektiz:
+                objekti.append({
+                    "tip": "profil",
+                    "id": obj.username,
+                    "slika": obj.slika,
+                    "prosecnaocena": obj.prosecnaocena,
+                    "naziv": obj.imeprezime
+                })
+        elif tip == "Kuća":
+            objektiz = IzdavackaKuca.objects.filter(Q(naziv__icontains=naziv)).order_by(znak + 'prosecnaocena')
+            for obj in objektiz:
+                objekti.append({
+                    "tip": "profil",
+                    "id": obj.username,
+                    "slika": obj.slika,
+                    "prosecnaocena": obj.prosecnaocena,
+                    "naziv": obj.naziv
+                })
+        else:
+            objektiz = Autor.objects.filter(Q(imeprezime__icontains=naziv)).order_by(znak + 'prosecnaocena')
+            for obj in objektiz:
+                objekti.append({
+                    "tip": "profil",
+                    "id": obj.username,
+                    "slika": obj.slika,
+                    "prosecnaocena": obj.prosecnaocena,
+                    "naziv": obj.imeprezime
+                })
+        return render(request, "entities/pretraga.html", {
+            'pretragaForm': form,
+            'objekti': objekti
+        })
+    else:
+        return redirect(request.META.get("HTTP_REFERER"))

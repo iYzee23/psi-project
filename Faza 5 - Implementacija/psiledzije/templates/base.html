@@ -37,19 +37,10 @@
                     <a href="{% url 'home' %}" class="logo">
                         <img src="../../static/slike/logo.png" alt="" style="width: 80px;">
                     </a>
-                    <form action="pretraga.html">
-                        <input type="text" placeholder="Pretraga..." style="float:left; height:38px;">
-                        <select name="Tip Pretrage" class="form-select" style="width:fit-content; float:left;">
-                            <option value="Knjiga">Knjiga</option>
-                            <option value="Autor">Autor</option>
-                            <option value="Kuca">Kuća</option>
-                            <option value="Korisnik">Korisnik</option>
-                          </select>
-                          <select name="Filter" class="form-select" style="width:fit-content; float:left; height:fit-content;">
-                            <option value="ocenaOpad">Ocena opadajuće</option>
-                            <option value="ocenaRast">Ocena rastuće</option>
-                          </select>
-                          <input type="submit" value="Pretraži" class="searchbtn"  style="float:left; height:38px;" >
+                    <form action="{% url 'pretraga' %}" method="POST">
+                        {% csrf_token %}
+                        {{ pretragaForm }}
+                        <input type="submit" value="Pretraži" class="searchbtn"  style="float:left; height:38px;" >
                       </form>
                     {% if user.is_authenticated %}
                         <ul class="navbar-nav text-right">

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Pretraga
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid" style="padding:0; margin:0;">
+        <div class="row" style="margin:0;" >
+            <div class="row col-sm-12 main" style="margin-bottom: 15px;">
+                {% if objekti %}
+                    {% for obj in objekti %}
+                        <div class="col-sm-4">
+                            <div class="card" style="width: fit-content;">
+                                <div class="card-img-top" >
+                                    <a href="/{{ obj.tip }}/{{ obj.id }}" class="link-secondary">
+                                        <img src="{% if obj.slika %}{{ obj.slika.url }}{% endif %}" alt="Nema slike :(" style="height: 500px; width: 350px">
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-title">⭐{{ obj.prosecnaocena }} - {{ obj.naziv }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <h1>Nažalost, nijedan podatak u bazi ne zadovoljava Vaše kriterijume.</h1>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
