@@ -12,4 +12,9 @@ urlpatterns = [
     path('logout/', logout_req, name="logout"),
     path('knjiga/<str:knjiga_id>', knjiga, name="knjiga"),
     path('profil/<str:profil_id>', profil, name="profil"),
+    path('profil/', mojProfil, name="mojProfil"),
+    path('mojProfil/', mojProfil, name="mojProfil"),
+    path('dodajObjavu/', dodajObjavu, name="dodajObjavu"),
+    path('promeniSifru/', promeniSifru, name="promeniSifru"),
+    path('promeniInfo/', promeniInfo, name="promeniInfo")
 ]

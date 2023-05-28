@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth import logout, login, authenticate, update_session_auth_hash
 from django.contrib.auth.models import Group
 from django.http import HttpRequest, Http404
 from django.shortcuts import render, redirect
@@ -63,7 +63,6 @@ def regKuca(request: HttpRequest):
         user.save()
         group = Group.objects.get(name='Kuce')
         user.groups.add(group)
-
         lokacije = form.cleaned_data["lokacije"].split("#")
         for lok in lokacije:
             if lok:
@@ -91,9 +90,11 @@ def login_req(request: HttpRequest):
         "form": form
     })
 
+
 def logout_req(request: HttpRequest):
     logout(request)
     return redirect('home')
+
 
 def knjiga(request: HttpRequest, knjiga_id: str):
     try:
@@ -114,6 +115,7 @@ def knjiga(request: HttpRequest, knjiga_id: str):
         'recenzije': recenzije
     }
     return render(request, 'entities/knjiga.html', context)
+
 
 def profil(request: HttpRequest, profil_id: str):
     try:
@@ -138,4 +140,112 @@ def profil(request: HttpRequest, profil_id: str):
         raise Http404("Ne postoji profil sa tim ID :(")
 
 
+@login_required(login_url="login")
+def mojProfil(request: HttpRequest):
+    return redirect("profil", profil_id=request.user.username)
 
+
+@login_required(login_url="login")
+def dodajObjavu(request: HttpRequest):
+    pass
+
+
+@login_required(login_url="login")
+def promeniSifru(request: HttpRequest):
+    form = PromenaSifreForm(request.POST or None)
+    message = ""
+    if form.is_valid():
+        pass1 = form.cleaned_data["password1"]
+        pass2 = form.cleaned_data["password2"]
+        if pass1 == pass2:
+            request.user.set_password(pass1)
+            request.user.save()
+            update_session_auth_hash(request, request.user)
+            return redirect("mojProfil")
+        else:
+            message = "Lozinke se ne poklapaju"
+    else:
+        form = PromenaSifreForm()
+    return render(request, "entities/promenaLozinke.html", {
+        "form": form,
+        "message": message
+    })
+
+
+@login_required(login_url="login")
+def promeniInfo(request: HttpRequest):
+    uloga: Uloga = Uloga.objects.get(pk=request.user.pk)
+    if uloga.tip == 'K':
+        korisnik: Korisnik = Korisnik.objects.get(pk=request.user.pk)
+        rIndex = korisnik.imeprezime.index(" ")
+        form = PromenaInfoKorisnikForm(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            korisnik.email = form.cleaned_data["email"]
+            korisnik.imeprezime = form.cleaned_data["ime"] + " " + form.cleaned_data["prezime"]
+            korisnik.datumrodjenja = form.cleaned_data["datumrodjenja"]
+            if request.FILES:
+                korisnik.slika = form.cleaned_data["slika"]
+            korisnik.save()
+            return redirect("mojProfil")
+        else:
+            form = PromenaInfoKorisnikForm(initial={
+                "email": korisnik.email,
+                "ime": korisnik.imeprezime[:rIndex],
+                "prezime": korisnik.imeprezime[rIndex + 1:],
+                "datumrodjenja": korisnik.datumrodjenja
+            })
+    elif uloga.tip == 'A':
+        autor: Autor = Autor.objects.get(pk=request.user.pk)
+        rIndex = autor.imeprezime.index(" ")
+        form = PromenaInfoAutorForm(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            autor.email = form.cleaned_data["email"]
+            autor.imeprezime = form.cleaned_data["ime"] + " " + form.cleaned_data["prezime"]
+            autor.datumrodjenja = form.cleaned_data["datumrodjenja"]
+            autor.biografija = form.cleaned_data["biografija"]
+            if request.FILES:
+                autor.slika = form.cleaned_data["slika"]
+            autor.save()
+            return redirect("mojProfil")
+        else:
+            form = PromenaInfoAutorForm(initial={
+                "email": autor.email,
+                "ime": autor.imeprezime[:rIndex],
+                "prezime": autor.imeprezime[rIndex + 1:],
+                "datumrodjenja": autor.datumrodjenja,
+                "biografija": autor.biografija
+            })
+    else:
+        kuca: IzdavackaKuca = IzdavackaKuca.objects.get(pk=request.user.pk)
+        lokacijez = ProdajnaMesta.objects.filter(idizdkuca=kuca)
+        lokacije = ""
+        for lok in lokacijez:
+            lokacije += lok.adresa + "#"
+        lokacije = lokacije[:-1]
+        form = PromenaInfoKucaForm(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            kuca.email = form.cleaned_data["email"]
+            kuca.naziv = form.cleaned_data["naziv"]
+            kuca.istorija = form.cleaned_data["istorija"]
+            kuca.adresa = form.cleaned_data["adresa"]
+            ProdajnaMesta.objects.filter(idizdkuca=kuca).delete()
+            lokacijes = form.cleaned_data["lokacije"].split("#")
+            for lok in lokacijes:
+                if lok:
+                    instance = ProdajnaMesta(idizdkuca=kuca, adresa=lok)
+                    instance.save()
+            if request.FILES:
+                kuca.slika = form.cleaned_data["slika"]
+            kuca.save()
+            return redirect("mojProfil")
+        else:
+            form = PromenaInfoKucaForm(initial={
+                "email": kuca.email,
+                "naziv": kuca.naziv,
+                "istorija": kuca.istorija,
+                "adresa": kuca.adresa,
+                "lokacije": lokacije
+            })
+    return render(request, "entities/promenaInfo.html", {
+        "form": form
+    })

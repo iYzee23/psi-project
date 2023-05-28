@@ -65,15 +65,15 @@ class Knjiga(models.Model):
     slika = models.ImageField(db_column='Slika', null=True, upload_to='knjigaImgs/')
     opis = models.CharField(db_column='Opis', max_length=100, blank=True, null=True)
     prosecnaocena = models.DecimalField(db_column='ProsecnaOcena', max_digits=5, decimal_places=2)
-    idizdkuca = models.ForeignKey(db_column='IDIzdKuca', max_length=20, to='IzdavackaKuca', on_delete=models.DO_NOTHING)
+    idizdkuca = models.ForeignKey(db_column='IDIzdKuca', max_length=20, to='IzdavackaKuca', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'knjiga'
 
 
 class Kolekcija(models.Model):
-    korime = models.ForeignKey(db_column='KorIme', max_length=20, to='Uloga', on_delete=models.DO_NOTHING)
-    isbn = models.ForeignKey(db_column='ISBN', max_length=20, to='Knjiga', on_delete=models.DO_NOTHING)
+    korime = models.ForeignKey(db_column='KorIme', max_length=20, to='Uloga', on_delete=models.CASCADE)
+    isbn = models.ForeignKey(db_column='ISBN', max_length=20, to='Knjiga', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'kolekcija'
@@ -88,8 +88,8 @@ class Licitacija(models.Model):
     datumkraja = models.DateTimeField(db_column='DatumKraja')
     pocetnacena = models.IntegerField(db_column='PocetnaCena')
     trenutniiznos = models.IntegerField(db_column='TrenutniIznos')
-    idautor = models.ForeignKey(db_column='IDAutor', max_length=20, to='Autor', on_delete=models.DO_NOTHING)
-    idpobednik = models.ForeignKey(db_column='IDPobednik', max_length=20, blank=True, null=True, to='IzdavackaKuca', on_delete=models.DO_NOTHING)
+    idautor = models.ForeignKey(db_column='IDAutor', max_length=20, to='Autor', on_delete=models.CASCADE)
+    idpobednik = models.ForeignKey(db_column='IDPobednik', max_length=20, blank=True, null=True, to='IzdavackaKuca', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'licitacija'
@@ -105,8 +105,8 @@ class NajpopularnijiMesec(models.Model):
 
 
 class Napisao(models.Model):
-    idautor = models.ForeignKey(db_column='IDAutor', max_length=20, to='Autor', on_delete=models.DO_NOTHING)
-    isbn = models.ForeignKey(db_column='ISBN', max_length=20, to='Knjiga', on_delete=models.DO_NOTHING)
+    idautor = models.ForeignKey(db_column='IDAutor', max_length=20, to='Autor', on_delete=models.CASCADE)
+    isbn = models.ForeignKey(db_column='ISBN', max_length=20, to='Knjiga', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'napisao'
@@ -118,7 +118,7 @@ class Objava(models.Model):
     sadrzaj = models.CharField(db_column='Sadrzaj', max_length=1000)
     datumobjave = models.DateTimeField(db_column='DatumObjave')
     slika = models.ImageField(db_column='Slika', upload_to='objavaImgs/', null=True)
-    korime = models.ForeignKey(db_column='KorIme', max_length=20, to='Uloga', on_delete=models.DO_NOTHING)
+    korime = models.ForeignKey(db_column='KorIme', max_length=20, to='Uloga', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'objava'
@@ -127,16 +127,16 @@ class Objava(models.Model):
 class Ponuda(models.Model):
     idponuda = models.IntegerField(db_column='IDPonuda', primary_key=True)
     iznos = models.IntegerField(db_column='Iznos')
-    idlicitacija = models.ForeignKey(db_column='IDLicitacija', to='Licitacija', on_delete=models.DO_NOTHING)
-    idizdkuca = models.ForeignKey(db_column='IDIzdKuca', max_length=20, to='IzdavackaKuca', on_delete=models.DO_NOTHING)
+    idlicitacija = models.ForeignKey(db_column='IDLicitacija', to='Licitacija', on_delete=models.CASCADE)
+    idizdkuca = models.ForeignKey(db_column='IDIzdKuca', max_length=20, to='IzdavackaKuca', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'ponuda'
 
 
 class Povezani(models.Model):
-    idautor = models.ForeignKey(db_column='IDAutor', max_length=20, to='Autor', on_delete=models.DO_NOTHING)
-    idizdkuca = models.ForeignKey(db_column='IDIzdKuca', max_length=20, to='IzdavackaKuca', on_delete=models.DO_NOTHING)
+    idautor = models.ForeignKey(db_column='IDAutor', max_length=20, to='Autor', on_delete=models.CASCADE)
+    idizdkuca = models.ForeignKey(db_column='IDIzdKuca', max_length=20, to='IzdavackaKuca', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'povezani'
@@ -144,8 +144,8 @@ class Povezani(models.Model):
 
 
 class Prati(models.Model):
-    idpratilac = models.ForeignKey(db_column='IDPratilac', max_length=20, to='Uloga', on_delete=models.DO_NOTHING, related_name='related_to_pratilac')
-    idpracen = models.ForeignKey(db_column='IDPracen', max_length=20, to='Uloga', on_delete=models.DO_NOTHING, related_name='related_to_pracen')
+    idpratilac = models.ForeignKey(db_column='IDPratilac', max_length=20, to='Uloga', on_delete=models.CASCADE, related_name='related_to_pratilac')
+    idpracen = models.ForeignKey(db_column='IDPracen', max_length=20, to='Uloga', on_delete=models.CASCADE, related_name='related_to_pracen')
 
     class Meta:
         db_table = 'prati'
@@ -153,7 +153,7 @@ class Prati(models.Model):
 
 
 class ProdajnaMesta(models.Model):
-    idizdkuca = models.ForeignKey(db_column='IDIzdKuca', max_length=20, to='IzdavackaKuca', on_delete=models.DO_NOTHING)
+    idizdkuca = models.ForeignKey(db_column='IDIzdKuca', max_length=20, to='IzdavackaKuca', on_delete=models.CASCADE)
     adresa = models.CharField(db_column='Adresa', max_length=60)
 
     class Meta:
@@ -166,9 +166,9 @@ class Recenzija(models.Model):
     ocena = models.DecimalField(db_column='Ocena', max_digits=5 ,decimal_places=1)
     datumobjave = models.DateTimeField(db_column='DatumObjave')
     tekst = models.CharField(db_column='Tekst', max_length=1000)
-    iddavalac = models.ForeignKey(db_column='IDDavalac', max_length=20, to='Uloga', on_delete=models.DO_NOTHING, related_name='related_to_davalac_uloga')
-    idprimalaculoga = models.ForeignKey(db_column='IDPrimalacUloga', max_length=20, blank=True, null=True, to='Uloga', on_delete=models.DO_NOTHING, related_name='related_to_primalac_uloga')
-    idprimalacknjiga = models.ForeignKey(db_column='IDPrimalacKnjiga', max_length=20, blank=True, null=True, to='Knjiga', on_delete=models.DO_NOTHING)
+    iddavalac = models.ForeignKey(db_column='IDDavalac', max_length=20, to='Uloga', on_delete=models.CASCADE, related_name='related_to_davalac_uloga')
+    idprimalaculoga = models.ForeignKey(db_column='IDPrimalacUloga', max_length=20, blank=True, null=True, to='Uloga', on_delete=models.CASCADE, related_name='related_to_primalac_uloga')
+    idprimalacknjiga = models.ForeignKey(db_column='IDPrimalacKnjiga', max_length=20, blank=True, null=True, to='Knjiga', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'recenzija'
