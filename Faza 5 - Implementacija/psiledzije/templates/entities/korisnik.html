@@ -22,9 +22,17 @@
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-sm-10 objave">
-
-
+                    <div class="col-sm-8 objave">
+                    <h1><b>Objave</b></h1>
+                        {% for objava in objave %}
+                            <div class="objava">
+                                {% if objava.slika %}
+                                    <img src="{{ objava.slika.url }}" style="max-width: 150px">
+                                {% endif %}
+                                {{ objava.sadrzaj }}
+                                <p> - {{ objava.datumobjave }}</p>
+                            </div>
+                        {% endfor %}
                     </div>
                     {% if uloga == user %}
                         <div class="col-sm-6" style="display: flex; justify-content: space-between">

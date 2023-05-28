@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'baza',
         'USER': 'root',
-        'PASSWORD': 'Cicko234!',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306'
     }
@@ -117,6 +117,20 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+# SMTP email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com'  # e.g., 'smtp.gmail.com'
+EMAIL_PORT = 587  # the port used by your SMTP server
+EMAIL_HOST_USER = 'ma200282d@student.etf.bg.ac.rs'  # your email address
+EMAIL_HOST_PASSWORD = ''  # your email password or app-specific password
+EMAIL_USE_TLS = True  # use TLS encryption for secure connection
+EMAIL_USE_SSL = False  # use SSL encryption for secure connection (if required)
+
+# Default email address settings
+DEFAULT_FROM_EMAIL = 'ma200282d@student.etf.bg.ac.rs'
+SERVER_EMAIL = 'ma200282d@student.etf.bg.ac.rs'
+
 
 
 # Static files (CSS, JavaScript, Images)

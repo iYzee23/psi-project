@@ -29,10 +29,10 @@
                 <h1><b>Najbolje ocenjeni autori</b></h1>
                 {% for autor in autori %}
                     <div class="col-sm-4">
-                        <div class="card" style="width: fit-content;">
+                        <div class="card">
                             <div class="card-img-top" >
                                 <a href="/profil/{{ autor.username }}" class="link-secondary">
-                                    <img src="{% if autor.slika %}{{ autor.slika.url }}{% endif %}" alt="Nema slike :(" style="height: 500px; width: 350px">
+                                    <img src="{% if autor.slika %}{{ autor.slika.url }}{% endif %}" alt="Nema slike :(" style="height: 400px; width: 250px">
                                 </a>
                             </div>
                             <div class="card-body">
@@ -63,7 +63,3 @@
         </div>
     </div>
 {% endblock %}
-<!--<body onload="inicijalizujStranicu()" style="padding:0; margin:0;">
-
-</body>
-</html>-->

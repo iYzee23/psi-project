@@ -7,11 +7,15 @@ from django.contrib import messages
 from .forms import *
 from datetime import datetime
 
+
 # Create your views here.
 def index(request: HttpRequest):
-    knjige = [Knjiga.objects.get(pk=naj.idocenjenog) for naj in NajpopularnijiMesec.objects.filter(tip='K').order_by('-prosecnaocena')]
-    autori = [Autor.objects.get(username=naj.idocenjenog) for naj in NajpopularnijiMesec.objects.filter(tip='A').order_by('-prosecnaocena')]
-    kuce = [IzdavackaKuca.objects.get(username=naj.idocenjenog) for naj in NajpopularnijiMesec.objects.filter(tip='I').order_by('-prosecnaocena')]
+    knjige = [Knjiga.objects.get(pk=naj.idocenjenog) for naj in
+              NajpopularnijiMesec.objects.filter(tip='K').order_by('-prosecnaocena')]
+    autori = [Autor.objects.get(username=naj.idocenjenog) for naj in
+              NajpopularnijiMesec.objects.filter(tip='A').order_by('-prosecnaocena')]
+    kuce = [IzdavackaKuca.objects.get(username=naj.idocenjenog) for naj in
+            NajpopularnijiMesec.objects.filter(tip='I').order_by('-prosecnaocena')]
     context = {
         'knjige': knjige,
         'autori': autori,
@@ -19,8 +23,8 @@ def index(request: HttpRequest):
     }
     return render(request, 'index.html', context)
 
-def generisiMesec(request: HttpRequest):
 
+def generisiMesec(request: HttpRequest):
     NajpopularnijiMesec.objects.all().delete()
 
     for k in Knjiga.objects.all().order_by('-prosecnaocena')[0:3]:
@@ -32,8 +36,8 @@ def generisiMesec(request: HttpRequest):
     for i in IzdavackaKuca.objects.all().order_by('-prosecnaocena')[0:3]:
         NajpopularnijiMesec.objects.create(idocenjenog=i.username, prosecnaocena=i.prosecnaocena, tip='I')
 
-
     return HttpResponse("Generisano <3")
+
 
 def reg(request: HttpRequest):
     if request.user.is_authenticated:
@@ -121,47 +125,51 @@ def logout_req(request: HttpRequest):
 
 def knjiga(request: HttpRequest, knjiga_id: str):
     try:
-        form = RecenzijaForm(data=request.POST or None);
-        editForm= RecenzijaEditForm(data=request.POST or None);
-        knjiga2 = Knjiga.objects.get(pk=knjiga_id)
-        knjiga2.opis="Zivot Ane Karenjine"
-        knjiga2.save()
-        napisanija = Napisao.objects.filter(isbn=knjiga2.isbn)
+        form = RecenzijaForm(data=request.POST or None)
+        editForm = RecenzijaEditForm(data=request.POST or None)
+        knjiga = Knjiga.objects.get(isbn=knjiga_id)
+        napisanija = Napisao.objects.filter(isbn=knjiga_id)
         autori = ''
         for napisanije in napisanija:
             autori += napisanije.idautor.imeprezime + ', '
         autori = autori[0:-2]
 
-        recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga2)
+        recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga_id)
 
-    except:
+        #if Recenzija.objects.get(iddavalac=request.user):
+           # TODO @ljubica IZBACI GRESKU - ne mogu da dam dve recenzije na nesto!
+
+    except Knjiga.DoesNotExist:
+        raise Http404("Ne postoji knjiga sa tim ID :(")
+    except Recenzija.DoesNotExist:
         raise Http404("Ne postoji knjiga sa tim ID :(")
 
-
     if form.is_valid():
-
-        if "postavi"  in request.POST:
-            datum=datetime.now()
+        if "postavi" in request.POST:
+            datum = datetime.now()
             ocena = form.cleaned_data["ocena"]
             tekst = form.cleaned_data["tekst"]
-            davalac= Uloga.objects.get(username=request.user.get_username())
+            # TODO @ljubica ovde moze samo user
+            davalac = Uloga.objects.get(username=request.user.get_username())
+
+            # TODO @ljubica mozemo da promenimo model da polje bude models.AutoField i onda auto generise
             poslRec = Recenzija.objects.last()
-            poslId=0
-            if(poslRec):
-                poslId=poslRec.idrec
-            novId=poslId+1
-            knjiga2 = Knjiga.objects.get(pk=knjiga_id)
-            novaRec=Recenzija(idrec=novId,ocena=ocena,datumobjave=datum,tekst=tekst,iddavalac=davalac,idprimalacknjiga=knjiga2)
+            poslId = 0
+            if (poslRec):
+                poslId = poslRec.idrec
+            novId = poslId + 1
+            novaRec = Recenzija(idrec=novId, ocena=ocena, datumobjave=datum, tekst=tekst, iddavalac=davalac,
+                                idprimalacknjiga=knjiga)
             novaRec.save()
-            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga2)
-            sumaOcena=0
+            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga_id)
+            sumaOcena = 0
             for rec in recenzije:
-                sumaOcena=sumaOcena+rec.ocena
+                sumaOcena = sumaOcena + rec.ocena
 
-            prosecnaOcena=sumaOcena/recenzije.count()
+            prosecnaOcena = sumaOcena / recenzije.count()
 
-            knjiga2.prosecnaocena=round(prosecnaOcena, 2)
-            knjiga2.save()
+            knjiga.prosecnaocena = round(prosecnaOcena, 2)
+            knjiga.save()
     if editForm.is_valid():
         if "izmeni" in request.POST:
             ocena = form.cleaned_data["ocena"]
@@ -172,36 +180,35 @@ def knjiga(request: HttpRequest, knjiga_id: str):
             novaRec.datumobjave = datetime.now()
             novaRec.tekst = tekst
             novaRec.save()
-            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga2)
+            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga_id)
             sumaOcena = 0
             for rec in recenzije:
                 sumaOcena = sumaOcena + rec.ocena
 
             prosecnaOcena = sumaOcena / recenzije.count()
 
-            knjiga2.prosecnaocena = round(prosecnaOcena, 2)
-            knjiga2.save()
+            knjiga.prosecnaocena = round(prosecnaOcena, 2)
+            knjiga.save()
         if "obrisi" in request.POST:
             idRec = request.POST.get('hiddenIdRec')
             novaRec = Recenzija.objects.get(idrec=idRec)
             novaRec.delete()
-            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga2)
+            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga_id)
             sumaOcena = 0
             for rec in recenzije:
                 sumaOcena = sumaOcena + rec.ocena
 
             prosecnaOcena = sumaOcena / recenzije.count()
 
-            knjiga2.prosecnaocena = round(prosecnaOcena, 2)
-            knjiga2.save()
-
+            knjiga.prosecnaocena = round(prosecnaOcena, 2)
+            knjiga.save()
 
     context = {
-        'knjiga': knjiga2,
+        'knjiga': knjiga,
         'autori': autori,
         'recenzije': recenzije,
-        'forma':form,
-        'editForma':editForm,
+        'forma': form,
+        'editForma': editForm,
     }
     return render(request, 'entities/knjiga.html', context)
 
@@ -210,14 +217,17 @@ def profil(request: HttpRequest, profil_id: str):
     try:
         uloga = Uloga.objects.get(pk=profil_id)
         recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
+        objave = Objava.objects.filter(korime=uloga)
 
         context = {
             'uloga': uloga,
-            'recenzije': recenzije
+            'recenzije': recenzije,
+            'objave': objave
         }
 
         if uloga.tip == 'A':
             context['profil'] = Autor.objects.get(pk=profil_id)
+            context['knjige'] = Knjiga.objects.filter(napisao__idautor=profil_id).order_by('-prosecnaocena')
             return render(request, 'entities/autor.html', context)
         elif uloga.tip == 'K':
             context['profil'] = Korisnik.objects.get(pk=profil_id)
@@ -229,19 +239,9 @@ def profil(request: HttpRequest, profil_id: str):
         raise Http404("Ne postoji profil sa tim ID :(")
 
 
-
 @login_required(login_url="login")
 def mojProfil(request: HttpRequest):
     return redirect("profil", profil_id=request.user.username)
-
-
-
-
-
-
-
-
-
 
 
 @login_required(login_url="login")
