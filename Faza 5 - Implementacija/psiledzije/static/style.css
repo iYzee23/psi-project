@@ -39,7 +39,7 @@ body{
 }
 
 .recenzija {
-    background-color: rgba(106, 106, 128, 0.8);
+    background-color: rgba(128, 113, 106, 0.8);
     margin: 5px;
     padding: 5px;
 }
@@ -106,7 +106,7 @@ body{
     background-color: #Cd5334;
     color: white;
     border: none;;
-   height:10%;
+    height:10%;
     cursor: pointer;
     width: 100%;
  
@@ -237,4 +237,57 @@ body{
 } 
 .popuptext{
     display: none;
+}
+
+
+#popupRecenzija {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    display:none;
+    transform: translate(-50%, -50%);
+    background-color: rgb(129, 118, 118);
+    padding: 20px;
+    border: 1px solid #ccc;
+    /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);*/
+}
+.dodaj{
+
+    background-color: #578d46;
+    color: white;
+    /*padding: 14px 20px;*/
+    /*margin-bottom: 10%;*/
+
+    font-size:large;
+    border: none;
+    cursor: pointer;
+    width: fit-content;
+    height:fit-content;
+}
+.odustani{
+    background-color: #de6349;
+    color: white;
+    /*padding: 14px 20px;*/
+    /*margin-bottom: 10%;*/
+
+    /*align-self: end;*/
+    float:right;
+    font-size:large;
+    border: none;
+    cursor: pointer;
+    width: fit-content;
+    height:fit-content;
+}
+
+#editRec{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    display:none;
+    transform: translate(-50%, -50%);
+    background-color: rgb(129, 118, 118);
+    padding: 20px;
+    border: 1px solid #ccc;
+    /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);*/
+
 }

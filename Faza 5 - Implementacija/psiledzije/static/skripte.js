@@ -291,10 +291,37 @@ function popUpPretpl()
 
 function dodajRec()
 {
-    var pop=document.getElementById("novaRec")
-    pop.style="display:block; padding:15px; "
+    var popupDiv = document.getElementById("popupRecenzija");
+    if (popupDiv.style.display == "none") {
+        popupDiv.style.display = "block";
+    } else {
+        popupDiv.style.display = "none";
+    }
+
+
 }
 
+
+// document.getElementById("dodajRec").addEventListener("click", function() {
+//
+// });
+function editRec(button,tekst,ocena){
+    var popupDiv = document.getElementById("editRec");
+    if (popupDiv.style.display == "none") {
+        popupDiv.style.display = "block";
+    } else {
+        popupDiv.style.display = "none";
+    }
+    var idRec=document.getElementById("hiddenIdRec")
+    idRec.value=button.value
+
+    var editTekst=document.getElementById("editTeksta")
+    editTekst.value= tekst
+
+    var editOcena=document.getElementById("editOcena")
+    editOcena.value=ocena
+
+}
 function meniRec()
 {
     var pop=document.getElementById("dropDownRec");

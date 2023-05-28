@@ -1,6 +1,10 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField, UserChangeForm
+
+
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
+
 from django.forms import *
 from .models import *
+from django import forms
 
 
 class KorisnikRegForm(UserCreationForm):
@@ -87,3 +91,19 @@ class PromenaInfoKucaForm(ModelForm):
     class Meta:
         model = IzdavackaKuca
         fields = ["email", "naziv", "slika", "istorija", "adresa", "lokacije"]
+
+class RecenzijaForm(Form):
+
+
+    tekst = forms.CharField(label='Review', widget=forms.Textarea,max_length=1000, required=False)
+    # forms.IntegerField(widget=forms.TextInput(attrs={'type': 'range'})
+    ocena=  forms.IntegerField(widget=forms.TextInput(attrs={'type': 'range', 'min': '1', 'max': '5'}))
+    # ocena = forms.ChoiceField(label='Grade', choices=GRADE_CHOICES, widget=forms.RadioSelect)
+
+class RecenzijaEditForm(Form):
+    tekst = forms.CharField(label='Review', widget=forms.Textarea(attrs={'id':'editTeksta'}), max_length=1000, required=False)
+    # forms.IntegerField(widget=forms.TextInput(attrs={'type': 'range'})
+    ocena = forms.IntegerField(widget=forms.TextInput(attrs={'type': 'range', 'min': '1', 'max': '5','id':'editOcena'}))
+    # ocena = forms.ChoiceField(label='Grade', choices=GRADE_CHOICES, widget=forms.RadioSelect)
+    hiddenIdRec = forms.CharField(widget=forms.HiddenInput(attrs={'id':'hiddenIdRec'}))
+

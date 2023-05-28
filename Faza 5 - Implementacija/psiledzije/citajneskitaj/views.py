@@ -5,7 +5,7 @@ from django.http import HttpRequest, Http404
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import *
-
+from datetime import datetime
 
 # Create your views here.
 def index(request: HttpRequest):
@@ -98,21 +98,87 @@ def logout_req(request: HttpRequest):
 
 def knjiga(request: HttpRequest, knjiga_id: str):
     try:
-        knjiga = Knjiga.objects.get(pk=knjiga_id)
-        napisanija = Napisao.objects.filter(isbn=knjiga.isbn)
+        form = RecenzijaForm(data=request.POST or None);
+        editForm= RecenzijaEditForm(data=request.POST or None);
+        knjiga2 = Knjiga.objects.get(pk=knjiga_id)
+        knjiga2.opis="Zivot Ane Karenjine"
+        knjiga2.save()
+        napisanija = Napisao.objects.filter(isbn=knjiga2.isbn)
         autori = ''
         for napisanije in napisanija:
             autori += napisanije.idautor.imeprezime + ', '
         autori = autori[0:-2]
 
-        recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga)
+        recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga2)
 
     except:
         raise Http404("Ne postoji knjiga sa tim ID :(")
+
+
+    if form.is_valid():
+
+        if "postavi"  in request.POST:
+            datum=datetime.now()
+            ocena = form.cleaned_data["ocena"]
+            tekst = form.cleaned_data["tekst"]
+            davalac= Uloga.objects.get(username=request.user.get_username())
+            poslRec = Recenzija.objects.last()
+            poslId=0
+            if(poslRec):
+                poslId=poslRec.idrec
+            novId=poslId+1
+            knjiga2 = Knjiga.objects.get(pk=knjiga_id)
+            novaRec=Recenzija(idrec=novId,ocena=ocena,datumobjave=datum,tekst=tekst,iddavalac=davalac,idprimalacknjiga=knjiga2)
+            novaRec.save()
+            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga2)
+            sumaOcena=0
+            for rec in recenzije:
+                sumaOcena=sumaOcena+rec.ocena
+
+            prosecnaOcena=sumaOcena/recenzije.count()
+
+            knjiga2.prosecnaocena=round(prosecnaOcena, 2)
+            knjiga2.save()
+    if editForm.is_valid():
+        if "izmeni" in request.POST:
+            ocena = form.cleaned_data["ocena"]
+            tekst = form.cleaned_data["tekst"]
+            idRec = request.POST.get('hiddenIdRec')
+            novaRec = Recenzija.objects.get(idrec=idRec)
+            novaRec.ocena = ocena
+            novaRec.datumobjave = datetime.now()
+            novaRec.tekst = tekst
+            novaRec.save()
+            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga2)
+            sumaOcena = 0
+            for rec in recenzije:
+                sumaOcena = sumaOcena + rec.ocena
+
+            prosecnaOcena = sumaOcena / recenzije.count()
+
+            knjiga2.prosecnaocena = round(prosecnaOcena, 2)
+            knjiga2.save()
+        if "obrisi" in request.POST:
+            idRec = request.POST.get('hiddenIdRec')
+            novaRec = Recenzija.objects.get(idrec=idRec)
+            novaRec.delete()
+            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga2)
+            sumaOcena = 0
+            for rec in recenzije:
+                sumaOcena = sumaOcena + rec.ocena
+
+            prosecnaOcena = sumaOcena / recenzije.count()
+
+            knjiga2.prosecnaocena = round(prosecnaOcena, 2)
+            knjiga2.save()
+
+
     context = {
-        'knjiga': knjiga,
+        'knjiga': knjiga2,
         'autori': autori,
-        'recenzije': recenzije
+        'recenzije': recenzije,
+        'forma':form,
+        'editForma':editForm,
     }
     return render(request, 'entities/knjiga.html', context)
 
@@ -140,9 +206,19 @@ def profil(request: HttpRequest, profil_id: str):
         raise Http404("Ne postoji profil sa tim ID :(")
 
 
+
 @login_required(login_url="login")
 def mojProfil(request: HttpRequest):
     return redirect("profil", profil_id=request.user.username)
+
+
+
+
+
+
+
+
+
 
 
 @login_required(login_url="login")
