@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Logovanje
+{% endblock %}
+
+{% block header %}
+    <div class="container-fluid" style="padding:0; margin:0;">
+        <div class="row col-sm-12 " style="padding:0; width:100%; margin: 0;">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="margin:0; padding:5px;" >
+                <div class="container-fluid " id="navmeni" style="margin:0;">
+                    <a href="{% url 'home' %}" class="logo">
+                        <img src="../../static/slike/logo.png" alt="" style="width: 80px;">
+                    </a>
+                    {% if user.is_authenticated %}
+                        <ul class="navbar-nav text-right">
+                            <li class="nav-item">
+                                <a href="{% url 'logout' %}" class="nav-link">Izloguj se</a>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <ul class="navbar-nav text-right">
+                            <li class="nav-item">
+                                <a href="{% url 'reg' %}" class="nav-link">Registruj se</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'login' %}" class="nav-link">Uloguj se</a>
+                            </li>
+                        </ul>
+                    {% endif %}
+                    </div>
+                </nav>
+            </div>
+        </div>
+{% endblock %}
+
+{% block body %}
+   <div class="container-fluid" style="margin:0; padding:0;">
+        <div id="login">
+            <h1>LOGOVANJE</h1>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Uloguj se" class="loginbtn">
+            </form>
+            <button type="button" class="btn btn-light resetPassbtn " data-toggle="modal" data-target="#exampleModalCenter">
+                Zaboravljena lozinka?
+            </button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Uputstvo</h5>
+                <button  class="btn-outline-dark" data-dismiss="modal" >
+                    <!-- <span aria-hidden="true">&times;</span> -->
+                    X
+                </button>
+                </div>
+                <div class="modal-body">
+                    Pošaljite informaciju o korisničkom imenu sa<br>
+                    Vašeg mejla na mejl: <a href="mailto:admin@gmail.com">admin@gmail.com</a>. Naslov <br>
+                    treba da bude: 'Zahtev za resetovanjem lozinke'.
+                    <br>
+                    <br>
+                    Ukoliko se Vaše korisničko ime poklapa sa mejlom <br>
+                    preko koga ste poslali informacije, u najskorijem <br>
+                    vremenskom periodu ćete dobiti informaciju o <br>
+                    privremenoj lozinci sa kojom se možete ulogovati<br>
+                    i potom je promeniti u podešavanjima.
+                </div>
+                <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+                </div> -->
+            </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
