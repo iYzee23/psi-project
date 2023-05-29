@@ -255,24 +255,22 @@ def knjiga(request: HttpRequest, knjiga_id: str):
 def profil(request: HttpRequest, profil_id: str):
     try:
         uloga = Uloga.objects.get(pk=profil_id)
-        flag=0
+        flag = 0
         recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
         objave = Objava.objects.filter(korime=uloga)
 
+        if (request.user.is_authenticated and request.user!=uloga):
+            if(Prati.objects.filter(idpracen=uloga, idpratilac=request.user).exists()):
+                flag = 2
+            else:
+                flag = 1
 
-        if(Uloga.objects.filter(pk=request.user.pk).first()):
-            user=Uloga.objects.get(pk=request.user.pk)
-            if(user.is_authenticated and user!=uloga):
-                if(Prati.objects.filter(idpracen=uloga, idpratilac=user).exists()):
-                    flag=2
-                else:
-                    flag=1
         context = {
             'uloga': uloga,
             'recenzije': recenzije,
             'objave': objave,
             'pretragaForm': SearchForm(),
-            'flag':flag
+            'flag' : flag
         }
 
 
@@ -522,61 +520,36 @@ def pretraga(request: HttpRequest):
     else:
         return redirect(request.META.get("HTTP_REFERER"))
 @login_required(login_url="login")
-def prijaviSe(request: HttpRequest):
+def zaprati(request: HttpRequest):
     if(request.method == 'POST'):
         form = PretplataForm(request.POST)
         if form.is_valid():
-            uloga = request.POST.get('uloga')
-            user = request.POST.get('user')
-            role:Uloga=Uloga.objects.get(pk=uloga)
-            korisnik: Uloga = Uloga.objects.get(pk=user)
-            role.brpratilaca+=1
-            role.save()
-            instance=Prati(idpracen=role, idpratilac=korisnik)
-            instance.save()
-            recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
-            context = {
-                'uloga': role,
-                'recenzije': recenzije,
-                'flag':2
-            }
-            if role.tip == 'A':
-                context['profil'] = Autor.objects.get(pk=uloga)
-                return render(request, 'entities/autor.html', context)
-            elif role.tip == 'K':
-                context['profil'] = Korisnik.objects.get(pk=uloga)
-                return render(request, 'entities/korisnik.html', context)
-            else:
-                context['profil'] = IzdavackaKuca.objects.get(pk=uloga)
-                return render(request, 'entities/izdavackakuca.html', context)
+
+            pratilac = request.user
+
+            praceni_id = request.POST.get('praceni')
+            praceni = Uloga.objects.get(pk=praceni_id)
+            praceni.brpratilaca += 1
+            praceni.save()
+
+            Prati.objects.create(idpracen=praceni, idpratilac=pratilac)
+
+            return redirect('profil', praceni_id)
+
     return redirect('home')
 
-def odjaviSe(request:HttpRequest):
+@login_required(login_url="login")
+def otprati(request:HttpRequest):
     if (request.method == 'POST'):
         form = PretplataForm(request.POST)
         if form.is_valid():
-            uloga = request.POST.get('uloga')
-            user = request.POST.get('user')
-            role: Uloga = Uloga.objects.get(pk=uloga)
-            korisnik: Uloga=Uloga.objects.get(pk=user)
-            role.brpratilaca -= 1
-            role.save()
-            instance = Prati.objects.get(idpracen=role, idpratilac=korisnik)
-            instance.delete()
-            recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
-            context = {
-                'uloga': role,
-                'recenzije': recenzije,
-                'flag': 1
-            }
-            if role.tip == 'A':
-                context['profil'] = Autor.objects.get(pk=uloga)
-                return render(request, 'entities/autor.html', context)
-            elif role.tip == 'K':
-                context['profil'] = Korisnik.objects.get(pk=uloga)
-                return render(request, 'entities/korisnik.html', context)
-            else:
-                context['profil'] = IzdavackaKuca.objects.get(pk=uloga)
-                return render(request, 'entities/izdavackakuca.html', context)
+            pratilac = request.user
 
+            praceni_id = request.POST.get('praceni')
+            praceni = Uloga.objects.get(pk=praceni_id)
+            praceni.brpratilaca -= 1
+            praceni.save()
+
+            Prati.objects.get(idpracen=praceni, idpratilac=pratilac).delete()
+            return redirect('profil', praceni_id)
     return redirect('home')

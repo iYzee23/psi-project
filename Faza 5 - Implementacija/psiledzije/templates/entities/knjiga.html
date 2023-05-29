@@ -4,6 +4,7 @@
     {{ knjiga.naziv }}
 {% endblock %}
 
+
 {% block body %}
     <div class="container-fluid" style="padding:0; margin:0;">
         <div class="row" style="margin:0;">
@@ -66,7 +67,7 @@
                                     {% else %}
                                         <i>@banovan</i>
                                     {% endif %}
-                                    {% if rec.iddavalac == request.user %}
+                                    {% if rec.iddavalac == request.user or user.is_superuser %}
                                     <button class="editBtn" onclick="editRec(this,'{{ rec.tekst }}','{{ rec.ocena }}')" value="{{ rec.idrec }}">...</button>
 
                                     {% endif %}

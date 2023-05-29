@@ -291,14 +291,7 @@ function popUpPretpl()
 
 function dodajRec()
 {
-    var popupDiv = document.getElementById("popupRecenzija");
-    if (popupDiv.style.display == "none") {
-        popupDiv.style.display = "block";
-    } else {
-        popupDiv.style.display = "none";
-    }
-
-
+    $("#popupRecenzija").toggle();
 }
 
 
@@ -306,20 +299,17 @@ function dodajRec()
 //
 // });
 function editRec(button,tekst,ocena){
-    var popupDiv = document.getElementById("editRec");
-    if (popupDiv.style.display == "none") {
-        popupDiv.style.display = "block";
-    } else {
-        popupDiv.style.display = "none";
-    }
-    var idRec=document.getElementById("hiddenIdRec")
-    idRec.value=button.value
 
-    var editTekst=document.getElementById("editTeksta")
-    editTekst.value= tekst
+    $("#editRec").toggle();
 
-    var editOcena=document.getElementById("editOcena")
-    editOcena.value=ocena
+    var idRec=document.getElementById("hiddenIdRec");
+    idRec.value=button.value;
+
+    var editTekst=document.getElementById("editTeksta");
+    editTekst.value= tekst;
+
+    var editOcena=document.getElementById("editOcena");
+    editOcena.value=ocena;
 
 }
 function meniRec()

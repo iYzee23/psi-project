@@ -1,37 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'registration/reg.html' %}
 
 {% block title %}
     Registracija izdavačke kuće
-{% endblock %}
-
-{% block header %}
-    <div class="container-fluid" style="padding:0; margin:0;">
-        <div class="row col-sm-12 " style="padding:0; width:100%; margin: 0;">
-            <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="margin:0; padding:5px;" >
-                <div class="container-fluid " id="navmeni" style="margin:0;">
-                    <a href="{% url 'home' %}" class="logo">
-                        <img src="../../static/slike/logo.png" alt="" style="width: 80px;">
-                    </a>
-                    {% if user.is_authenticated %}
-                        <ul class="navbar-nav text-right">
-                            <li class="nav-item">
-                                <a href="{% url 'logout' %}" class="nav-link">Izloguj se</a>
-                            </li>
-                        </ul>
-                    {% else %}
-                        <ul class="navbar-nav text-right">
-                            <li class="nav-item">
-                                <a href="{% url 'reg' %}" class="nav-link">Registruj se</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{% url 'login' %}" class="nav-link">Uloguj se</a>
-                            </li>
-                        </ul>
-                    {% endif %}
-                    </div>
-                </nav>
-            </div>
-        </div>
 {% endblock %}
 
 {% block body %}
@@ -48,7 +18,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 {% endblock %}
 

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block twoPanels %}
+    <div class="container-fluid" style="padding:0; margin:0;">
+        <div class="row" style="margin:0;">
+            <div class="col-sm-8 mainPanel" >
+                <div class="row">
+                    {% block upperLeft %}
+                    {% endblock %}
+                    <hr>
+                    {% block lowerLeft %}
+                    {% endblock %}
+                </div>
+            </div>
+            <div class="col-sm-4 sidePanel " style="margin:0;">
+                {% block rightPanel %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

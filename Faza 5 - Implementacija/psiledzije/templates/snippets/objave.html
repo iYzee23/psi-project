@@ -1,0 +1,13 @@
+<div class="col-sm-11 objave">
+    <h1><b>Objave</b></h1>
+    {% for objava in objave %}
+        <div class="objava">
+            {% if objava.slika %}
+                <img src="{{ objava.slika.url }}" style="max-width: 100px;">
+            {% endif %}
+            {{ objava.sadrzaj }}
+            <span> - {{ objava.datumobjave }}</span>
+
+        </div>
+    {% endfor %}
+</div>

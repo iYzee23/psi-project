@@ -1,0 +1,13 @@
+{% if flag == 1 %}
+    <form action="{% url 'zaprati' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="praceni" value="{{ uloga }}">
+        <button class="katalogbtn" type="submit">Zaprati</button>
+    </form>
+{% elif flag == 2 %}
+    <form action="{% url 'otprati' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="praceni" value="{{ uloga }}">
+        <button class="katalogbtn" type="submit">Otprati</button>
+    </form>
+{% endif %}
