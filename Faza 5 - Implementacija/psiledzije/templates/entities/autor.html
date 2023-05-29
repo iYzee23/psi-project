@@ -99,9 +99,8 @@
                 {% endfor %}
             </div>
         </div>
-
-
     </div>
+
     <div class="popup " id="desno"
          style="width:50%; margin:auto;position:absolute; top:30%; left:25%; padding:0; background-color: rgb(233, 233, 233); height:fit-content;">
         <div class="popuptext" id="novaRec">
@@ -112,7 +111,6 @@
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
-
             </select>
             <textarea id="" name="" rows="4" cols="50">Uneti komentar.</textarea>
             <button class="katalogbtn btn-success" onclick="ukloniRec()">Objavi</button>
@@ -129,14 +127,24 @@
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
-
             </select>
             <textarea id="" name="" rows="4" cols="50">Uneti komentar.</textarea>
             <button class="katalogbtn btn-success" onclick="ukloniMeni()">Objavi</button>
             <button class="katalogbtn btn-danger" onclick="ukloniMeni()">Obriši</button>
-
         </div>
-
-
     </div>
+
+    <div class="modal">
+        <div id="dodajObjavu">
+            <h1>DODAJ NOVU OBJAVU</h1><br><br>
+            <form method="POST" enctype="multipart/form-data" action="{% url "dodajObjavu" %}">
+                {% csrf_token %}
+                {{ objavaForm }}
+                <button class="btn-success">Dodaj objavu</button>
+                <input type="reset" name="odustani" value="Odustani" class="odustani" style="background-color:grey" onclick="toggleModal()">
+            </form>
+        </div>
+    </div>
+
+
 {% endblock %}

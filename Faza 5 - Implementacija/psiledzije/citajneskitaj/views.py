@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login, authenticate, update_session_auth_hash
 from django.contrib.auth.models import Group
-from django.db.models import Q
+from django.db.models import Q, Max
 from django.http import HttpRequest, Http404, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -14,17 +14,24 @@ from django.core.mail import send_mail
 
 # Create your views here.
 def index(request: HttpRequest):
+    feed = []
     knjige = [Knjiga.objects.get(pk=naj.idocenjenog) for naj in
               NajpopularnijiMesec.objects.filter(tip='K').order_by('-prosecnaocena')]
     autori = [Autor.objects.get(username=naj.idocenjenog) for naj in
               NajpopularnijiMesec.objects.filter(tip='A').order_by('-prosecnaocena')]
     kuce = [IzdavackaKuca.objects.get(username=naj.idocenjenog) for naj in
             NajpopularnijiMesec.objects.filter(tip='I').order_by('-prosecnaocena')]
+    if request.user.is_authenticated:
+        pracenja = Prati.objects.filter(idpratilac=request.user.pk)
+        for pracenje in pracenja:
+            objave = Objava.objects.filter(korime=pracenje.idpracen)
+            feed.extend(objave)
     context = {
         'knjige': knjige,
         'autori': autori,
         'kuce': kuce,
-        'pretragaForm': SearchForm()
+        'pretragaForm': SearchForm(),
+        'feed': feed
     }
     return render(request, 'index.html', context)
 
@@ -242,9 +249,6 @@ def knjiga(request: HttpRequest, knjiga_id: str):
         'errorTekst':errorTekst,
         'imaUkolekciji':imaUkolekciji,
     }
-
-
-
     return render(request, 'entities/knjiga.html', context)
 
 
@@ -266,7 +270,9 @@ def profil(request: HttpRequest, profil_id: str):
             'recenzije': recenzije,
             'objave': objave,
             'pretragaForm': SearchForm(),
-            'flag' : flag
+            'objavaForm': TextObjavaForm(),
+            'knjigaForm': KnjigaObjavaForm(),
+            'flag': flag
         }
 
 
@@ -287,11 +293,6 @@ def profil(request: HttpRequest, profil_id: str):
 @login_required(login_url="login")
 def mojProfil(request: HttpRequest):
     return redirect("profil", profil_id=request.user.username)
-
-
-@login_required(login_url="login")
-def dodajObjavu(request: HttpRequest):
-    pass
 
 
 @login_required(login_url="login")
@@ -396,6 +397,7 @@ def promeniInfo(request: HttpRequest):
         'pretragaForm': SearchForm()
     })
 
+
 def generate_random_string(length):
     letters = string.ascii_letters + string.digits
     random_string = ''.join(random.choice(letters) for _ in range(length))
@@ -406,7 +408,7 @@ def posaljiMejlLozinka(lozinka, primalac):
     subject = "[Čitaj, ne skitaj] Vaša lozinka je uspešno resetovana"
     message = "Nova privremena lozinka: " + lozinka
     recipient_list = [primalac]
-    from_email = "nl2000370d@student.etf.bg.ac.rs"
+    from_email = "pp200023d@student.etf.bg.ac.rs"
     send_mail(subject, message, from_email, recipient_list)
 
 
@@ -414,7 +416,7 @@ def posaljiMejlBanovan(tekst, primalac):
     subject = "[Čitaj, ne skitaj] Nažalost, morali smo da onesposobimo Vaš nalog"
     message = "Zbog narušene politike našeg sajta, suspendovani ste sa istog.\n\n" + tekst
     recipient_list = [primalac]
-    from_email = "nl2000370d@student.etf.bg.ac.rs"
+    from_email = "pp200023d@student.etf.bg.ac.rs"
     send_mail(subject, message, from_email, recipient_list)
 
 
@@ -469,7 +471,7 @@ def pretraga(request: HttpRequest):
         tip = form.cleaned_data["tip"]
         znak = ("-" if form.cleaned_data["filter"] == "Ocena opadajuće" else "")
         objekti = []
-        if tip == "Knjiga":
+        if tip == "Knjiga" or tip == "Sve":
             objektiz = Knjiga.objects.filter(Q(naziv__icontains=naziv)).order_by(znak + 'prosecnaocena')
             for obj in objektiz:
                 objekti.append({
@@ -479,7 +481,7 @@ def pretraga(request: HttpRequest):
                     "prosecnaocena": obj.prosecnaocena,
                     "naziv": obj.naziv
                 })
-        elif tip == "Korisnik":
+        if tip == "Korisnik" or tip == "Sve":
             objektiz = Korisnik.objects.filter(Q(imeprezime__icontains=naziv)).order_by(znak + 'prosecnaocena')
             for obj in objektiz:
                 objekti.append({
@@ -489,7 +491,7 @@ def pretraga(request: HttpRequest):
                     "prosecnaocena": obj.prosecnaocena,
                     "naziv": obj.imeprezime
                 })
-        elif tip == "Kuća":
+        if tip == "Kuća" or tip == "Sve":
             objektiz = IzdavackaKuca.objects.filter(Q(naziv__icontains=naziv)).order_by(znak + 'prosecnaocena')
             for obj in objektiz:
                 objekti.append({
@@ -499,7 +501,7 @@ def pretraga(request: HttpRequest):
                     "prosecnaocena": obj.prosecnaocena,
                     "naziv": obj.naziv
                 })
-        else:
+        if tip == "Autor" or tip == "Sve":
             objektiz = Autor.objects.filter(Q(imeprezime__icontains=naziv)).order_by(znak + 'prosecnaocena')
             for obj in objektiz:
                 objekti.append({
@@ -515,6 +517,8 @@ def pretraga(request: HttpRequest):
         })
     else:
         return redirect(request.META.get("HTTP_REFERER"))
+
+
 @login_required(login_url="login")
 def zaprati(request: HttpRequest):
     if(request.method == 'POST'):
@@ -549,3 +553,37 @@ def otprati(request:HttpRequest):
             Prati.objects.get(idpracen=praceni, idpratilac=pratilac).delete()
             return redirect('profil', praceni_id)
     return redirect('home')
+
+
+def procitajISBN():
+    with open('static/ISBN.txt', 'r') as file:
+        return file.read().strip()
+
+
+def upisiISBN(novISBN):
+    with open('static/ISBN.txt', 'w') as file:
+        file.write(novISBN)
+
+
+def generisiISBN():
+    ISBN = str(int(procitajISBN()) + 1).zfill(13)
+    upisiISBN(ISBN)
+    return ISBN
+
+
+@login_required(login_url="login")
+def dodajObjavu(request: HttpRequest):
+    form = TextObjavaForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        id = Objava.objects.aggregate(max_idobjava=Max('idobjava'))['max_idobjava'] + 1
+        sadrzaj = form.cleaned_data["sadrzaj"]
+        slika = form.cleaned_data["slika"]
+        datum = datetime.now()
+        Objava(idobjava=id, sadrzaj=sadrzaj, datumobjave=datum, slika=slika, korime=request.user).save()
+    return redirect("mojProfil")
+
+
+@login_required(login_url="login")
+def dodajKnjigu(request: HttpRequest):
+    print("jajaKnjiga")
+    pass

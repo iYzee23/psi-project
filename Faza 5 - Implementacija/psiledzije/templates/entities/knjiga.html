@@ -60,17 +60,15 @@
                         {% for rec in recenzije %}
                             <div class="recenzija">
                                 <h2>⭐{{ rec.ocena }} -
-                                    {% if rec.iddavalac.banovan == 0 %}<i> <a class="profilLink"
-                                                                              href="{% url 'profil' rec.iddavalac.username %}">@{{ rec.iddavalac.username }} </a>
-                                    </i>
+                                    {% if rec.iddavalac.banovan == 0 %}
+                                        <i>
+                                            <a class="profilLink" href="{% url 'profil' rec.iddavalac.username %}">@{{ rec.iddavalac.username }} </a>
+                                        </i>
                                     {% else %}
                                         <i>@banovan</i>
                                     {% endif %}
                                     {% if rec.iddavalac == request.user or user.is_superuser %}
-                                        <button class="editBtn"
-                                                onclick="editRec(this,'{{ rec.tekst }}','{{ rec.ocena }}')"
-                                                value="{{ rec.idrec }}">...
-                                        </button>
+                                        <button class="editBtn" onclick="showModalEdit(this,'{{ rec.tekst }}','{{ rec.ocena }}')" value="{{ rec.idrec }}">...</button>
                                     {% endif %}
                                 </h2>
                                 <div style="font-style: italic">{{ rec.tekst }}</div>
@@ -81,53 +79,13 @@
                     </div>
                     <div class="col-sm-2">
                         {% if user.is_authenticated %}
-                            <button class="katalogbtn" id="dodajRec" onclick="dodajRec()">Dodaj recenziju</button>
+                            <button class="katalogbtn" id="dodajRec" onclick="toggleModal()">Dodaj recenziju</button>
                         {% endif %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div id="popupRecenzija">
 
-        <form method="POST">
-            {% csrf_token %}
-            <h3 style="font-weight: bold">Nova recenzija</h3>
-            <p style="font-weight: bold">Ocena (1-5): </p>
-            {{ forma.ocena }}
-
-            <pre style="font-weight: bold">1     2     3     4     5</pre>
-            <p style="font-weight: bold">Komentar: </p>
-            {{ forma.tekst }}
-            <input type="submit" name="postavi" value="Postavi recenziju" class="dodaj">
-            <input type="submit" name="odustani" value="Odustani" class="odustani" style="background-color:grey">
-        </form>
-
-    </div>
-
-
-    <div id="editRec">
-        <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" id="hiddenIdRec" name="hiddenIdRec" value="">
-
-            <h3 style="font-weight: bold">Izmena recenzije</h3>
-            <p style="font-weight: bold">Ocena (1-5): </p>
-            {{ editForma.ocena }}
-
-            <pre style="font-weight: bold">1     2     3     4     5</pre>
-            <p style="font-weight: bold">Komentar: </p>
-            {{ editForma.tekst }}
-            <input type="submit" name="izmeni" value="Izmeni recenziju" class="dodaj">
-            <input type="submit" name="obrisi" value="Obrisi recenziju" class="odustani">
-            <input type="submit" name="odustani" value="Odustani" class="odustani" style="background-color:grey">
-
-        </form>
-
-    </div>
-
-
-
-
-
+    {% include 'snippets/modals.html' %}
 {% endblock %}

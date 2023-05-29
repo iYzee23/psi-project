@@ -1,9 +1,6 @@
 {% if uloga == user %}
     <div class="col-sm-12" style="display: flex; justify-content: space-between">
-        <form action="{% url "dodajObjavu" %}" method="POST">
-            {% csrf_token %}
-            <button class="katalogbtn">Dodaj objavu</button>
-        </form>
+        <button class="katalogbtn" onclick="toggleModal()">Dodaj objavu</button>
         <form action="{% url "promeniSifru" %}" method="POST">
             {% csrf_token %}
             <button class="katalogbtn">Promena sifre</button>

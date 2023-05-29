@@ -16,11 +16,12 @@ urlpatterns = [
     path('profil/', mojProfil, name="mojProfil"),
     path('mojProfil/', mojProfil, name="mojProfil"),
     path('dodajObjavu/', dodajObjavu, name="dodajObjavu"),
+    path('dodajKnjigu/', dodajKnjigu, name="dodajKnjigu"),
     path('promeniSifru/', promeniSifru, name="promeniSifru"),
     path('promeniInfo/', promeniInfo, name="promeniInfo"),
     path('resetujLozinku/', admResetujLozinku, name="admResetujLozinku"),
     path('banojNalog/', admBanujNalog, name="admBanujNalog"),
     path('pretraga/', pretraga, name="pretraga"),
     path('zaprati', zaprati, name="zaprati"),
-    path('otprati', otprati, name="otprati"),
+    path('otprati', otprati, name="otprati")
 ]

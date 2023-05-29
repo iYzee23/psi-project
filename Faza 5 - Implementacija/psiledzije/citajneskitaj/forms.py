@@ -118,10 +118,31 @@ class AdminBanForm(Form):
 
 
 class SearchForm(Form):
-    tipChoices = [("Knjiga", "Knjiga"), ("Korisnik", "Korisnik"), ("Kuća", "Kuća"), ("Autor", "Autor")]
+    tipChoices = [("Sve", "Sve"), ("Knjiga", "Knjiga"), ("Korisnik", "Korisnik"), ("Kuća", "Kuća"), ("Autor", "Autor")]
     filterChoices = [("Ocena opadajuće", "Ocena opadajuće"), ("Ocena rastuće", "Ocena rastuće")]
-    naziv = fields.CharField(widget=TextInput(attrs={"style": "float:left; height:38px;", "placeholder": "Pretraga..."}))
+    naziv = fields.CharField(widget=TextInput(attrs={"style": "float:left; height:38px;", "placeholder": "Pretraga..."}), required=False)
     tip = fields.ChoiceField(choices=tipChoices, widget=Select(attrs={"class": "form-select", "style": "width:fit-content; float:left;"}))
     filter = fields.ChoiceField(choices=filterChoices, widget=Select(attrs={"class": "form-select", "style": "width:fit-content; float:left; height:fit-content;"}))
+
+
 class PretplataForm(Form):
     praceni = forms.CharField(widget=forms.HiddenInput(), max_length=30)
+
+
+class TextObjavaForm(ModelForm):
+    slika = ImageField(label='Slika objave (opciono)', required=False)
+    sadrzaj = CharField(label='Sadrzaj', widget=Textarea)
+
+    class Meta:
+        model = Objava
+        fields = ["slika", "sadrzaj"]
+
+
+class KnjigaObjavaForm(ModelForm):
+    naziv = CharField(label='Naziv knjige', widget=TextInput(attrs={"size": "50"}))
+    slika = ImageField(label='Slika knjige')
+    opis = CharField(label='Opis', widget=Textarea)
+
+    class Meta:
+        model = Knjiga
+        fields = ["naziv", "slika", "opis"]

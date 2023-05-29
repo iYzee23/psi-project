@@ -3,6 +3,7 @@
     {{ uloga.username }}
 {% endblock %}
 
+<<<<<<< HEAD
 {% block upperLeft %}
     <div class="col-sm-4">
         <img class="profilnaU" src="{% if uloga.slika %}{{ uloga.slika.url }}{% endif %}" alt="No image :(">
@@ -16,6 +17,19 @@
 
         {% include 'snippets/mojprofil_dugmad.html' %}
     </div>
+
+    <div class="modal">
+        <div id="dodajObjavu">
+            <h1>DODAJ NOVU OBJAVU</h1><br><br>
+            <form method="POST" enctype="multipart/form-data" action="{% url "dodajObjavu" %}">
+                {% csrf_token %}
+                {{ objavaForm }}
+                <button class="btn-success">Dodaj objavu</button>
+                <input type="reset" name="odustani" value="Odustani" class="odustani" style="background-color:grey" onclick="toggleModal()">
+            </form>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block lowerLeft %}
@@ -58,7 +72,5 @@
             <div class="text-italic">{{ rec.tekst }}</div>
         </div>
     {% endfor %}
-
-    {% include 'snippets/modals.html' %}
 {% endblock %}
 

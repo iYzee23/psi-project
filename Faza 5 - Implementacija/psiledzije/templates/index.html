@@ -59,7 +59,30 @@
                     </div>
                 {% endfor %}
             </div>
-            </div>
+            {% if user.is_authenticated %}
+                <div class="row col-sm-12 main" style="margin-bottom: 15px;">
+                    <h1><b>Feed</b></h1>
+                    {% if feed %}
+                        {% for f in feed %}
+                            <div class="col-sm-4">
+                                <div class="card" style="width: fit-content;">
+                                    <div class="card-img-top" >
+                                        <a href="/profil/{{ f.korime }}" class="link-secondary">
+                                            <h4>@{{ f.korime }}</h4>
+                                        </a>
+                                        {% if f.slika %}<img src="{{ f.slika.url }}" alt="Nema slike :(" style="height: 500px; width: 350px">{% endif %}
+                                    </div>
+                                    <div class="card-body">
+                                        <h4 class="card-title">{{ f.sadrzaj }}<br> - {{ f.datumobjave }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <h1>Nažalost, Vaš zid je prazan <3</h1>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

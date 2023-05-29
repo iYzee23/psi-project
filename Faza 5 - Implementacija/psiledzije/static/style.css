@@ -260,13 +260,12 @@ body{
     position: fixed;
     top: 50%;
     left: 50%;
-    display:none;
     transform: translate(-50%, -50%);
     background-color: rgb(129, 118, 118);
     padding: 20px;
     border: 1px solid #ccc;
-    /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);*/
 }
+
 .dodaj{
 
     background-color: #578d46;
@@ -295,22 +294,67 @@ body{
     height:fit-content;
 }
 
-#editRec{
+#editRec {
     position: fixed;
     top: 50%;
     left: 50%;
-    display:none;
     transform: translate(-50%, -50%);
     background-color: rgb(129, 118, 118);
     padding: 20px;
     border: 1px solid #ccc;
-    /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);*/
-
 }
-.profilLink{
+.profilLink {
     color:black;
-
 }
-.profilLink:hover{
+
+.profilLink:hover {
     color: #772121;
+}
+
+#dodajObjavu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(129, 118, 118);
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+#dodajKnjigu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(129, 118, 118);
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modalEdit {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }

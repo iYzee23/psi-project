@@ -76,3 +76,22 @@ function uploadEditObj(){
     var pop=document.getElementById("editObj")
     pop.style="display:none;"
 }
+
+function toggleModal() {
+    $(".modal").toggle()
+}
+
+
+function showModalEdit(button, tekst, ocena) {
+    $(".modalEdit").show()
+    var idRec=document.getElementById("hiddenIdRec")
+    idRec.value=button.value
+    var editTekst=document.getElementById("editTeksta")
+    editTekst.value= tekst
+    var editOcena=document.getElementById("editOcena")
+    editOcena.value=ocena
+}
+
+function hideModalEdit() {
+    $(".modalEdit").hide()
+}
