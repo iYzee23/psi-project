@@ -144,6 +144,7 @@ def logout_req(request: HttpRequest):
 def knjiga(request: HttpRequest, knjiga_id: str):
     try:
         knjiga = Knjiga.objects.get(isbn=knjiga_id)
+
     except Knjiga.DoesNotExist:
         raise Http404("Ne postoji knjiga sa tim ID :(")
 
@@ -197,8 +198,11 @@ def knjiga(request: HttpRequest, knjiga_id: str):
 
             knjiga.prosecnaocena = round(prosecnaOcena, 2)
             knjiga.save()
+    recenzije = list(Recenzija.objects.filter(idprimalacknjiga=knjiga).exclude(iddavalac=korisnik))
+    prvi=list(Recenzija.objects.filter(iddavalac=korisnik).filter(idprimalacknjiga=knjiga))
 
-    recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga)
+    recenzije=prvi+recenzije
+
     context = {
         'knjiga': knjiga,
         'autori': autori,
