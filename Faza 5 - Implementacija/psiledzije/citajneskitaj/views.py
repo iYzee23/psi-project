@@ -277,11 +277,15 @@ def profil(request: HttpRequest, profil_id: str):
 
 
         if uloga.tip == 'A':
-            context['profil'] = Autor.objects.get(pk=profil_id)
+            autor: Autor=Autor.objects.get(pk=profil_id)
+            context['profil'] = autor
             context['knjige'] = Knjiga.objects.filter(napisao__idautor=profil_id).order_by('-prosecnaocena')
+            context['licna_kolekcija']=Knjiga.objects.filter(kolekcija__korime=autor)
             return render(request, 'entities/autor.html', context)
         elif uloga.tip == 'K':
-            context['profil'] = Korisnik.objects.get(pk=profil_id)
+            korisnik: Korisnik=Korisnik.objects.get(pk=profil_id)
+            context['profil'] = korisnik
+            context['licna_kolekcija']=Knjiga.objects.filter(kolekcija__korime=korisnik)
             return render(request, 'entities/korisnik.html', context)
         else:
             context['profil'] = IzdavackaKuca.objects.get(pk=profil_id)

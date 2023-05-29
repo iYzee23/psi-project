@@ -18,8 +18,18 @@
                         <h3 style="margin-bottom: 5%;">{{ profil.prosecnaocena }}/5.00</h3>
                         <h5 style="margin-bottom: 5%;"><b>Broj pratilaca:</b> {{ profil.brpratilaca }}</h5>
                         <h5><b>Biografija: </b>{{ profil.biografija }}</h5>
-                        {% if user.is_authenticated %}
-                            <button type="button" class="katalogbtn">Pretplati se</button>
+                        {% if flag == 1 %}
+                            <form action="{% url 'zaprati' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="praceni" value="{{ uloga }}">
+                                <button class="katalogbtn" type="submit">Zaprati</button>
+                            </form>
+                        {% elif flag == 2 %}
+                            <form action="{% url 'otprati' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="praceni" value="{{ uloga }}">
+                                <button class="katalogbtn" type="submit">Otprati</button>
+                            </form>
                         {% endif %}
                     </div>
                 </div>
@@ -28,7 +38,7 @@
                 <div class="row col-sm-12 main" style="margin-bottom: 15px;">
                     <h1><b>Dela autora</b></h1>
 
-                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <div id="carouselExampleIndicators1" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
                             {% for knjiga in knjige %}
                                 <div class="carousel-item {% if knjiga == knjige.first  %}active{% endif %}" style="align-content: center">
@@ -40,12 +50,41 @@
                                 </div>
                             {% endfor %}
                         </div>
-                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators1" role="button"
                            data-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
 
                         </a>
-                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
+                        <a class="carousel-control-next" href="#carouselExampleIndicators1" role="button"
+                           data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+
+                        </a>
+                    </div>
+                </div>
+            <hr>
+             <!-- LICNA KOLEKCIJA -->
+                <div class="row col-sm-12 main" style="margin-bottom: 15px;">
+                    <h1><b>Lična kolekcija autora</b></h1>
+
+                    <div id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for knjiga in licna_kolekcija %}
+                                <div class="carousel-item {% if knjiga == licna_kolekcija.first  %}active{% endif %}" style="align-content: center">
+                                    <img class="d-block w-100" src="{% if knjiga.slika %}{{ knjiga.slika.url }}{% endif %}" alt="SLIKA NIJE DOSTUPNA" style="margin:auto; max-width: 250px">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5> {{knjiga.naziv}} </h5>
+                                        <p>⭐{{ knjiga.prosecnaocena }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators2" role="button"
+                           data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators2" role="button"
                            data-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
 
