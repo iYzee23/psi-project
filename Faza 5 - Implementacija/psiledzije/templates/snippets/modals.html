@@ -1,0 +1,32 @@
+<div id="popupRecenzija">
+    <form method="POST">
+        {% csrf_token %}
+        <h3 style="font-weight: bold">Nova recenzija</h3>
+        <p style="font-weight: bold">Ocena (1-5): </p>
+        {{ forma.ocena }}
+
+        <pre style="font-weight: bold">1     2     3     4     5</pre>
+        <p style="font-weight: bold">Komentar: </p>
+        {{ forma.tekst }}
+        <input type="submit" name="postavi" value="Postavi recenziju" class="dodaj">
+        <input type="submit" name="odustani" value="Odustani" class="odustani" style="background-color:grey">
+    </form>
+</div>
+
+<div id="editRec">
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" id="hiddenIdRec" name="hiddenIdRec" value="">
+
+        <h3 style="font-weight: bold">Izmena recenzije</h3>
+        <p style="font-weight: bold">Ocena (1-5): </p>
+        {{ editForma.ocena }}
+
+        <pre style="font-weight: bold">1     2     3     4     5</pre>
+        <p style="font-weight: bold">Komentar: </p>
+        {{ editForma.tekst }}
+        <input type="submit" name="izmeni" value="Izmeni recenziju" class="dodaj">
+        <input type="submit" name="obrisi" value="Obrisi recenziju" class="odustani">
+        <input type="submit" name="odustani" value="Odustani" class="odustani" style="background-color:grey">
+    </form>
+</div>

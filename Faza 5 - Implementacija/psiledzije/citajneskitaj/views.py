@@ -172,14 +172,10 @@ def knjiga(request: HttpRequest, knjiga_id: str):
         raise Http404("Ne postoji knjiga sa tim ID :(")
 
     if form.is_valid():
-
-
         if "postavi" in request.POST:
             datum = datetime.now()
             ocena = form.cleaned_data["ocena"]
             tekst = form.cleaned_data["tekst"]
-            # TODO @ljubica ovde moze samo user
-            # ne znam na sta mislis
 
             rec = Recenzija.objects.filter(idprimalacknjiga=knjiga).filter(iddavalac=korisnik)
             if(rec.count()==0):

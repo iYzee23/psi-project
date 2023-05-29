@@ -20,56 +20,57 @@
                         <h5><b>Autori:</b> {{ autori }}</h5>
                         <h5><b>Izdavačka kuća:</b> {{ knjiga.idizdkuca.naziv }}</h5>
                         <h5><b>Opis: </b>
-                        {{ knjiga.opis }}
+                            {{ knjiga.opis }}
                         </h5><br><br>
 
                         {% if user.is_authenticated %}
                             {% if imaUkolekciji == False %}
                                 <form method="POST">
                                     {% csrf_token %}
-                                    <input type="submit" name="dodajUkolekciju" class="katalogbtn" value="Dodaj u kolekciju">
+                                    <input type="submit" name="dodajUkolekciju" class="katalogbtn"
+                                           value="Dodaj u kolekciju">
                                 </form>
                             {% else %}
                                 <form method="POST">
                                     {% csrf_token %}
-                                    <input type="submit" name="brisiIzKolekcije" class="katalogbtn" value="Izbaci iz kolekcije">
+                                    <input type="submit" name="brisiIzKolekcije" class="katalogbtn"
+                                           value="Izbaci iz kolekcije">
                                 </form>
                             {% endif %}
                         {% endif %}
 
                     </div>
                 </div>
-            <hr>
+                <hr>
                 <div class="row">
-                     <div class="col-sm-10 recenzije">
+                    <div class="col-sm-10 recenzije">
                         <h1 style="font-weight: bold;"><u>Recenzije</u></h1>
 
-
                         {% if errorTekst != None %}
-                             <div class="alert alert-danger alert-info" role="alert" style="width:100%;">
+                            <div class="alert alert-danger alert-info" role="alert" style="width:100%;">
                                 <span>
                                   {{ errorTekst }}
                                 </span>
-                             <button type="button" class="close text-right" data-dismiss="alert" aria-label="Close">
-                                 <span aria-hidden="true" style="float:right">&times;</span>
-                             </button>
+                                <button type="button" class="close text-right" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true" style="float:right">&times;</span>
+                                </button>
                             </div>
                         {% endif %}
-
-
 
                         {% for rec in recenzije %}
                             <div class="recenzija">
                                 <h2>⭐{{ rec.ocena }} -
-
-
-                                    {% if rec.iddavalac.banovan == 0 %}<i> <a class="profilLink" href="{% url 'profil' rec.iddavalac.username %}" >@{{ rec.iddavalac.username }} </a> </i>
+                                    {% if rec.iddavalac.banovan == 0 %}<i> <a class="profilLink"
+                                                                              href="{% url 'profil' rec.iddavalac.username %}">@{{ rec.iddavalac.username }} </a>
+                                    </i>
                                     {% else %}
                                         <i>@banovan</i>
                                     {% endif %}
                                     {% if rec.iddavalac == request.user or user.is_superuser %}
-                                    <button class="editBtn" onclick="editRec(this,'{{ rec.tekst }}','{{ rec.ocena }}')" value="{{ rec.idrec }}">...</button>
-
+                                        <button class="editBtn"
+                                                onclick="editRec(this,'{{ rec.tekst }}','{{ rec.ocena }}')"
+                                                value="{{ rec.idrec }}">...
+                                        </button>
                                     {% endif %}
                                 </h2>
                                 <div style="font-style: italic">{{ rec.tekst }}</div>
@@ -77,20 +78,15 @@
                             </div>
                         {% endfor %}
 
-                     </div>
+                    </div>
                     <div class="col-sm-2">
                         {% if user.is_authenticated %}
                             <button class="katalogbtn" id="dodajRec" onclick="dodajRec()">Dodaj recenziju</button>
                         {% endif %}
                     </div>
-
-
+                </div>
             </div>
-
         </div>
-
-
-    </div>
     </div>
     <div id="popupRecenzija">
 
@@ -112,7 +108,7 @@
 
     <div id="editRec">
         <form method="POST">
-            {% csrf_token  %}
+            {% csrf_token %}
             <input type="hidden" id="hiddenIdRec" name="hiddenIdRec" value="">
 
             <h3 style="font-weight: bold">Izmena recenzije</h3>

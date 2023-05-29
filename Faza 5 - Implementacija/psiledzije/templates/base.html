@@ -41,7 +41,7 @@
                     {% if user.is_authenticated %}
                         <ul class="navbar-nav text-right">
                             <li class="nav-item">
-                                <a href="{% url 'mojProfil' %}" class="nav-link">Moj profil</a>
+                                <a href="{% url 'mojProfil' %}" class="nav-link">{{ user.username }}</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{% url 'logout' %}" class="nav-link">Izloguj se</a>
@@ -62,8 +62,6 @@
             </div>
         </div>
     {% endblock %}
-
-
     {% block body %}
         {% block twoPanels %} {% endblock %}
         {% block onePanel %} {% endblock %}
