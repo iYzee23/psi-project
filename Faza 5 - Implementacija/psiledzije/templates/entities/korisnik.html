@@ -1,9 +1,8 @@
-{% extends 'base_profil.html' %}
+{% extends 'base_two_panels.html' %}
 {% block title %}
     {{ uloga.username }}
 {% endblock %}
 
-<<<<<<< HEAD
 {% block upperLeft %}
     <div class="col-sm-4">
         <img class="profilnaU" src="{% if uloga.slika %}{{ uloga.slika.url }}{% endif %}" alt="No image :(">
@@ -17,19 +16,7 @@
 
         {% include 'snippets/mojprofil_dugmad.html' %}
     </div>
-
-    <div class="modal">
-        <div id="dodajObjavu">
-            <h1>DODAJ NOVU OBJAVU</h1><br><br>
-            <form method="POST" enctype="multipart/form-data" action="{% url "dodajObjavu" %}">
-                {% csrf_token %}
-                {{ objavaForm }}
-                <button class="btn-success">Dodaj objavu</button>
-                <input type="reset" name="odustani" value="Odustani" class="odustani" style="background-color:grey" onclick="toggleModal()">
-            </form>
-        </div>
-    </div>
-
+    {% include 'snippets/modals.html' %}
 {% endblock %}
 
 {% block lowerLeft %}
@@ -38,40 +25,6 @@
 {% endblock %}
 
 {% block rightPanel %}
-    <h1 style="font-weight: bold;"><u>Recenzije</u>
-        <span>
-            {% if user.is_authenticated %}
-                <button class="katalogbtn" id="dodajRec" onclick="dodajRec()">Dodaj recenziju</button>
-            {% endif %}
-        </span>
-    </h1>
-    {% if errorTekst != None %}
-        <div class="alert alert-danger alert-info" role="alert" style="width:100%;">
-            <span> {{ errorTekst }} </span>
-            <button type="button" class="close text-right" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true" style="float:right">X</span>
-            </button>
-        </div>
-    {% endif %}
-
-    {% for rec in recenzije %}
-        <div class="recenzija">
-            <h2>⭐{{ rec.ocena }} -
-                {% if rec.iddavalac.banovan == 0 %}<i>
-                    <a class="profilLink"
-                       href="{% url 'profil' rec.iddavalac.username %}">@{{ rec.iddavalac.username }} </a>
-                </i>
-                {% else %}
-                    <i>@banovan</i>
-                {% endif %}
-                {% if rec.iddavalac == request.user or user.is_superuser %}
-                    <button class="editBtn" onclick="editRec(this,'{{ rec.tekst }}','{{ rec.ocena }}')"
-                            value="{{ rec.idrec }}">...
-                    </button>
-                {% endif %}
-            </h2>
-            <div class="text-italic">{{ rec.tekst }}</div>
-        </div>
-    {% endfor %}
+    {% include 'snippets/recenzije.html' %}
 {% endblock %}
 

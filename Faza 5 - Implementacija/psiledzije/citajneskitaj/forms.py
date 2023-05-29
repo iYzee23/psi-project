@@ -24,7 +24,8 @@ class AutorRegForm(KorisnikRegForm):
 
     class Meta:
         model = Autor
-        fields = ["email", "username", "password1", "password2", "ime", "prezime", "datumrodjenja", "slika", 'biografija']
+        fields = ["email", "username", "password1", "password2", "ime", "prezime", "datumrodjenja", "slika",
+                  'biografija']
 
 
 class KucaRegForm(UserCreationForm):
@@ -91,24 +92,16 @@ class PromenaInfoKucaForm(ModelForm):
 
 
 class RecenzijaForm(Form):
-    tekst = forms.CharField(label='Review', widget=forms.Textarea,max_length=1000, required=False)
-    # forms.IntegerField(widget=forms.TextInput(attrs={'type': 'range'})
-    ocena=  forms.IntegerField(widget=forms.TextInput(attrs={'type': 'range', 'min': '1', 'max': '5'}))
-    # ocena = forms.ChoiceField(label='Grade', choices=GRADE_CHOICES, widget=forms.RadioSelect)
-
-
-class RecenzijaEditForm(Form):
-    tekst = forms.CharField(label='Review', widget=forms.Textarea(attrs={'id':'editTeksta'}), max_length=1000, required=False)
-    # forms.IntegerField(widget=forms.TextInput(attrs={'type': 'range'})
-    ocena = forms.IntegerField(widget=forms.TextInput(attrs={'type': 'range', 'min': '1', 'max': '5','id':'editOcena'}))
-    # ocena = forms.ChoiceField(label='Grade', choices=GRADE_CHOICES, widget=forms.RadioSelect)
-    hiddenIdRec = forms.CharField(widget=forms.HiddenInput(attrs={'id':'hiddenIdRec'}))
+    tekst = forms.CharField(label='Review', widget=forms.Textarea, max_length=1000, required=True)
+    ocena = forms.IntegerField(widget=forms.TextInput(attrs={'type': 'range', 'min': '1', 'max': '5'}))
+    hiddenIdRec = forms.CharField(widget=forms.HiddenInput(attrs={'id': 'hiddenIdRec'}), required=False, initial=-1)
 
 
 class AdminResetForm(Form):
     username = CharField(label='Korisničko ime')
     email = EmailField(label="Email")
-    sifra = CharField(label="Generisana šifra", disabled=True, required=False, widget=TextInput(attrs={"style": "background-color: lightgray"}))
+    sifra = CharField(label="Generisana šifra", disabled=True, required=False,
+                      widget=TextInput(attrs={"style": "background-color: lightgray"}))
 
 
 class AdminBanForm(Form):
@@ -120,9 +113,12 @@ class AdminBanForm(Form):
 class SearchForm(Form):
     tipChoices = [("Sve", "Sve"), ("Knjiga", "Knjiga"), ("Korisnik", "Korisnik"), ("Kuća", "Kuća"), ("Autor", "Autor")]
     filterChoices = [("Ocena opadajuće", "Ocena opadajuće"), ("Ocena rastuće", "Ocena rastuće")]
-    naziv = fields.CharField(widget=TextInput(attrs={"style": "float:left; height:38px;", "placeholder": "Pretraga..."}), required=False)
-    tip = fields.ChoiceField(choices=tipChoices, widget=Select(attrs={"class": "form-select", "style": "width:fit-content; float:left;"}))
-    filter = fields.ChoiceField(choices=filterChoices, widget=Select(attrs={"class": "form-select", "style": "width:fit-content; float:left; height:fit-content;"}))
+    naziv = fields.CharField(
+        widget=TextInput(attrs={"style": "float:left; height:38px;", "placeholder": "Pretraga..."}), required=False)
+    tip = fields.ChoiceField(choices=tipChoices,
+                             widget=Select(attrs={"class": "form-select", "style": "width:fit-content; float:left;"}))
+    filter = fields.ChoiceField(choices=filterChoices, widget=Select(
+        attrs={"class": "form-select", "style": "width:fit-content; float:left; height:fit-content;"}))
 
 
 class PretplataForm(Form):

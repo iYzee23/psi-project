@@ -1,189 +1,33 @@
-{% extends 'base.html' %}
-
+{% extends 'base_two_panels.html' %}
 {% block title %}
     {{ uloga.username }}
 {% endblock %}
 
-{% block body %}
-    <div class="container-fluid" style="padding:0; margin:0;">
-        <div class="row" style="margin:0;">
-            <div class=" col-sm-8 main" id="levi">
-                <div class="row col-sm-8" style="margin-bottom:10px;">
-                    <div class="col-sm-4">
-                        <img class="profilnaU" src="{% if uloga.slika %}{{ uloga.slika.url }}{% endif %}"
-                             alt="No image :(">
-                    </div>
-                    <div class="col-sm-8">
-                        <h1 style="font-weight: bold">{{ profil.imeprezime }}</h1>
-                        <h3 style="margin-bottom: 5%;">{{ profil.prosecnaocena }}/5.00</h3>
-                        <h5 style="margin-bottom: 5%;"><b>Broj pratilaca:</b> {{ profil.brpratilaca }}</h5>
-                        <h5><b>Biografija: </b>{{ profil.biografija }}</h5>
-                        {% if flag == 1 %}
-                            <form action="{% url 'zaprati' %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="praceni" value="{{ uloga }}">
-                                <button class="katalogbtn" type="submit">Zaprati</button>
-                            </form>
-                        {% elif flag == 2 %}
-                            <form action="{% url 'otprati' %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="praceni" value="{{ uloga }}">
-                                <button class="katalogbtn" type="submit">Otprati</button>
-                            </form>
-                        {% endif %}
-                    </div>
-                </div>
-                <hr>
-                <!-- IZDATE KNJIGE -->
-                <div class="row col-sm-12 main" style="margin-bottom: 15px;">
-                    <h1><b>Dela autora</b></h1>
-
-                    <div id="carouselExampleIndicators1" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
-                            {% for knjiga in knjige %}
-                                <div class="carousel-item {% if knjiga == knjige.first  %}active{% endif %}" style="align-content: center">
-                                    <img class="d-block w-100" src="{% if knjiga.slika %}{{ knjiga.slika.url }}{% endif %}" alt="SLIKA NIJE DOSTUPNA" style="margin:auto; max-width: 250px">
-                                    <div class="carousel-caption d-none d-md-block">
-                                        <h5> {{knjiga.naziv}} </h5>
-                                        <p>⭐{{ knjiga.prosecnaocena }}</p>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <a class="carousel-control-prev" href="#carouselExampleIndicators1" role="button"
-                           data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-
-                        </a>
-                        <a class="carousel-control-next" href="#carouselExampleIndicators1" role="button"
-                           data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-
-                        </a>
-                    </div>
-                </div>
-            <hr>
-             <!-- LICNA KOLEKCIJA -->
-                <div class="row col-sm-12 main" style="margin-bottom: 15px;">
-                    <h1><b>Lična kolekcija autora</b></h1>
-
-                    <div id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
-                            {% for knjiga in licna_kolekcija %}
-                                <div class="carousel-item {% if knjiga == licna_kolekcija.first  %}active{% endif %}" style="align-content: center">
-                                    <img class="d-block w-100" src="{% if knjiga.slika %}{{ knjiga.slika.url }}{% endif %}" alt="SLIKA NIJE DOSTUPNA" style="margin:auto; max-width: 250px">
-                                    <div class="carousel-caption d-none d-md-block">
-                                        <h5> {{knjiga.naziv}} </h5>
-                                        <p>⭐{{ knjiga.prosecnaocena }}</p>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <a class="carousel-control-prev" href="#carouselExampleIndicators2" role="button"
-                           data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-
-                        </a>
-                        <a class="carousel-control-next" href="#carouselExampleIndicators2" role="button"
-                           data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-
-                        </a>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-sm-8 objave">
-                        <h1><b>Objave</b></h1>
-                        {% for objava in objave %}
-                            <div class="objava">
-                                {% if objava.slika %}
-                                    <img src="{{ objava.slika.url }}" style="max-width: 150px">
-                                {% endif %}
-                                {{ objava.sadrzaj }}
-                                <p> - {{ objava.datumobjave }}</p>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    {% if uloga == user %}
-                        <div class="col-sm-6" style="display: flex; justify-content: space-between">
-                            <form action="{% url "dodajObjavu" %}" method="POST">
-                                {% csrf_token %}
-                                <button class="katalogbtn">Dodaj objavu</button>
-                            </form>
-                            <form action="{% url "promeniSifru" %}" method="POST">
-                                {% csrf_token %}
-                                <button class="katalogbtn">Promena sifre</button>
-                            </form>
-                            <form action="{% url "promeniInfo" %}" method="POST">
-                                {% csrf_token %}
-                                <button class="katalogbtn">Promena informacija o profilu</button>
-                            </form>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-
-
-            <div class="col-sm-4 recenzije" style="margin:0; padding:0;">
-                <h1 style="font-weight: bold;"><u>Recenzije</u></h1>
-                {% for rec in recenzije %}
-                    <div class="recenzija">
-                        {% if rec.iddavalac == user or perms.citajneskitaj.edit_recenzija %}
-                            <button class="editBtn">...</button>
-                        {% endif %}
-                        <h2>⭐{{ rec.ocena }} - <i>@{{ rec.iddavalac.username }}</i></h2>
-                        <div style="font-style: italic">{{ rec.tekst }}</div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
+{% block upperLeft %}
+    <div class="col-sm-4">
+        <img class="profilnaU" src="{% if uloga.slika %}{{ uloga.slika.url }}{% endif %}" alt="No image :(">
     </div>
-
-    <div class="popup " id="desno"
-         style="width:50%; margin:auto;position:absolute; top:30%; left:25%; padding:0; background-color: rgb(233, 233, 233); height:fit-content;">
-        <div class="popuptext" id="novaRec">
-            <select name="" id="" class="form-select" style="width:fit-content">
-                <option value="0">Unesi ocenu</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-            <textarea id="" name="" rows="4" cols="50">Uneti komentar.</textarea>
-            <button class="katalogbtn btn-success" onclick="ukloniRec()">Objavi</button>
+    <div class="col-sm-8" style="margin-bottom: 5%;">
+        <h1 style="font-weight: bold">{{ profil.imeprezime }}</h1>
+        <h3 style="margin-bottom: 5%;">{{ profil.prosecnaocena }}/5.00</h3>
+        <h5 style="margin-bottom: 5%;"><b>Broj pratilaca:</b> {{ profil.brpratilaca }}</h5>
+        <h5><b>Biografija: </b>{{ profil.biografija }}</h5>
+        <div>
+            {% include 'snippets/zaprati_otprati_dugme.html' %}
         </div>
+
+        {% include 'snippets/mojprofil_dugmad.html' %}
     </div>
-
-    <div class="popup " id="meniRec"
-         style="width:50%; margin:auto;position:absolute; top:30%; left:25%; padding:0; background-color: rgb(233, 233, 233); height:fit-content;">
-        <div class="popuptext" id="dropDownRec">
-            <select name="" id="" class="form-select" style="width:fit-content">
-                <option value="0">Unesi ocenu</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-            <textarea id="" name="" rows="4" cols="50">Uneti komentar.</textarea>
-            <button class="katalogbtn btn-success" onclick="ukloniMeni()">Objavi</button>
-            <button class="katalogbtn btn-danger" onclick="ukloniMeni()">Obriši</button>
-        </div>
-    </div>
-
-    <div class="modal">
-        <div id="dodajObjavu">
-            <h1>DODAJ NOVU OBJAVU</h1><br><br>
-            <form method="POST" enctype="multipart/form-data" action="{% url "dodajObjavu" %}">
-                {% csrf_token %}
-                {{ objavaForm }}
-                <button class="btn-success">Dodaj objavu</button>
-                <input type="reset" name="odustani" value="Odustani" class="odustani" style="background-color:grey" onclick="toggleModal()">
-            </form>
-        </div>
-    </div>
-
-
+    {% include 'snippets/modals.html' %}
 {% endblock %}
+
+{% block lowerLeft %}
+    {% include 'snippets/objave.html' %}
+    {% include 'snippets/licna_kolekcija.html' %}
+    {% include 'snippets/izdate_knjige.html' %}
+{% endblock %}
+
+{% block rightPanel %}
+    {% include 'snippets/recenzije.html' %}
+{% endblock %}
+

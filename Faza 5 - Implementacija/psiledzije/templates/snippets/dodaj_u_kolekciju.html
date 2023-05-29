@@ -1,0 +1,15 @@
+{% if user.is_authenticated %}
+    {% if imaUkolekciji == False %}
+        <form method="POST">
+            {% csrf_token %}
+            <input type="submit" name="dodajUkolekciju" class="katalogbtn"
+                   value="Dodaj u kolekciju">
+        </form>
+    {% else %}
+        <form method="POST">
+            {% csrf_token %}
+            <input type="submit" name="brisiIzKolekcije" class="katalogbtn"
+                   value="Izbaci iz kolekcije">
+        </form>
+    {% endif %}
+{% endif %}

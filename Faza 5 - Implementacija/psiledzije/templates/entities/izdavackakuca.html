@@ -1,10 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base_two_panels.html' %}
+{% block title %}
+    {{ uloga.username }}
+{% endblock %}
 
-</body>
-</html>
+{% block upperLeft %}
+    <div class="col-sm-4">
+        <img class="profilnaU" src="{% if uloga.slika %}{{ uloga.slika.url }}{% endif %}" alt="No image :(">
+    </div>
+    <div class="col-sm-8" style="margin-bottom: 3%;">
+        <h1 style="font-weight: bold">{{ profil.naziv }}</h1>
+        <h3 style="margin-bottom: 5%;">{{ profil.prosecnaocena }}/5.00</h3>
+        <h5 style="margin-bottom: 5%;"><b>Broj pratilaca:</b> {{ profil.brpratilaca }}</h5>
+        <h5><b>Istorija: </b>{{ profil.istorija }}</h5>
+        <h5><b>Adresa: </b>{{ profil.adresa }}</h5>
+        <div>
+            {% include 'snippets/zaprati_otprati_dugme.html' %}
+        </div>
+
+        {% include 'snippets/mojprofil_dugmad.html' %}
+    </div>
+    {% include 'snippets/modals.html' %}
+{% endblock %}
+
+{% block lowerLeft %}
+    {% include 'snippets/objave.html' %}
+    {% include 'snippets/licna_kolekcija.html' %}
+    {% include 'snippets/izdate_knjige.html' %}
+{% endblock %}
+
+{% block rightPanel %}
+    {% include 'snippets/recenzije.html' %}
+{% endblock %}
+

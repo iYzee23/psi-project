@@ -1,7 +1,7 @@
 <!-- LICNA KOLEKCIJA -->
-<div class="row col-sm-12 main" style="margin-bottom: 15px;">
-    <h1><b>Licna kolekcija</b></h1>
-
+<div class="col-sm-11 main" style="margin-bottom: 15px;">
+    <h1><b>Lična kolekcija</b></h1>
+    {% if licna_kolekcija %}
     <div id="carouselExampleIndicatorsLicna" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
             {% for knjiga in licna_kolekcija %}
@@ -17,7 +17,6 @@
         <a class="carousel-control-prev" href="#carouselExampleIndicatorsLicna" role="button"
            data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-
         </a>
         <a class="carousel-control-next" href="#carouselExampleIndicatorsLicna" role="button"
            data-slide="next">
@@ -25,5 +24,5 @@
 
         </a>
     </div>
+    {% endif %}
 </div>
-<hr>

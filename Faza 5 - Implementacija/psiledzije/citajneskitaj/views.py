@@ -143,152 +143,154 @@ def logout_req(request: HttpRequest):
 
 def knjiga(request: HttpRequest, knjiga_id: str):
     try:
-        # messages.clear(request)
-        form = RecenzijaForm(data=request.POST or None)
-        editForm = RecenzijaEditForm(data=request.POST or None)
         knjiga = Knjiga.objects.get(isbn=knjiga_id)
-        napisanija = Napisao.objects.filter(isbn=knjiga_id)
-        autori = ''
-        for napisanije in napisanija:
-            autori += napisanije.idautor.imeprezime + ', '
-        autori = autori[0:-2]
-        errorTekst=None
-        recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga_id)
-
-        imaUkolekciji=False
-        korisnik = Uloga.objects.get(username=request.user.get_username())
-        tmpKolekcije=Kolekcija.objects.filter(isbn=knjiga).filter(korime=korisnik)
-
-        if(tmpKolekcije.count()!=0):
-            imaUkolekciji=True
-
-        #if Recenzija.objects.get(iddavalac=request.user):
-           # TODO @ljubica IZBACI GRESKU - ne mogu da dam dve recenzije na nesto!
-
-        if "dodajUkolekciju" in request.POST:
-            kolekcija = Kolekcija(isbn=knjiga, korime=korisnik)
-            kolekcija.save()
-            imaUkolekciji = True
-
-        if "brisiIzKolekcije" in request.POST:
-            tmpKolekcije.delete()
-            imaUkolekciji = False
     except Knjiga.DoesNotExist:
         raise Http404("Ne postoji knjiga sa tim ID :(")
-    except Recenzija.DoesNotExist:
-        raise Http404("Ne postoji knjiga sa tim ID :(")
 
-    if form.is_valid():
-        if "postavi" in request.POST:
-            datum = datetime.now()
-            ocena = form.cleaned_data["ocena"]
-            tekst = form.cleaned_data["tekst"]
+    recenzijaForm = RecenzijaForm(data=request.POST or None, prefix='edit')
+    if not recenzijaForm.is_valid():
+        recenzijaForm = RecenzijaForm(data=request.POST or None, prefix='add')
+    napisanija = Napisao.objects.filter(isbn=knjiga_id)
+    autori = ''
+    for napisanije in napisanija:
+        autori += napisanije.idautor.imeprezime + ', '
+    autori = autori[0:-2]
+    errorTekst = None
 
-            rec = Recenzija.objects.filter(idprimalacknjiga=knjiga).filter(iddavalac=korisnik)
-            if(rec.count()==0):
-                # TODO @ljubica mozemo da promenimo model da polje bude models.AutoField i onda auto generise
-                poslRec = Recenzija.objects.last()
-                poslId = 0
-                if (poslRec):
-                    poslId = poslRec.idrec
-                novId = poslId + 1
-                novaRec = Recenzija(idrec=novId, ocena=ocena, datumobjave=datum, tekst=tekst, iddavalac=korisnik,
-                                    idprimalacknjiga=knjiga)
-                novaRec.save()
-                recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga)
+    korisnik = request.user
+    imaUkolekciji = Kolekcija.objects.filter(Q(isbn=knjiga) & Q(korime=korisnik)).exists()
+
+    if imaUkolekciji == True and "brisiIzKolekcije" in request.POST:
+        Kolekcija.objects.get(Q(isbn=knjiga) & Q(korime=korisnik)).delete()
+        imaUkolekciji = False
+    elif imaUkolekciji == False and "dodajUkolekciju" in request.POST:
+        Kolekcija.objects.create(isbn=knjiga, korime=korisnik)
+        imaUkolekciji = True
+
+    if recenzijaForm.is_valid():
+        if "obrisi" not in request.POST:
+            ocena = recenzijaForm.cleaned_data["ocena"]
+            tekst = recenzijaForm.cleaned_data["tekst"]
+            try:
+                recenzija = Recenzija.objects.get(Q(idprimalacknjiga=knjiga) & Q(iddavalac=korisnik))
+                if "postavi" in request.POST:
+                    errorTekst = 'Ne mozete upisati više od 1 recenzije!'
+            except:
+                recenzija = Recenzija(idprimalacknjiga=knjiga, iddavalac=korisnik)
+
+            if errorTekst is None:
+                recenzija.tekst = tekst
+                recenzija.ocena = ocena
+                recenzija.save()
+        elif "obrisi" in request.POST:
+            Recenzija.objects.get(Q(idprimalacknjiga=knjiga) & Q(iddavalac=korisnik)).delete()
+
+        if errorTekst is None:
+            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga)
+            if recenzije.count() == 0:
+                prosecnaOcena = 0
+            else:
                 sumaOcena = 0
-                for rec in recenzije:
-                    sumaOcena = sumaOcena + rec.ocena
-
+                for postojecaRecenzija in recenzije:
+                    sumaOcena = sumaOcena + postojecaRecenzija.ocena
                 prosecnaOcena = sumaOcena / recenzije.count()
 
-                knjiga.prosecnaocena = round(prosecnaOcena, 2)
-                knjiga.save()
-            else:
-                errorTekst= 'Ne mozete upisati više od 1 recenzije!'
-    if editForm.is_valid():
-        if "izmeni" in request.POST:
-            ocena = form.cleaned_data["ocena"]
-            tekst = form.cleaned_data["tekst"]
-            idRec = request.POST.get('hiddenIdRec')
-            novaRec = Recenzija.objects.get(idrec=idRec)
-            novaRec.ocena = ocena
-            novaRec.datumobjave = datetime.now()
-            novaRec.tekst = tekst
-            novaRec.save()
-            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga)
-            sumaOcena = 0
-            for rec in recenzije:
-                sumaOcena = sumaOcena + rec.ocena
-
-            prosecnaOcena = sumaOcena / recenzije.count()
-
-            knjiga.prosecnaocena = round(prosecnaOcena, 2)
-            knjiga.save()
-        if "obrisi" in request.POST:
-            idRec = request.POST.get('hiddenIdRec')
-            novaRec = Recenzija.objects.get(idrec=idRec)
-            novaRec.delete()
-            recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga)
-            sumaOcena = 0
-            for rec in recenzije:
-                sumaOcena = sumaOcena + rec.ocena
-
-            prosecnaOcena = sumaOcena / recenzije.count()
-
             knjiga.prosecnaocena = round(prosecnaOcena, 2)
             knjiga.save()
 
+    recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga)
     context = {
         'knjiga': knjiga,
         'autori': autori,
         'recenzije': recenzije,
-        'forma': form,
-        'editForma': editForm,
+        'recenzijaFormAdd': RecenzijaForm(prefix='add'),
+        'recenzijaFormEdit': RecenzijaForm(prefix='edit'),
         'pretragaForm': SearchForm(),
-        'errorTekst':errorTekst,
-        'imaUkolekciji':imaUkolekciji,
+        'errorTekst': errorTekst,
+        'imaUkolekciji': imaUkolekciji,
     }
     return render(request, 'entities/knjiga.html', context)
 
 
 def profil(request: HttpRequest, profil_id: str):
     try:
+        recenzijaForm = RecenzijaForm(data=request.POST or None, prefix='edit')
+        if not recenzijaForm.is_valid():
+            recenzijaForm = RecenzijaForm(data=request.POST or None, prefix='add')
         uloga = Uloga.objects.get(pk=profil_id)
+        korisnik = request.user
         flag = 0
-        recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
         objave = Objava.objects.filter(korime=uloga)
+        errorTekst = None
 
-        if (request.user.is_authenticated and request.user!=uloga):
-            if(Prati.objects.filter(idpracen=uloga, idpratilac=request.user).exists()):
+        if (request.user.is_authenticated and request.user != uloga):
+            if (Prati.objects.filter(idpracen=uloga, idpratilac=request.user).exists()):
                 flag = 2
             else:
                 flag = 1
 
+        if recenzijaForm.is_valid():
+            if "obrisi" not in request.POST:
+                ocena = recenzijaForm.cleaned_data["ocena"]
+                tekst = recenzijaForm.cleaned_data["tekst"]
+                try:
+                    recenzija = Recenzija.objects.get(Q(idprimalaculoga=uloga) & Q(iddavalac=korisnik))
+                    if "postavi" in request.POST:
+                        errorTekst = 'Ne mozete upisati više od 1 recenzije!'
+                except:
+                    recenzija = Recenzija(idprimalaculoga=uloga, iddavalac=korisnik)
+
+                if errorTekst is None:
+                    recenzija.tekst = tekst
+                    recenzija.ocena = ocena
+                    recenzija.save()
+            elif "obrisi" in request.POST:
+                idRec = request.POST.get('hiddenIdRec')
+                Recenzija.objects.get(idrec=idRec).delete()
+
+            if errorTekst is None:
+                recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
+                if recenzije.count() == 0:
+                    prosecnaOcena = 0
+                else:
+                    sumaOcena = 0
+                    for postojecaRecenzija in recenzije:
+                        sumaOcena = sumaOcena + postojecaRecenzija.ocena
+                    prosecnaOcena = sumaOcena / recenzije.count()
+
+                uloga.prosecnaocena = round(prosecnaOcena, 2)
+                uloga.save()
+
+        recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
         context = {
             'uloga': uloga,
             'recenzije': recenzije,
             'objave': objave,
+            'recenzijaFormAdd': RecenzijaForm(prefix='add'),
+            'recenzijaFormEdit': RecenzijaForm(prefix='edit'),
             'pretragaForm': SearchForm(),
             'objavaForm': TextObjavaForm(),
             'knjigaForm': KnjigaObjavaForm(),
-            'flag': flag
+            'flag': flag,
+            'errorTekst': errorTekst
         }
 
-
         if uloga.tip == 'A':
-            autor: Autor=Autor.objects.get(pk=profil_id)
+            autor: Autor = Autor.objects.get(pk=profil_id)
             context['profil'] = autor
             context['knjige'] = Knjiga.objects.filter(napisao__idautor=profil_id).order_by('-prosecnaocena')
-            context['licna_kolekcija']=Knjiga.objects.filter(kolekcija__korime=autor)
+            context['licna_kolekcija'] = Knjiga.objects.filter(kolekcija__korime=autor)
             return render(request, 'entities/autor.html', context)
         elif uloga.tip == 'K':
-            korisnik: Korisnik=Korisnik.objects.get(pk=profil_id)
+            korisnik: Korisnik = Korisnik.objects.get(pk=profil_id)
             context['profil'] = korisnik
-            context['licna_kolekcija']=Knjiga.objects.filter(kolekcija__korime=korisnik)
+            context['licna_kolekcija'] = Knjiga.objects.filter(kolekcija__korime=korisnik)
             return render(request, 'entities/korisnik.html', context)
         else:
-            context['profil'] = IzdavackaKuca.objects.get(pk=profil_id)
+            kuca = IzdavackaKuca.objects.get(pk=profil_id)
+            context['profil'] = kuca
+            context['licna_kolekcija'] = Knjiga.objects.filter(kolekcija__korime=korisnik)
+            context['knjige'] = Knjiga.objects.filter(idizdkuca=kuca).order_by('-prosecnaocena')
             return render(request, 'entities/izdavackakuca.html', context)
     except Autor.DoesNotExist:
         raise Http404("Ne postoji profil sa tim ID :(")
@@ -525,10 +527,9 @@ def pretraga(request: HttpRequest):
 
 @login_required(login_url="login")
 def zaprati(request: HttpRequest):
-    if(request.method == 'POST'):
+    if (request.method == 'POST'):
         form = PretplataForm(request.POST)
         if form.is_valid():
-
             pratilac = request.user
 
             praceni_id = request.POST.get('praceni')
@@ -542,8 +543,9 @@ def zaprati(request: HttpRequest):
 
     return redirect('home')
 
+
 @login_required(login_url="login")
-def otprati(request:HttpRequest):
+def otprati(request: HttpRequest):
     if (request.method == 'POST'):
         form = PretplataForm(request.POST)
         if form.is_valid():

@@ -6,6 +6,8 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
+import datetime
+
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -81,7 +83,7 @@ class Kolekcija(models.Model):
 
 
 class Licitacija(models.Model):
-    idlicitacija = models.IntegerField(db_column='IDLicitacija', primary_key=True)
+    idlicitacija = models.AutoField(db_column='IDLicitacija', primary_key=True)
     nazivdela = models.CharField(db_column='NazivDela', max_length=40)
     pdf = models.FileField(db_column='PDF', upload_to='pdfs/', null=True)
     datumpocetka = models.DateTimeField(db_column='DatumPocetka')
@@ -114,7 +116,7 @@ class Napisao(models.Model):
 
 
 class Objava(models.Model):
-    idobjava = models.IntegerField(db_column='IDObjava', primary_key=True)
+    idobjava = models.AutoField(db_column='IDObjava', primary_key=True)
     sadrzaj = models.CharField(db_column='Sadrzaj', max_length=1000)
     datumobjave = models.DateTimeField(db_column='DatumObjave')
     slika = models.ImageField(db_column='Slika', upload_to='objavaImgs/', null=True)
@@ -125,7 +127,7 @@ class Objava(models.Model):
 
 
 class Ponuda(models.Model):
-    idponuda = models.IntegerField(db_column='IDPonuda', primary_key=True)
+    idponuda = models.AutoField(db_column='IDPonuda', primary_key=True)
     iznos = models.IntegerField(db_column='Iznos')
     idlicitacija = models.ForeignKey(db_column='IDLicitacija', to='Licitacija', on_delete=models.CASCADE)
     idizdkuca = models.ForeignKey(db_column='IDIzdKuca', max_length=20, to='IzdavackaKuca', on_delete=models.CASCADE)
@@ -162,9 +164,9 @@ class ProdajnaMesta(models.Model):
 
 
 class Recenzija(models.Model):
-    idrec = models.IntegerField(db_column='IDRec', primary_key=True)
+    idrec = models.AutoField(db_column='IDRec', primary_key=True)
     ocena = models.DecimalField(db_column='Ocena', max_digits=5 ,decimal_places=1)
-    datumobjave = models.DateTimeField(db_column='DatumObjave')
+    datumobjave = models.DateTimeField(db_column='DatumObjave', default=datetime.datetime.now())
     tekst = models.CharField(db_column='Tekst', max_length=1000)
     iddavalac = models.ForeignKey(db_column='IDDavalac', max_length=20, to='Uloga', on_delete=models.CASCADE, related_name='related_to_davalac_uloga')
     idprimalaculoga = models.ForeignKey(db_column='IDPrimalacUloga', max_length=20, blank=True, null=True, to='Uloga', on_delete=models.CASCADE, related_name='related_to_primalac_uloga')

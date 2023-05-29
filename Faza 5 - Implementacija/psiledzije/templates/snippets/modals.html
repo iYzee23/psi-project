@@ -1,33 +1,46 @@
-<div class="modal">
+<div class="modal" id="addRecenzijaModal">
     <div id="popupRecenzija">
         <form method="POST">
             {% csrf_token %}
             <h3 style="font-weight: bold">Nova recenzija</h3>
             <p style="font-weight: bold">Ocena (1-5): </p>
-            {{ forma.ocena }}
+            {{ recenzijaFormAdd.ocena }}
             <pre style="font-weight: bold">1     2     3     4     5</pre>
             <p style="font-weight: bold">Komentar: </p>
-            {{ forma.tekst }}
+            {{ recenzijaFormAdd.tekst }}
             <input type="submit" name="postavi" value="Postavi recenziju" class="dodaj">
-            <input type="reset" value="Odustani" class="odustani" style="background-color:grey" onclick="toggleModal()">
+            <input type="reset" value="Odustani" class="odustani" style="background-color:grey" onclick="$('#addRecenzijaModal').hide()">
         </form>
     </div>
 </div>
 
-<div class="modalEdit">
+<div class="modal" id="editRecenzijaModal">
     <div id="editRec">
         <form method="POST">
             {% csrf_token  %}
             <input type="hidden" id="hiddenIdRec" name="hiddenIdRec" value="">
             <h3 style="font-weight: bold">Izmena recenzije</h3>
             <p style="font-weight: bold">Ocena (1-5): </p>
-            {{ editForma.ocena }}
+            {{ recenzijaFormEdit.ocena }}
             <pre style="font-weight: bold">1     2     3     4     5</pre>
             <p style="font-weight: bold">Komentar: </p>
-            {{ editForma.tekst }}
+            {{ recenzijaFormEdit.tekst }}
             <input type="submit" name="izmeni" value="Izmeni recenziju" class="dodaj">
             <input type="submit" name="obrisi" value="Obrisi recenziju" class="odustani">
-            <input type="reset" value="Odustani" class="odustani" style="background-color:grey" onclick="hideModalEdit()">
+            <input type="reset" value="Odustani" class="odustani" style="background-color:grey" onclick="$('#editRecenzijaModal').hide()">
         </form>
     </div>
 </div>
+
+ <div class="modal" id="addObjavaModal">
+        <div id="dodajObjavu">
+            <h1>DODAJ NOVU OBJAVU</h1><br><br>
+            <form method="POST" enctype="multipart/form-data" action="{% url "dodajObjavu" %}">
+                {% csrf_token %}
+                {{ addObjavaForm }}
+                <button class="btn-success">Dodaj objavu</button>
+                <input type="reset" name="odustani" value="Odustani" class="odustani" style="background-color:grey"
+                       onclick="$('#addObjavaModal').hide()">
+            </form>
+        </div>
+ </div>
