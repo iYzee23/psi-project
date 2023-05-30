@@ -23,13 +23,13 @@
         {% endblock %}
     </title>
 </head>
-<body>
+<body class="w-100 p-0 m-0">
     <!-- HEADER -->
     {% block header %}
-        <div class="container-fluid" style="padding:0; margin:0;">
-        <div class="row col-sm-12 " style="padding:0; width:100%; margin: 0;">
-            <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="margin:0; padding:5px;" >
-                <div class="container-fluid " id="navmeni" style="margin:0;">
+        <div class="container-fluid w-100 p-0 m-0" >
+        <div class="row col-sm-12 p-0 m-0 w-100">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark m-0 p-5px"  >
+                <div class="container-fluid m-0 p-0" id="navmeni">
                     <a href="{% url 'home' %}" class="logo">
                         <img src="../../static/slike/logo.png" alt="" style="width: 80px;">
                     </a>

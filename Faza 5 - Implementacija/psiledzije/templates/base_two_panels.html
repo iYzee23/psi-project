@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
 {% block twoPanels %}
-    <div class="container-fluid" style="padding:0; margin:0;">
-        <div class="row" style="margin:0;">
-            <div class="col-sm-8 mainPanel" >
-                <div class="row">
+    <div class="container-fluid p-0 m-0">
+        <div class="row m-0 p-0">
+            <div class="col-sm-8 mainPanel p-0 m-0" >
+                <div class="row m-0 p-0">
                     {% block upperLeft %}
                     {% endblock %}
                     <hr>
@@ -12,7 +12,7 @@
                     {% endblock %}
                 </div>
             </div>
-            <div class="col-sm-4 sidePanel " style="margin:0;">
+            <div class="col-sm-4 sidePanel p-0 m-0 " >
                 {% block rightPanel %}
                 {% endblock %}
             </div>
