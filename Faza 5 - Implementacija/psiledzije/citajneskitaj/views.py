@@ -260,8 +260,29 @@ def profil(request: HttpRequest, profil_id: str):
 
                 uloga.prosecnaocena = round(prosecnaOcena, 2)
                 uloga.save()
+        elif "obrisi" in request.POST:
+            idRec = request.POST.get('hiddenIdDeleteRec')
+            Recenzija.objects.get(idrec=idRec).delete()
 
-        recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
+            if errorTekst is None:
+                recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
+                if recenzije.count() == 0:
+                    prosecnaOcena = 0
+                else:
+                    sumaOcena = 0
+                    for postojecaRecenzija in recenzije:
+                        sumaOcena = sumaOcena + postojecaRecenzija.ocena
+                    prosecnaOcena = sumaOcena / recenzije.count()
+
+                uloga.prosecnaocena = round(prosecnaOcena, 2)
+                uloga.save()
+
+        try:
+            recenzija = Recenzija.objects.get(Q(idprimalaculoga=uloga) & Q(iddavalac=korisnik))
+            recenzije = Recenzija.objects.filter(idprimalaculoga=uloga).exclude(recenzija)
+        except:
+            recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
+
         context = {
             'uloga': uloga,
             'recenzije': recenzije,

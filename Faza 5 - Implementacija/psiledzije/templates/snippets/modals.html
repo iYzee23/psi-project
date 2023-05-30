@@ -1,5 +1,5 @@
 <div class="modal" id="addRecenzijaModal">
-    <div id="popupRecenzija">
+    <div class="modalDiv" id="popupRecenzija">
         <form method="POST">
             {% csrf_token %}
             <h3 style="font-weight: bold">Nova recenzija</h3>
@@ -15,14 +15,13 @@
 </div>
 
 <div class="modal" id="editRecenzijaModal">
-    <div id="editRec">
+    <div class="modalDiv" id="editRec">
         <form method="POST">
             {% csrf_token  %}
-            <input type="hidden" id="hiddenIdRec" name="hiddenIdRec" value="">
+            {{ recenzijaFormEdit.hiddenIdRec }}
             <h3 style="font-weight: bold">Izmena recenzije</h3>
             <p style="font-weight: bold">Ocena (1-5): </p>
             {{ recenzijaFormEdit.ocena }}
-            <pre style="font-weight: bold">1     2     3     4     5</pre>
             <p style="font-weight: bold">Komentar: </p>
             {{ recenzijaFormEdit.tekst }}
             <input type="submit" name="izmeni" value="Izmeni recenziju" class="dodaj">
@@ -32,8 +31,20 @@
     </div>
 </div>
 
+<div class="modal" id="deleteRecenzijaModal">
+    <div class="modalDiv" id="deleteRec">
+        <form method="POST" id="deleteRecenzijaForm">
+            {% csrf_token  %}
+            <input type="hidden" id="hiddenIdDeleteRec" name="hiddenIdDeleteRec" form="deleteRecenzijaForm">
+            <h3>Želite li da obrišete izabranu recenziju?</h3>
+            <input type="submit" name="obrisi" value="Obrisi recenziju" class="odustani">
+            <input type="reset" value="Odustani" class="odustani" style="background-color:grey" onclick="$('#deleteRecenzijaModal').hide()">
+        </form>
+    </div>
+</div>
+
  <div class="modal" id="addObjavaModal">
-        <div id="dodajObjavu">
+        <div class="modalDiv" id="dodajObjavu">
             <h1>DODAJ NOVU OBJAVU</h1><br><br>
             <form method="POST" enctype="multipart/form-data" action="{% url "dodajObjavu" %}">
                 {% csrf_token %}

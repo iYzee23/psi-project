@@ -253,17 +253,6 @@ body{
     display: none;
 }
 
-
-#popupRecenzija {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgb(129, 118, 118);
-    padding: 20px;
-    border: 1px solid #ccc;
-}
-
 .dodaj{
 
     background-color: #578d46;
@@ -292,7 +281,7 @@ body{
     height:fit-content;
 }
 
-#editRec {
+.modalDiv {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -307,16 +296,6 @@ body{
 
 .profilLink:hover {
     color: #772121;
-}
-
-#dodajObjavu {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgb(129, 118, 118);
-    padding: 20px;
-    border: 1px solid #ccc;
 }
 
 #dodajKnjigu {

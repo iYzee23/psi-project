@@ -26,10 +26,10 @@
             {% else %}
                 <i>@banovan</i>
             {% endif %}
-            {% if rec.iddavalac == request.user or user.is_superuser %}
-                <button class="editBtn" onclick="showModalEdit(this,'{{ rec.tekst }}',{{ rec.ocena }})"
-                        value="{{ rec.idrec }}">...
-                </button>
+            {% if rec.iddavalac == request.user %}
+                <button class="editBtn" onclick="showModalEdit({{ rec.idrec }},'{{ rec.tekst }}',{{ rec.ocena }})">...</button>
+            {% elif user.is_superuser %}
+                <button class="editBtn" onclick="showModalDelete({{ rec.idrec }})">...</button>
             {% endif %}
         </h2>
         <div style="font-style: italic">{{ rec.tekst }}</div>

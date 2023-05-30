@@ -94,7 +94,7 @@ class PromenaInfoKucaForm(ModelForm):
 class RecenzijaForm(Form):
     tekst = forms.CharField(label='Review', widget=forms.Textarea, max_length=1000, required=True)
     ocena = forms.IntegerField(widget=forms.TextInput(attrs={'type': 'range', 'min': '1', 'max': '5'}))
-    hiddenIdRec = forms.CharField(widget=forms.HiddenInput(attrs={'id': 'hiddenIdRec'}), required=False, initial=-1)
+    hiddenIdRec = forms.CharField(widget=forms.HiddenInput(), required=False, initial=-1)
 
 
 class AdminResetForm(Form):

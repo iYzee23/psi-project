@@ -9,6 +9,7 @@
     </div>
     <div class="col-sm-8" style="margin-bottom: 5%;">
         <h1 style="font-weight: bold">{{ profil.imeprezime }}</h1>
+        <h3 style="margin-bottom: 5%;">{{ profil.prosecnaocena }}/5.00</h3>
         <h3 style="margin-bottom: 5%;"><b>Broj pratilaca:</b> {{ uloga.brpratilaca }}</h3>
         <div>
             {% include 'snippets/zaprati_otprati_dugme.html' %}
@@ -20,8 +21,8 @@
 {% endblock %}
 
 {% block lowerLeft %}
-    {% include 'snippets/objave.html' %}
     {% include 'snippets/licna_kolekcija.html' %}
+    {% include 'snippets/objave.html' %}
 {% endblock %}
 
 {% block rightPanel %}
