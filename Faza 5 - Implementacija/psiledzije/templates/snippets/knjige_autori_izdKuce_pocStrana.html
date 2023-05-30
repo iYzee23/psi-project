@@ -5,7 +5,7 @@
             <div class="card text-center"
                  style="background-color:rgba(255,255,255,0.66); max-width:250px;    ">
                 <div class="card-img-top ">
-                    <div style="width:250px; height:350px;">
+                    <div style="width:100%; height:100%;">
                         <a href="/knjiga/{{ knjiga.isbn }}" class="link-secondary">
                             <img class="mx-auto"
                                  src="{% if knjiga.slika %}{{ knjiga.slika.url }}{% endif %}"
@@ -30,10 +30,13 @@
             <div class="card text-center"
                  style="background-color:rgba(255,255,255,0.66); max-width:250px;    ">
                 <div class="card-img-top">
-                    <a href="/profil/{{ autor.username }}" class="link-secondary">
-                        <img class="mx-auto" src="{% if autor.slika %}{{ autor.slika.url }}{% endif %}"
-                             alt="Nema slike :(" style=" height:250px; width:250px;">
-                    </a>
+                    <div style="width:100%; height:100%;">
+
+                        <a href="/profil/{{ autor.username }}" class="link-secondary">
+                            <img class="mx-auto" src="{% if autor.slika %}{{ autor.slika.url }}{% endif %}"
+                                 alt="Nema slike :(" style=" height:250px; width:250px;">
+                        </a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <h5 class="card-text">⭐{{ autor.prosecnaocena }} - {{ autor.imeprezime }}</h5>
@@ -49,10 +52,13 @@
             <div class="card text-center"
                  style="background-color:rgba(255,255,255,0.66); max-width:250px;    ">
                 <div class="card-img-top">
-                    <a href="/profil/{{ kuca.username }}" class="link-secondary">
-                        <img class="mx-auto" src="{% if kuca.slika %}{{ kuca.slika.url }}{% endif %}"
-                             alt="Nema slike :(" style=" height:250px; width:250px;">
-                    </a>
+                    <div style="width:100%; height:100%;">
+
+                        <a href="/profil/{{ kuca.username }}" class="link-secondary">
+                            <img class="mx-auto" src="{% if kuca.slika %}{{ kuca.slika.url }}{% endif %}"
+                                 alt="Nema slike :(" style=" height:250px; width:250px;">
+                        </a>
+                    </div>
                 </div>
                 <div class="card-body" style=" background-color:rgba(255,255,255,0.66);">
                     <h4 class="card-title">⭐{{ kuca.prosecnaocena }} - {{ kuca.naziv }}</h4>
