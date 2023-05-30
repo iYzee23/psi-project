@@ -17,18 +17,17 @@
                 {{ form }}
                 <input type="submit" value="Uloguj se" class="loginbtn">
             </form>
-            <button type="button" class="btn btn-light resetPassbtn " data-toggle="modal"
-                    data-target="#exampleModalCenter">
+            <button type="button" class="btn btn-light resetPassbtn " onclick="$('#zabLozinkaModal').show()">
                 Zaboravljena lozinka?
             </button>
         </div>
 
 
         <div class="modal" id="zabLozinkaModal">
-            <div class="modalDiv" id="zabLozinkaDiv">
+            <div class="modalDiv" id="zabLozinkaDiv" style="color:white">
                     <div>
                         Pošaljite informaciju o korisničkom imenu sa<br>
-                        Vašeg mejla na mejl: <a href="mailto:predrag.pesic@citajneskitaj.rs">predrag.pesic@citajneskitaj.rs</a>. Naslov
+                        Vašeg mejla na mejl: <a href="mailto:predrag.pesic@citajneskitaj.rs" class="profilLink">predrag.pesic@citajneskitaj.rs</a>. Naslov
                         <br>
                         treba da bude: 'Zahtev za resetovanjem lozinke'.
                         <br>
@@ -40,37 +39,8 @@
                         i potom je promeniti u podešavanjima.
                     </div>
                     <input type="reset" value="Odustani" class="odustani" style="background-color:grey"
-                           onclick="$('#deleteRecenzijaModal').hide()">
+                           onclick="$('#zabLozinkaModal').hide()">
                 </form>
-            </div>
-        </div>
-
-
-        <!-- Modal -->
-        <div class="modal" id="exampleModalCenter" tabindex="-1" role="dialog"
-             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Uputstvo</h5>
-                        <button class="btn-outline-dark" onclick="$('#exampleModalCenter').hide()">
-                            X
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Pošaljite informaciju o korisničkom imenu sa<br>
-                        Vašeg mejla na mejl: <a href="mailto:admin@gmail.com">predrag.pesic@citajneskitaj.rs</a>. Naslov
-                        <br>
-                        treba da bude: 'Zahtev za resetovanjem lozinke'.
-                        <br>
-                        <br>
-                        Ukoliko se Vaše korisničko ime poklapa sa mejlom <br>
-                        preko koga ste poslali informacije, u najskorijem <br>
-                        vremenskom periodu ćete dobiti informaciju o <br>
-                        privremenoj lozinci sa kojom se možete ulogovati<br>
-                        i potom je promeniti u podešavanjima.
-                    </div>
-                </div>
             </div>
         </div>
     </div>
