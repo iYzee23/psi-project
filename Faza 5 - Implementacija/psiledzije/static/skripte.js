@@ -17,7 +17,7 @@ $(document).ready(function () {
                 interval: false
             })
         //licna kolekcija
-        if ($(".tripleCarousel.licna .carousel-inner")) {
+        if ($(".tripleCarousel.licna .carousel-inner") && $(".tripleCarousel.licna .carousel-inner")[0]) {
             var carouselWidthLicna = $(".tripleCarousel.licna .carousel-inner")[0].scrollWidth;
             var cardWidthLicna = $(".tripleCarousel.licna .carousel-item").width();
 
@@ -40,7 +40,7 @@ $(document).ready(function () {
                 }
             });
         }
-        if ($(".tripleCarousel.izdate .carousel-inner")) {
+        if ($(".tripleCarousel.izdate .carousel-inner") && $(".tripleCarousel.izdate .carousel-inner")[0]) {
             //izdate knjige
             var carouselWidthIzdate = $(".tripleCarousel.izdate .carousel-inner")[0].scrollWidth;
             var cardWidthIzdate = $(".tripleCarousel.izdate .carousel-item").width();
