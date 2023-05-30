@@ -1,0 +1,6 @@
+{% if knjiga.idizdkuca_id == request.user.pk %}
+<form action="{% url 'izmeniKnjigu' %}" method="post">
+        {% csrf_token %}
+        <button class="katalogbtn" type="submit">Izmeni informacije</button>
+    </form>
+{% endif %}

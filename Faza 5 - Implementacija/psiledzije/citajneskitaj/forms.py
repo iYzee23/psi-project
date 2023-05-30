@@ -132,16 +132,17 @@ class TextObjavaForm(ModelForm):
     class Meta:
         model = Objava
         fields = ["slika", "sadrzaj"]
-
+class AutoriField(forms.ModelMultipleChoiceField):
+    def label_from_instance(self, obj):
+        return f"{obj.imeprezime}-[@{obj.username}]"
 
 class KnjigaObjavaForm(ModelForm):
-    autorChoices = [(autor.username, autor.imeprezime + " [@" + autor.username + "]") for autor in Autor.objects.all()]
 
     naziv = CharField(label='Naziv knjige', widget=TextInput(attrs={"size": "50"}))
-    slika = ImageField(label='Slika knjige')
-    autor = ChoiceField(choices=autorChoices, widget=Select)
+    slika = ImageField(label='Slika knjige', required=False)
+    autori = AutoriField(queryset=Autor.objects.all(), widget=CheckboxSelectMultiple)
     opis = CharField(label='Opis', widget=Textarea)
-
     class Meta:
         model = Knjiga
-        fields = ["naziv", "slika", "autor", "opis"]
+        fields = ["naziv", "slika", "autori", "opis"]
+

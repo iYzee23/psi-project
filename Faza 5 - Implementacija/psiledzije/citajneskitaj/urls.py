@@ -17,6 +17,7 @@ urlpatterns = [
     path('mojProfil/', mojProfil, name="mojProfil"),
     path('dodajObjavu/', dodajObjavu, name="dodajObjavu"),
     path('dodajKnjigu/', dodajKnjigu, name="dodajKnjigu"),
+    path('izmeniKnjigu/', promeniInfoKnjige, name="izmeniKnjigu"),
     path('promeniSifru/', promeniSifru, name="promeniSifru"),
     path('promeniInfo/', promeniInfo, name="promeniInfo"),
     path('resetujLozinku/', admResetujLozinku, name="admResetujLozinku"),

@@ -210,6 +210,7 @@ def knjiga(request: HttpRequest, knjiga_id: str):
         'errorTekst': errorTekst,
         'imaUkolekciji': imaUkolekciji,
     }
+    request.session['isbn'] = knjiga_id
     return render(request, 'entities/knjiga.html', context)
 
 
@@ -646,10 +647,47 @@ def dodajKnjigu(request: HttpRequest):
         naziv = form.cleaned_data["naziv"]
         slika = form.cleaned_data["slika"]
         opis = form.cleaned_data["opis"]
-        autor = form.cleaned_data["autor"]
+        autori = form.cleaned_data["autori"]
         Knjiga(isbn=isbn, naziv=naziv, slika=slika, opis=opis, prosecnaocena=0, idizdkuca_id=request.user.pk).save()
-        Napisao(isbn_id=isbn, idautor_id=autor).save()
-        if not Povezani.objects.filter(Q(idautor_id=autor) & Q(idizdkuca_id=request.user.pk)).exists():
-            Povezani(idautor_id=autor, idizdkuca_id=request.user.pk).save()
+        for autor in autori:
+            Napisao(isbn_id=isbn, idautor_id=autor).save()
+            if not Povezani.objects.filter(Q(idautor_id=autor) & Q(idizdkuca_id=request.user.pk)).exists():
+                Povezani(idautor_id=autor, idizdkuca_id=request.user.pk).save()
         Objava(sadrzaj=sadrzaj, datumobjave=datetime.now(), slika=slika, korime=request.user).save()
     return redirect("mojProfil")
+
+@login_required(login_url="login")
+def promeniInfoKnjige(request: HttpRequest):
+    izd_kuca: IzdavackaKuca = IzdavackaKuca.objects.get(username=request.user.pk)
+    knjiga: Knjiga = Knjiga.objects.get(isbn=request.session.get('isbn'))
+    autori=Autor.objects.filter(napisao__isbn=knjiga)
+    izmenaForm = KnjigaObjavaForm(request.POST or None, request.FILES or None)
+    if (izmenaForm.is_valid()):
+        knjiga.naziv =  izmenaForm.cleaned_data["naziv"]
+        knjiga.opis = izmenaForm.cleaned_data["opis"]
+        if request.FILES:
+            knjiga.slika =  izmenaForm.cleaned_data["slika"]
+
+        novi_autori_id = izmenaForm.cleaned_data["autori"]
+
+        for autor in autori:
+            num_knjiga_autora_i_izd_kuce = Knjiga.objects.filter(
+                Q(idizdkuca=izd_kuca) & Q(napisao__idautor=autor)).count()
+            if num_knjiga_autora_i_izd_kuce == 1:
+               Povezani.objects.get(idizdkuca=izd_kuca, idautor=autor).delete()
+            Napisao.objects.get(idautor=autor, isbn=knjiga).delete()
+        for novi_autor_id in novi_autori_id:
+            print(novi_autor_id)
+            novi_autor = Autor.objects.get(username=novi_autor_id)
+            Napisao(idautor=novi_autor, isbn=knjiga).save()
+            if not Povezani.objects.filter(Q(idautor=novi_autor) & Q(idizdkuca_id=request.user.pk)).exists():
+                Povezani(idautor=novi_autor, idizdkuca_id=request.user.pk).save()
+        knjiga.save()
+
+        return redirect("knjiga", knjiga_id=knjiga.pk)
+    else :
+        izmenaForm = KnjigaObjavaForm(initial={"naziv": knjiga.naziv,
+                                               "autori":autori,
+                                               "slika":knjiga.slika,
+                                               "opis": knjiga.opis})
+    return render(request, "entities/promenaInfoKnjige.html", {"form":izmenaForm})
