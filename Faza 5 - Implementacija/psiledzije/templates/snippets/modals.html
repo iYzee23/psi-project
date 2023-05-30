@@ -68,3 +68,23 @@
             </form>
     </div>
 </div>
+
+<div class="modal" id="prikaziPratioceModal">
+    <div id="prikaziPratioce">
+        <h1>PRATIOCI</h1><br><br>
+        {% for pratilac in pratioci %}
+            <a href="{% url "profil" profil_id=pratilac %}">@{{ pratilac }}</a><br>
+        {% endfor %}
+        <input type="button" value="Odustani" class="odustani" style="background-color:grey" onclick="$('#prikaziPratioceModal').hide()">
+    </div>
+</div>
+
+<div class="modal" id="prikaziPraceneModal">
+    <div id="prikaziPracene">
+        <h1>PRACENI</h1><br><br>
+        {% for pracen in praceni %}
+            <a href="{% url "profil" profil_id=pracen %}">@{{ pracen }}</a><br>
+        {% endfor %}
+        <input type="button" value="Odustani" class="odustani" style="background-color:grey" onclick="$('#prikaziPraceneModal').hide()">
+    </div>
+</div>

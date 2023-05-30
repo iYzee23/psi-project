@@ -295,7 +295,9 @@ def profil(request: HttpRequest, profil_id: str):
             'objavaForm': TextObjavaForm(),
             'knjigaForm': KnjigaObjavaForm(),
             'flag': flag,
-            'errorTekst': errorTekst
+            'errorTekst': errorTekst,
+            'pratioci': [pratilac.idpratilac_id for pratilac in Prati.objects.filter(idpracen_id=profil_id)],
+            'praceni': [pracen.idpracen_id for pracen in Prati.objects.filter(idpratilac_id=profil_id)]
         }
 
         if uloga.tip == 'A':

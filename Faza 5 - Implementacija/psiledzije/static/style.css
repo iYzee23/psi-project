@@ -381,4 +381,22 @@ body {
     height: 25vh;
 }
 
+#prikaziPratioce {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(129, 118, 118);
+    padding: 20px;
+    border: 1px solid #ccc;
+}
 
+#prikaziPracene {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(129, 118, 118);
+    padding: 20px;
+    border: 1px solid #ccc;
+}
