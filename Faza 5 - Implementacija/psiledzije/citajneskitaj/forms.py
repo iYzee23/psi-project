@@ -135,10 +135,13 @@ class TextObjavaForm(ModelForm):
 
 
 class KnjigaObjavaForm(ModelForm):
+    autorChoices = [(autor.username, autor.imeprezime + " [@" + autor.username + "]") for autor in Autor.objects.all()]
+
     naziv = CharField(label='Naziv knjige', widget=TextInput(attrs={"size": "50"}))
     slika = ImageField(label='Slika knjige')
+    autor = ChoiceField(choices=autorChoices, widget=Select)
     opis = CharField(label='Opis', widget=Textarea)
 
     class Meta:
         model = Knjiga
-        fields = ["naziv", "slika", "opis"]
+        fields = ["naziv", "slika", "autor", "opis"]

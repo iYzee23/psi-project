@@ -6,11 +6,13 @@
         <div class="carousel-inner">
             {% for knjiga in licna_kolekcija %}
                 <div class="carousel-item {% if knjiga == licna_kolekcija.first  %}active{% endif %}" style="align-content: center">
-                    <img class="d-block w-100" src="{% if knjiga.slika %}{{ knjiga.slika.url }}{% endif %}" alt="SLIKA NIJE DOSTUPNA" style="margin:auto; max-width: 250px">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5> {{knjiga.naziv}} </h5>
-                        <p>⭐{{ knjiga.prosecnaocena }}</p>
-                    </div>
+                    <a href="{% url "knjiga" knjiga_id=knjiga.isbn %}">
+                        <img class="d-block w-100" src="{% if knjiga.slika %}{{ knjiga.slika.url }}{% endif %}" alt="SLIKA NIJE DOSTUPNA" style="margin:auto; max-width: 250px">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5> {{knjiga.naziv}} </h5>
+                            <p>⭐{{ knjiga.prosecnaocena }}</p>
+                        </div>
+                    </a>
                 </div>
             {% endfor %}
         </div>

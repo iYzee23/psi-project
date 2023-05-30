@@ -449,6 +449,7 @@ def posaljiMejlBanovan(tekst, primalac):
     send_mail(subject, message, from_email, recipient_list)
 
 
+@login_required(login_url="login")
 def admResetujLozinku(request: HttpRequest):
     form = AdminResetForm(request.POST or None)
     if form.is_valid():
@@ -473,6 +474,7 @@ def admResetujLozinku(request: HttpRequest):
     })
 
 
+@login_required(login_url="login")
 def admBanujNalog(request: HttpRequest):
     form = AdminBanForm(request.POST or None)
     if form.is_valid():
@@ -511,7 +513,7 @@ def pretraga(request: HttpRequest):
                     "naziv": obj.naziv
                 })
         if tip == "Korisnik" or tip == "Sve":
-            objektiz = Korisnik.objects.filter(Q(imeprezime__icontains=naziv)).order_by(znak + 'prosecnaocena')
+            objektiz = Korisnik.objects.filter(Q(imeprezime__icontains=naziv) | Q(username__icontains=naziv)).order_by(znak + 'prosecnaocena')
             for obj in objektiz:
                 objekti.append({
                     "tip": "profil",
@@ -521,7 +523,7 @@ def pretraga(request: HttpRequest):
                     "naziv": obj.imeprezime
                 })
         if tip == "Kuća" or tip == "Sve":
-            objektiz = IzdavackaKuca.objects.filter(Q(naziv__icontains=naziv)).order_by(znak + 'prosecnaocena')
+            objektiz = IzdavackaKuca.objects.filter(Q(naziv__icontains=naziv) | Q(username__icontains=naziv)).order_by(znak + 'prosecnaocena')
             for obj in objektiz:
                 objekti.append({
                     "tip": "profil",
@@ -531,7 +533,7 @@ def pretraga(request: HttpRequest):
                     "naziv": obj.naziv
                 })
         if tip == "Autor" or tip == "Sve":
-            objektiz = Autor.objects.filter(Q(imeprezime__icontains=naziv)).order_by(znak + 'prosecnaocena')
+            objektiz = Autor.objects.filter(Q(imeprezime__icontains=naziv) | Q(username__icontains=naziv)).order_by(znak + 'prosecnaocena')
             for obj in objektiz:
                 objekti.append({
                     "tip": "profil",
@@ -604,15 +606,26 @@ def generisiISBN():
 def dodajObjavu(request: HttpRequest):
     form = TextObjavaForm(request.POST or None, request.FILES or None)
     if form.is_valid():
-        id = Objava.objects.aggregate(max_idobjava=Max('idobjava'))['max_idobjava'] + 1
+        # id = Objava.objects.aggregate(max_idobjava=Max('idobjava'))['max_idobjava'] + 1
         sadrzaj = form.cleaned_data["sadrzaj"]
         slika = form.cleaned_data["slika"]
-        datum = datetime.now()
-        Objava(idobjava=id, sadrzaj=sadrzaj, datumobjave=datum, slika=slika, korime=request.user).save()
+        Objava(sadrzaj=sadrzaj, datumobjave=datetime.now(), slika=slika, korime=request.user).save()
     return redirect("mojProfil")
 
 
 @login_required(login_url="login")
 def dodajKnjigu(request: HttpRequest):
-    print("jajaKnjiga")
-    pass
+    form = KnjigaObjavaForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        sadrzaj = "Upravo smo objavili novu knjigu. Stranici nove knjige možete pristupiti preko kataloga izdatih dela na našem profilu."
+        isbn = generisiISBN()
+        naziv = form.cleaned_data["naziv"]
+        slika = form.cleaned_data["slika"]
+        opis = form.cleaned_data["opis"]
+        autor = form.cleaned_data["autor"]
+        Knjiga(isbn=isbn, naziv=naziv, slika=slika, opis=opis, prosecnaocena=0, idizdkuca_id=request.user.pk).save()
+        Napisao(isbn_id=isbn, idautor_id=autor).save()
+        if not Povezani.objects.filter(Q(idautor_id=autor) & Q(idizdkuca_id=request.user.pk)).exists():
+            Povezani(idautor_id=autor, idizdkuca_id=request.user.pk).save()
+        Objava(sadrzaj=sadrzaj, datumobjave=datetime.now(), slika=slika, korime=request.user).save()
+    return redirect("mojProfil")

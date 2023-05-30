@@ -48,10 +48,23 @@
             <h1>DODAJ NOVU OBJAVU</h1><br><br>
             <form method="POST" enctype="multipart/form-data" action="{% url "dodajObjavu" %}">
                 {% csrf_token %}
-                {{ addObjavaForm }}
+                {{ objavaForm.as_p }}
                 <button class="btn-success">Dodaj objavu</button>
                 <input type="reset" name="odustani" value="Odustani" class="odustani" style="background-color:grey"
                        onclick="$('#addObjavaModal').hide()">
             </form>
         </div>
  </div>
+
+<div class="modal" id="addKnjigaModal">
+    <div id="dodajKnjigu">
+        <h1>DODAJ NOVU KNJIGU</h1><br><br>
+            <form method="POST" enctype="multipart/form-data" action="{% url "dodajKnjigu" %}">
+                {% csrf_token %}
+                {{ knjigaForm.as_p }}
+                <button class="btn-success">Dodaj knjigu</button>
+                <input type="reset" name="odustani" value="Odustani" class="odustani" style="background-color:grey"
+                       onclick="$('#addKnjigaModal').hide()">
+            </form>
+    </div>
+</div>
