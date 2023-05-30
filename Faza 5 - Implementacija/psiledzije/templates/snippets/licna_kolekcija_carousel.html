@@ -1,0 +1,40 @@
+<!-- Autor: Aleksa Micanovic - Carousel za izdate knjige -->
+<div class="col-sm-11 main tripleCarousel licna" style="margin-bottom: 15px;">
+    <h1 style="padding-bottom: 5%;"><b>Lična kolekcija</b></h1>
+    {% if licna_kolekcija %}
+        <div id="carouselExampleControlsLicna" class="carousel" data-bs-ride="carousel">
+            <div class="carousel-inner licna">
+                {% for knjiga in licna_kolekcija %}
+                    <div class="carousel-item licna">
+                        <div class="card">
+                            <a href="{% url 'knjiga' knjiga.isbn %}">
+                                <div class="img-wrapper">
+                                    <img src="
+
+                                            {% if knjiga.slika %}{{ knjiga.slika.url }}{% else %}../../../media/KnjigaImgs/default.png{% endif %}"
+                                         class="d-block w-100" alt="...">
+                                </div>
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ knjiga.naziv }}</h5>
+                                <p class="card-text">
+                                <p>⭐{{ knjiga.prosecnaocena }}</p>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev licna" type="button" data-bs-target="#carouselExampleControlsLicna"
+                    data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next licna" type="button" data-bs-target="#carouselExampleControlsLicna"
+                    data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    {% endif %}
+</div>

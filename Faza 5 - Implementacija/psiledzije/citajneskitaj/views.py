@@ -144,18 +144,13 @@ def logout_req(request: HttpRequest):
 def knjiga(request: HttpRequest, knjiga_id: str):
     try:
         knjiga = Knjiga.objects.get(isbn=knjiga_id)
-
     except Knjiga.DoesNotExist:
         raise Http404("Ne postoji knjiga sa tim ID :(")
 
     recenzijaForm = RecenzijaForm(data=request.POST or None, prefix='edit')
     if not recenzijaForm.is_valid():
         recenzijaForm = RecenzijaForm(data=request.POST or None, prefix='add')
-    napisanija = Napisao.objects.filter(isbn=knjiga_id)
-    autori = ''
-    for napisanije in napisanija:
-        autori += napisanije.idautor.imeprezime + ', '
-    autori = autori[0:-2]
+    autori = Autor.objects.filter(napisao__isbn=knjiga)
     errorTekst = None
 
     korisnik = request.user
@@ -194,16 +189,17 @@ def knjiga(request: HttpRequest, knjiga_id: str):
                 sumaOcena = 0
                 for postojecaRecenzija in recenzije:
                     sumaOcena = sumaOcena + postojecaRecenzija.ocena
-
                 prosecnaOcena = sumaOcena / recenzije.count()
 
             knjiga.prosecnaocena = round(prosecnaOcena, 2)
             knjiga.save()
-    recenzije = list(Recenzija.objects.filter(idprimalacknjiga=knjiga).exclude(iddavalac=korisnik))
-    prvi=list(Recenzija.objects.filter(iddavalac=korisnik).filter(idprimalacknjiga=knjiga))
 
-    recenzije=prvi+recenzije
-
+    try:
+        recenzija = list(Recenzija.objects.get(Q(idprimalacknjiga=knjiga) & Q(iddavalac=korisnik)))
+        recenzije = list(Recenzija.objects.filter(idprimalacknjiga=knjiga).exclude(recenzija))
+        recenzije = recenzija + recenzije
+    except:
+        recenzije = Recenzija.objects.filter(idprimalacknjiga=knjiga)
     context = {
         'knjiga': knjiga,
         'autori': autori,
@@ -283,8 +279,9 @@ def profil(request: HttpRequest, profil_id: str):
                 uloga.save()
 
         try:
-            recenzija = Recenzija.objects.get(Q(idprimalaculoga=uloga) & Q(iddavalac=korisnik))
-            recenzije = Recenzija.objects.filter(idprimalaculoga=uloga).exclude(recenzija)
+            recenzija = list(Recenzija.objects.get(Q(idprimalaculoga=uloga) & Q(iddavalac=korisnik)))
+            recenzije = list(Recenzija.objects.filter(idprimalaculoga=uloga).exclude(recenzija))
+            recenzije = recenzija + recenzije
         except:
             recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
 
@@ -440,7 +437,7 @@ def posaljiMejlLozinka(lozinka, primalac):
     subject = "[Čitaj, ne skitaj] Vaša lozinka je uspešno resetovana"
     message = "Nova privremena lozinka: " + lozinka
     recipient_list = [primalac]
-    from_email = "ml200071d@student.etf.bg.ac.rs"
+    from_email = "pp200023d@student.etf.bg.ac.rs"
     send_mail(subject, message, from_email, recipient_list)
 
 
@@ -448,7 +445,7 @@ def posaljiMejlBanovan(tekst, primalac):
     subject = "[Čitaj, ne skitaj] Nažalost, morali smo da onesposobimo Vaš nalog"
     message = "Zbog narušene politike našeg sajta, suspendovani ste sa istog.\n\n" + tekst
     recipient_list = [primalac]
-    from_email = "ml200071d@student.etf.bg.ac.rs"
+    from_email = "pp200023d@student.etf.bg.ac.rs"
     send_mail(subject, message, from_email, recipient_list)
 
 

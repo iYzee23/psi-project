@@ -8,6 +8,67 @@
 //  })});
 $(document).ready(function () {
 
+    const tripleCarouselElementLicna = document.querySelector(".tripleCarousel.licna")
+    const tripleCarouselElementIzdate = document.querySelector(".tripleCarousel.izdrate")
+    if (window.matchMedia("(min-width: 576px)").matches) {
+
+        const carouselLicna = new bootstrap.Carousel(tripleCarouselElementLicna,
+            {
+                interval: false
+            })
+
+        //licna kolekcija
+        var carouselWidthLicna = $(".tripleCarousel.licna .carousel-inner")[0].scrollWidth;
+        var cardWidthLicna = $(".tripleCarousel.licna .carousel-item").width();
+
+        scrollPositionLicna = 0;
+
+        $(".tripleCarousel.licna .carousel-control-next").on("click", function () {
+            if (scrollPositionLicna < (carouselWidthLicna - cardWidthLicna * 4)) { //check if you can go any further
+                scrollPositionLicna += cardWidthLicna;  //update scroll position
+                $(".tripleCarousel.licna .carousel-inner").animate({scrollLeft: scrollPositionLicna}, 600); //scroll left
+            }
+        });
+
+        $(".tripleCarousel.licna .carousel-control-prev").on("click", function () {
+            if (scrollPositionLicna > 0) {
+                scrollPositionLicna -= cardWidthLicna;
+                $(".tripleCarousel.licna .carousel-inner").animate(
+                    {scrollLeft: scrollPositionLicna},
+                    600
+                );
+            }
+        });
+
+        //izdate knjige
+        var carouselWidthIzdate = $(".tripleCarousel.izdate .carousel-inner")[0].scrollWidth;
+        var cardWidthIzdate = $(".tripleCarousel.izdate .carousel-item").width();
+
+        scrollPositionIzdate = 0;
+
+        $(".tripleCarousel.izdate .carousel-control-next").on("click", function () {
+            if (scrollPositionIzdate < (carouselWidthIzdate - cardWidthIzdate * 4)) { //check if you can go any further
+                scrollPositionIzdate += cardWidthIzdate;  //update scroll position
+                $(".tripleCarousel.izdate .carousel-inner").animate({scrollLeft: scrollPositionIzdate}, 600); //scroll left
+            }
+        });
+
+        $(".tripleCarousel.izdate .carousel-control-prev").on("click", function () {
+            if (scrollPositionIzdate > 0) {
+                scrollPositionIzdate -= cardWidthIzdate;
+                $(".tripleCarousel.izdate .carousel-inner").animate(
+                    {scrollLeft: scrollPositionIzdate},
+                    600
+                );
+            }
+        });
+
+
+    } else {
+        $(tripleCarouselElementLicna).addClass("slide");
+        $(tripleCarouselElementIzdate).addClass("slide");
+    }
+
 });
 
 function showModalEdit(idRec, tekst, ocena) {
@@ -18,92 +79,9 @@ function showModalEdit(idRec, tekst, ocena) {
 
     $("#editRecenzijaModal").show()
 }
-function showModalDelete(idRec) {
 
+function showModalDelete(idRec) {
     $("#hiddenIdDeleteRec").val(idRec)
     $("#deleteRecenzijaModal").show()
-}
-
-
-function popUpPretpl()
-{
-    alert("Pretplatili ste se na autora");  
-}
-
-function dodajRec()
-{
-
-    $("#popupRecenzija").toggle();
-
-    // var popupDiv = document.getElementById("popupRecenzija");
-    // if (popupDiv.style.display == "none") {
-    //     popupDiv.style.display = "block";
-    // } else {
-    //     popupDiv.style.display = "none";
-    // }
-
-
-}
-
-
-// document.getElementById("dodajRec").addEventListener("click", function() {
-//
-// });
-function editRec(button,tekst,ocena){
-
-
-    $("#editRec").toggle();
-
-    $("#hiddenIdRec").val(button.value);
-    $("#editTeksta").val(tekst);
-    $("#editOcena").val(ocena);
-    // var idRec=document.getElementById("hiddenIdRec");
-    // idRec.value=button.value;
-    //
-    // var editTekst=document.getElementById("editTeksta");
-    // editTekst.value= tekst;
-    //
-    // var editOcena=document.getElementById("editOcena");
-    // editOcena.value=ocena;
-
-}
-function meniRec()
-{
-    var pop=document.getElementById("dropDownRec");
-    pop.style="display:block; padding:15px; "
-}
-
-function ukloniMeni()
-{
-    $("#dropDownRec").hide();
-}
-
-function editObjavu(){
-    var pop=document.getElementById("editObj")
-    pop.style="display:block; padding:15px; "
-}
-
-function uploadEditObj(){
-    var pop=document.getElementById("editObj")
-    pop.style="display:none;"
-}
-
-function toggleModal() {
-    $(".modal").toggle()
-}
-
-
-function showModalEdit(button, tekst, ocena) {
-    $(".modalEdit").show()
-    var idRec=document.getElementById("hiddenIdRec")
-    idRec.value=button.value
-    var editTekst=document.getElementById("editTeksta")
-    editTekst.value= tekst
-    var editOcena=document.getElementById("editOcena")
-    editOcena.value=ocena
-}
-
-function hideModalEdit() {
-    $(".modalEdit").hide()
 
 }

@@ -2,29 +2,29 @@
 <div class="col-sm-11 main" style="margin-bottom: 15px;">
     <h1 style="padding-bottom: 5%;"><b>Izdate knjige</b></h1>
     {% if knjige %}
-    <div id="carouselExampleIndicators1" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-            {% for knjiga in knjige %}
-                <div class="carousel-item {% if knjiga == knjige.first %}active{% endif %}"
-                     style="align-content: center">
-                    <img class="d-block w-100"
-                         src="{% if knjiga.slika %}{{ knjiga.slika.url }}{% endif %}"
-                         alt="SLIKA NIJE DOSTUPNA" style="margin:auto; max-width: 250px">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5> {{ knjiga.naziv }} </h5>
-                        <p>⭐{{ knjiga.prosecnaocena }}</p>
+        <div id="carouselExampleIndicators1" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                {% for knjiga in knjige %}
+                    <div class="carousel-item {% if knjiga == knjige.first %}active{% endif %}"
+                         style="align-content: center">
+                        <img class="d-block w-100"
+                             src="{% if knjiga.slika %}{{ knjiga.slika.url }}{% endif %}"
+                             alt="SLIKA NIJE DOSTUPNA" style="margin:auto; max-width: 250px">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5> {{ knjiga.naziv }} </h5>
+                            <p>⭐{{ knjiga.prosecnaocena }}</p>
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators1" role="button"
+               data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators1" role="button"
+               data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </a>
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators1" role="button"
-           data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators1" role="button"
-           data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </a>
-    </div>
     {% endif %}
 </div>
