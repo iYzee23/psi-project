@@ -303,6 +303,7 @@ def profil(request: HttpRequest, profil_id: str):
             context['profil'] = autor
             context['knjige'] = Knjiga.objects.filter(napisao__idautor=profil_id).order_by('-prosecnaocena')
             context['licna_kolekcija'] = Knjiga.objects.filter(kolekcija__korime=autor)
+            context['kuce'] = IzdavackaKuca.objects.filter(povezani__idautor=autor).order_by('-prosecnaocena').distinct()
             return render(request, 'entities/autor.html', context)
         elif uloga.tip == 'K':
             korisnik: Korisnik = Korisnik.objects.get(pk=profil_id)
@@ -314,6 +315,7 @@ def profil(request: HttpRequest, profil_id: str):
             context['profil'] = kuca
             context['licna_kolekcija'] = Knjiga.objects.filter(kolekcija__korime=korisnik)
             context['knjige'] = Knjiga.objects.filter(idizdkuca=kuca).order_by('-prosecnaocena')
+            context['autori'] = Autor.objects.filter(povezani__idizdkuca=kuca).order_by('imeprezime').distinct()
             return render(request, 'entities/izdavackakuca.html', context)
     except Autor.DoesNotExist:
         raise Http404("Ne postoji profil sa tim ID :(")

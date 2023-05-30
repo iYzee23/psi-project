@@ -1,0 +1,21 @@
+<button class="katalogbtn" onclick="$('#povezaneKuceModal').show()">Povezane izdavačke kuće</button>
+
+<div class="modal" id="povezaneKuceModal">
+    <div class="modalDiv" id="povezaneKuceDiv">
+        <h3>Izdavačke kuće autora {{ profil.imeprezime }}</h3>
+        <ul>
+            {% for kuca in kuce %}
+                <li>
+                    <h5>
+                        <img src="{% if kuca.slika %}{{ kuca.slika.url }}{% else %}../../media/ulogaImgs/default.png{% endif %}" style="width: 50px; height: 50px; object-fit: cover">
+                        <a href="{% url 'profil' kuca.username %}" class="profilLink">
+                        {{ kuca.naziv }}
+                        </a>
+                    </h5>
+                </li>
+            {% endfor %}
+        </ul>
+        <input type="reset" value="Zatvori" style="background-color:grey" onclick="$('#povezaneKuceModal').hide()">
+    </div>
+</div>
+

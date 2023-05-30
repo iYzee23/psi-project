@@ -13,6 +13,9 @@
         <h5 style="margin-bottom: 5%;"><b>Broj pratilaca:</b> {{ profil.brpratilaca }}</h5>
         <h5><b>Biografija: </b>{{ profil.biografija }}</h5>
         <div>
+            {% include 'snippets/povezane_kuce.html' %}
+        </div>
+        <div>
             {% include 'snippets/zaprati_otprati_dugme.html' %}
         </div>
 
