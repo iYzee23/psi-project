@@ -285,6 +285,26 @@ def profil(request: HttpRequest, profil_id: str):
         except:
             recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
 
+        pratioci = []; praceni = []
+        pratiociz = [pratilac.idpratilac for pratilac in Prati.objects.filter(idpracen_id=profil_id)]
+        praceniz = [pracen.idpracen for pracen in Prati.objects.filter(idpratilac_id=profil_id)]
+        for pratilac in pratiociz:
+            pratioci.append({
+                "username": pratilac.username,
+                "slika": pratilac.slika,
+                "naziv": Korisnik.objects.get(username=pratilac.username).imeprezime if pratilac.tip == "K"
+                        else (Autor.objects.get(username=pratilac.username).imeprezime if pratilac.tip == "A"
+                        else IzdavackaKuca.objects.get(username=pratilac.username).naziv)
+            })
+        for pracen in praceniz:
+            praceni.append({
+                "username": pracen.username,
+                "slika": pracen.slika,
+                "naziv": Korisnik.objects.get(username=pracen.username).imeprezime if pracen.tip == "K"
+                        else (Autor.objects.get(username=pracen.username).imeprezime if pracen.tip == "A"
+                        else IzdavackaKuca.objects.get(username=pracen.username).naziv)
+            })
+
         context = {
             'uloga': uloga,
             'recenzije': recenzije,
@@ -296,8 +316,8 @@ def profil(request: HttpRequest, profil_id: str):
             'knjigaForm': KnjigaObjavaForm(),
             'flag': flag,
             'errorTekst': errorTekst,
-            'pratioci': [pratilac.idpratilac_id for pratilac in Prati.objects.filter(idpracen_id=profil_id)],
-            'praceni': [pracen.idpracen_id for pracen in Prati.objects.filter(idpratilac_id=profil_id)]
+            'pratioci': pratioci,
+            'praceni': praceni
         }
 
         if uloga.tip == 'A':
