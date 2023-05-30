@@ -25,7 +25,7 @@ class Uloga(AbstractUser):
     username = models.CharField(db_column='KorIme', primary_key=True, max_length=20, validators=[UnicodeUsernameValidator()])
     password = models.CharField(db_column='Sifra', max_length=128)
     email = models.CharField(db_column='Email', max_length=40)
-    slika = models.ImageField(db_column='Slika', null=True, upload_to='ulogaImgs/')
+    slika = models.ImageField(db_column='Slika', null=True, upload_to='ulogaImgs/', default="ulogaImgs/default.jpg")
     brpratilaca = models.IntegerField(db_column='BrPratilaca', default=0)
     prosecnaocena = models.DecimalField(db_column='ProsecnaOcena', max_digits=5, decimal_places=2, default=0)
     tip = models.CharField(db_column='Tip', max_length=1, default='K')

@@ -145,7 +145,6 @@ def knjiga(request: HttpRequest, knjiga_id: str):
     try:
         knjiga = Knjiga.objects.get(isbn=knjiga_id)
 
-
     except Knjiga.DoesNotExist:
         raise Http404("Ne postoji knjiga sa tim ID :(")
 

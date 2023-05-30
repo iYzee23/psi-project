@@ -8,81 +8,59 @@
     <div class="container-fluid p-0 m-0" >
         <div class="row p-0 m-0" >
             <!-- Najbolje knjige -->
-            <div class="row col-sm-12 main"  >
-                <h1><b>Najbolje ocenjene knjige</b></h1>
-                {% for knjiga in knjige %}
-                    <div class="col-sm-4">
-                        <div class="card" style="width: fit-content; background-color:rgba(203,190,172,0.64);">
-                            <div class="card-img-top" >
-                                <a href="/knjiga/{{ knjiga.isbn }}" class="link-secondary">
-                                    <img src="{% if knjiga.slika %}{{ knjiga.slika.url }}{% endif %}" alt="Nema slike :(" style="height: 400px; width: 350px">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">⭐{{ knjiga.prosecnaocena }} - {{ knjiga.naziv }}</h4>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="row col-sm-12 main" >
-                <h1><b>Najbolje ocenjeni autori</b></h1>
-                {% for autor in autori %}
-                    <div class="col-sm-4">
-                        <div class="card">
-                            <div class="card-img-top" >
-                                <a href="/profil/{{ autor.username }}" class="link-secondary">
-                                    <img src="{% if autor.slika %}{{ autor.slika.url }}{% endif %}" alt="Nema slike :(" style="height: 400px; width: 250px">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">⭐{{ autor.prosecnaocena }} - {{ autor.imeprezime }}</h4>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="row col-sm-12 main" >
-                <h1><b>Najbolje ocenjene izdavačke kuće</b></h1>
-                {% for kuca in kuce %}
-                    <div class="col-sm-4">
-                        <div class="card" style="width: fit-content;">
-                            <div class="card-img-top" >
-                                <a href="/profil/{{ kuca.username }}" class="link-secondary">
-                                    <img src="{% if kuca.slika %}{{ kuca.slika.url }}{% endif %}" alt="Nema slike :(" style="height: 500px; width: 350px">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">⭐{{ kuca.prosecnaocena }} - {{ kuca.naziv }}</h4>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
+
+
             {% if user.is_authenticated %}
-                <div class="row col-sm-12 main" >
-                    <h1><b>Feed</b></h1>
-                    {% if feed %}
-                        {% for f in feed %}
-                            <div class="col-sm-4">
-                                <div class="card" style="width: fit-content;">
-                                    <div class="card-img-top" >
-                                        <a href="/profil/{{ f.korime }}" class="link-secondary">
-                                            <h4>@{{ f.korime }}</h4>
-                                        </a>
-                                        {% if f.slika %}<img src="{{ f.slika.url }}" alt="Nema slike :(" style="height: 500px; width: 350px">{% endif %}
-                                    </div>
-                                    <div class="card-body">
-                                        <h4 class="card-title">{{ f.sadrzaj }}<br> - {{ f.datumobjave }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <h1>Nažalost, Vaš zid je prazan <3</h1>
-                    {% endif %}
+                <div class="col-sm-6">
+                    {% include 'snippets/knjige_autori_izdKuce_pocStrana.html' %}
                 </div>
+                <div class="col-sm-6">
+                    {#            feed#}
+                    {% if user.is_authenticated %}
+                        <div class="col-sm-12 main" style="margin-bottom: 15px; height:fit-content;">
+                            <h1><b>Feed</b></h1>
+                            {% if feed %}
+                                {% for f in feed %}
+                                    <div class="row col-sm-12">
+
+                                        <a href="/profil/{{ f.korime }}" class="link-secondary">
+                                            <h4 style="float:left; color:black;">@{{ f.korime }}</h4>
+                                        </a>
+
+
+                                    </div>
+
+                                    <div class="row col-sm-12">
+                                        <div class="col-sm-8 " style="background-color:rgba(255,255,255,0.66);">
+                                            <h4 class="card-text">{{ f.sadrzaj }}<br> - {{ f.datumobjave }}</h4>
+                                        </div>
+                                        {% if f.slika %}
+                                            <div class="col-sm-4  text-center">
+                                                <img src="{{ f.slika.url }}"
+                                                     style=" height:180px; width:180px;" alt=" ">
+                                            </div>
+                                        {% endif %}
+
+                                    </div>
+                                    {#                                    </div#}
+                                {% endfor %}
+                            {% else %}
+                                <h1>Nažalost, Vaš zid je prazan <3</h1>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+
+                </div>
+            {% else %}
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    {% include 'snippets/knjige_autori_izdKuce_pocStrana.html' %}
+
+                </div>
+                <div class="col-sm-2"></div>
             {% endif %}
+
         </div>
     </div>
 {% endblock %}
