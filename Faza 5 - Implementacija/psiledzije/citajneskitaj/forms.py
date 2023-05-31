@@ -107,7 +107,8 @@ class AdminResetForm(Form):
 class AdminBanForm(Form):
     username = CharField(label='Korisničko ime')
     email = EmailField(label="Email")
-    tekst = CharField(label="Razlog banovanja", widget=Textarea())
+    ban = ChoiceField(label="Akcija", widget=RadioSelect, choices=[("Ban", "Ban"), ("Unban", "Unban")], initial="Ban")
+    tekst = CharField(label="Razlog (un)banovanja", widget=Textarea)
 
 
 class SearchForm(Form):

@@ -2,14 +2,12 @@
     {% if imaUkolekciji == False %}
         <form method="POST">
             {% csrf_token %}
-            <input type="submit" name="dodajUkolekciju" class="katalogbtn"
-                   value="Dodaj u kolekciju">
+            <button type="submit" name="dodajUkolekciju" class="katalogbtn">Dodaj u kolekciju</button>
         </form>
     {% else %}
-        <form method="POST">
+        <form method="POST" action="{% url "knjiga" knjiga_id=knjiga.isbn %}">
             {% csrf_token %}
-            <input type="submit" name="brisiIzKolekcije" class="katalogbtn"
-                   value="Izbaci iz kolekcije">
+            <button type="submit" name="brisiIzKolekcije" class="katalogbtn">Izbaci iz kolekcije</button>
         </form>
     {% endif %}
 {% endif %}

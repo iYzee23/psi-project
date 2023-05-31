@@ -410,3 +410,7 @@ body {
     height: 80%;
     overflow: auto;
 }
+
+#id_ban_1 {
+    margin-bottom: 35px;
+}
