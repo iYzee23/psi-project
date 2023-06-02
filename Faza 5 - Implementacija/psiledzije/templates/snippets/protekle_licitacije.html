@@ -1,0 +1,19 @@
+
+<div class="col-sm-11 main" style="margin-bottom: 15px;">
+    <h1><b>Protekle licitacije</b></h1>
+    {% for licitacija in protekle_licitacije %}
+        <div class="card protekla_lic" style="width: 100%;">
+            <div class="card-body">
+                Autor: {{ licitacija.idautor.username }}-{{ licitacija.idautor.imeprezime }}
+                <br>
+                Naziv: {{ licitacija.nazivdela }}
+                <br>
+                Pobednik: {{ licitacija.idpobednik.username }}-{{ licitacija.idpobednik.naziv }}
+                <br>
+                Iznos: {{ licitacija.trenutniiznos }}
+                <br>
+                <button>...</button>
+            </div>
+        </div>
+    {% endfor %}
+</div>

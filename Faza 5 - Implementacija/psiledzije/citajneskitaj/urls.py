@@ -25,4 +25,5 @@ urlpatterns = [
     path('pretraga/', pretraga, name="pretraga"),
     path('zaprati', zaprati, name="zaprati"),
     path('otprati', otprati, name="otprati"),
+    path('licitacije/',licitacije, name="licitacije")
 ]

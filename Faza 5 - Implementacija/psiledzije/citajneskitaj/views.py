@@ -760,3 +760,21 @@ def promeniInfoKnjige(request: HttpRequest):
             "opis": knjiga.opis
         })
     return render(request, "entities/promenaInfoKnjige.html", {"form": izmenaForm})
+
+@login_required(login_url="login")
+def licitacije(request: HttpRequest):
+    autor: Autor = Autor.objects.filter(username=request.user.pk).first()
+    izd_kuca: IzdavackaKuca=IzdavackaKuca.objects.filter(username=request.user.pk).first()
+    if autor:
+        tekuce_licitacije: Licitacija=Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__gt=datetime.now()))
+        protekle_licitacije: Licitacija=Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__lt=datetime.now()))
+        return render(request, "entities/licitacije.html",{'pretragaForm': SearchForm(), "tekuce_licitacije":tekuce_licitacije, "protekle_licitacije":protekle_licitacije})
+    elif izd_kuca:
+        tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(idpobednik=izd_kuca) & Q(datumkraja__gt=datetime.now()))
+        protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(idpobednik=izd_kuca) & Q(datumkraja__lt=datetime.now()))
+        return render(request, "entities/licitacije.html",
+                      {'pretragaForm': SearchForm(),"tekuce_licitacije": tekuce_licitacije, "protekle_licitacije": protekle_licitacije})
+    else:
+        return redirect("mojProfil")
+
+

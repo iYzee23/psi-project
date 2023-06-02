@@ -1,0 +1,14 @@
+{% extends 'base_two_panels.html' %}
+{% block title %}
+    {{ uloga.username }}
+{% endblock %}
+{% block upperLeft %}
+    {% include 'snippets/tekuce_licitacije.html' %}
+{% endblock %}
+
+{% block lowerLeft %}
+    {% include 'snippets/protekle_licitacije.html' %}
+{% endblock %}
+{% block rightPanel %}
+    {% include 'snippets/postavi_licitaciju_dugme.html' %}
+{% endblock %}

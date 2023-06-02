@@ -1,0 +1,22 @@
+<div class="col-sm-11 main" style="margin-bottom: 15px;">
+    <h1><b>Tekuće licitacije</b></h1>
+    {% for licitacija in tekuce_licitacije %}
+        <div class="card tekuca_lic" style="width: 100%;">
+            <div class="card-body">
+                Autor: {{ licitacija.idautor.username }}-{{ licitacija.idautor.imeprezime }}
+                <br>
+                Naziv: {{ licitacija.nazivdela }}
+                <br>
+                Trenutni najviši ponuđač: {{ licitacija.idpobednik.username }}-{{ licitacija.idpobednik.naziv }}
+                <br>
+                Trenutni Iznos: {{ licitacija.trenutniiznos }}
+                <br>
+                Datum Kraja:{{ licitacija.datumkraja}}
+                <br>
+                {% if user.tip == 'I' %}
+                    <button>Postavi ponudu</button>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
