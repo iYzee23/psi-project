@@ -1,0 +1,26 @@
+<!-- Autori:
+- Aleksa Mićanović 0282/2020
+-->
+
+<!-- licitacijaAddModal -->
+<div class="modal fade" id="licitacijaAddModalBS" tabindex="-1" aria-labelledby="licitacijaAddModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="licitacijaAddModalHeader">Dodaj licitaciju</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
+            </div>
+            <div class="modal-body" id="licitacijaAddModalBody">
+                <form method="POST" action="{% url 'dodajLicitaciju' %}" id="licitacijaAddModalForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ dodajLicitacijuForm.as_p }}
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="sumbit" class="gray" form="licitacijaAddModalForm">Dodaj</button>
+                <button type="button" class="gray" data-bs-dismiss="modal">Zatvori</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,11 @@
-
-<div class="col-sm-2">
+<!-- Autori:
+- Luka Nevajda 0370/2020
+-->
+<div>
     <!--autor flag ili neki drugi nacin da se proveri da li je user autor ili ne-->
     {% if user.is_authenticated and user.tip == 'A' %}
         <!--U dugme dodajte stvari za bekhend(modal itd...)-->
-        <button class="katalogbtn" id="dodajLic">Dodaj licitaciju</button>
+        <button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#licitacijaAddModalBS">Dodaj licitaciju</button>
     {% endif %}
 </div>
+

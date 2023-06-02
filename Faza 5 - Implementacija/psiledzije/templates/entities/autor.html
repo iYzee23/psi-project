@@ -1,3 +1,7 @@
+<!-- Autori:
+- Aleksa Mićanović 0282/2020
+- Luka Nevajda 0370/2020
+-->
 {% extends 'base_two_panels.html' %}
 {% block title %}
     {{ uloga.username }}
@@ -21,7 +25,7 @@
 
         {% include 'snippets/mojprofil_dugmad.html' %}
     </div>
-    {#  {% include 'snippets/modals.html' %} #}
+    {% include 'snippets/modals.html' %}
 {% endblock %}
 
 {% block lowerLeft %}

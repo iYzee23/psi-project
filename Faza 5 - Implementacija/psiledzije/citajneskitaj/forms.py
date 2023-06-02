@@ -4,6 +4,13 @@ from django.forms import *
 from .models import *
 from django import forms
 
+'''
+Autori: 
+- Predrag Pešić 0023/2020
+- Aleksa Mićanović 0282/2020
+- Luka Nevajda 0370/2020
+- Ljubica Muravljov 0071/2020
+'''
 
 class KorisnikRegForm(UserCreationForm):
     email = EmailField(label="Email")
@@ -145,18 +152,18 @@ class KnjigaObjavaForm(ModelForm):
         model = Knjiga
         fields = ["naziv", "slika", "autori", "opis"]
 
-class LicitacijaPonudaForm(ModelForm):
-    iznos = IntegerField(label='Iznos', required=True)
+class LicitacijaPonudaForm(Form):
+    hiddenIdLic = forms.CharField(widget=forms.HiddenInput(), required=False, initial=-1)
+    iznos = IntegerField(label='Iznos', required=True, min_value=1)
 
 
-class DodajLicitacijuForm(ModelForm):
+class DodajLicitacijuForm(Form):
     nazivdela = CharField(label='Naziv dela', widget=TextInput(attrs={"size": "50"}))
     pdf = FileField(label="PDF")
-    datumkraja = DateTimeField(label="Datum kraja", widget=DateTimeInput)
+    datumkraja = forms.DateTimeField(
+        label='Datum kraja',
+        widget=forms.DateTimeInput(attrs={'type': 'datetime-local'})
+    )
     pocetnacena = IntegerField(label="Pocetna cena", validators=[
         MinValueValidator(1, message='Morate uneti vrednost veću od 0 kao početnu cenu.')
     ])
-
-    class Meta:
-        model = Licitacija
-        fields = ["nazivdela", "pdf", "datumkraja", "pocetnacena"]

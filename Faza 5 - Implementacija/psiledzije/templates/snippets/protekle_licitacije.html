@@ -1,18 +1,26 @@
-
-<div class="col-sm-11 main" style="margin-bottom: 15px;">
+<!-- Autori:
+- Luka Nevajda 0370/2020
+-->
+<div class="col-sm-10 main" style="margin-bottom: 15px;">
     <h1><b>Protekle licitacije</b></h1>
     {% for licitacija in protekle_licitacije %}
         <div class="card protekla_lic" style="width: 100%;">
             <div class="card-body">
-                Autor: {{ licitacija.idautor.username }}-{{ licitacija.idautor.imeprezime }}
+                <b>Autor</b>: {{ licitacija.idautor.imeprezime }} [<a href="{% url 'profil' licitacija.idautor.username  %}" class="profilLink">@{{ licitacija.idautor.username }}</a>]
                 <br>
-                Naziv: {{ licitacija.nazivdela }}
+                <b>Naziv</b>: {{ licitacija.nazivdela }}
                 <br>
-                Pobednik: {{ licitacija.idpobednik.username }}-{{ licitacija.idpobednik.naziv }}
+                <b>Pobednik</b>:
+                {% if licitacija.idpobednik %}
+                    {{ licitacija.idpobednik.naziv }} [<a href="{% url 'profil' licitacija.idpobednik.username %}" class="profilLink">@{{ licitacija.idpobednik.username }}</a>]
+                {% else %}
+                    - [-]
+                {% endif %}
                 <br>
-                Iznos: {{ licitacija.trenutniiznos }}
+                <b>Trenutni iznos</b>: {{ licitacija.trenutniiznos }}
                 <br>
-                <button>...</button>
+                <b>Datum kraja</b>: {{ licitacija.datumkraja }} <br>
+{#               <button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#licitacijaInfoModalBS")">...</button>#}
             </div>
         </div>
     {% endfor %}

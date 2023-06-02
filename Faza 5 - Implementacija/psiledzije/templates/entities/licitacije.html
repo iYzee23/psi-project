@@ -1,9 +1,25 @@
+<!-- Autori:
+- Luka Nevajda 0370/2020
+-->
 {% extends 'base_two_panels.html' %}
 {% block title %}
     {{ uloga.username }}
 {% endblock %}
 {% block upperLeft %}
+
+    {% if errorTekst != None %}
+        <div class="alert alert-danger alert-info alert-dismissible fade show" role="alert" style="width:100%;">
+                                    <span>
+                                      {{ errorTekst }}
+                                    </span>
+            <button type="button" class="close text-right" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true" style="float:right">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+
     {% include 'snippets/tekuce_licitacije.html' %}
+    {% include 'snippets/licitacija_info_modal.html' %}
 {% endblock %}
 
 {% block lowerLeft %}
@@ -11,4 +27,5 @@
 {% endblock %}
 {% block rightPanel %}
     {% include 'snippets/postavi_licitaciju_dugme.html' %}
+    {% include 'snippets/dodaj_licitaciju_modal.html' %}
 {% endblock %}

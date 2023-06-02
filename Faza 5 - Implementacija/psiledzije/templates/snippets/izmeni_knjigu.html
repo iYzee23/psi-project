@@ -1,3 +1,6 @@
+<!-- Autori:
+- Luka Nevajda 0370/2020
+-->
 {% if knjiga.idizdkuca_id == request.user.pk %}
 <form action="{% url 'izmeniKnjigu' %}" method="post">
         {% csrf_token %}

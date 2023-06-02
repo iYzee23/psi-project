@@ -12,6 +12,13 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+'''
+Autori:
+- Predrag Pešić 0023/2020
+- Aleksa Mićanović 0282/2020
+- Luka Nevajda 0370/2020
+- Ljubica Muravljov 0071/2020
+'''
 
 class Uloga(AbstractUser):
     id = None

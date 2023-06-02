@@ -10,8 +10,13 @@ from datetime import datetime as dt
 from .forms import *
 import random, string
 
-
-# Create your views here
+'''
+Autori: 
+- Predrag Pešić 0023/2020
+- Aleksa Mićanović 0282/2020
+- Luka Nevajda 0370/2020
+- Ljubica Muravljov 0071/2020
+'''
 
 
 # Dohvata najpopularnije knjige, autore i kuce - kao i feed za ulogovane korisnike
@@ -645,6 +650,7 @@ def pretraga(request: HttpRequest):
     else:
         return redirect(request.META.get("HTTP_REFERER"))
 
+
 # evidentira pracenje profila od strane usera
 @login_required(login_url="login")
 def zaprati(request: HttpRequest):
@@ -664,6 +670,7 @@ def zaprati(request: HttpRequest):
 
     return redirect('home')
 
+
 # evidentira odpracivanje profila od strane usera
 @login_required(login_url="login")
 def otprati(request: HttpRequest):
@@ -681,21 +688,25 @@ def otprati(request: HttpRequest):
             return redirect('profil', praceni_id)
     return redirect('home')
 
+
 # pomocna funkcija za generisanje sledeceg ISBNa
 def procitajISBN():
     with open('static/ISBN.txt', 'r') as file:
         return file.read().strip()
+
 
 # pomocna funkcija za generisanje sledeceg  ISBNa
 def upisiISBN(novISBN):
     with open('static/ISBN.txt', 'w') as file:
         file.write(novISBN)
 
+
 # pomocna funkcija za generisanjes sledeceg ISBNa
 def generisiISBN():
     ISBN = str(int(procitajISBN()) + 1).zfill(13)
     upisiISBN(ISBN)
     return ISBN
+
 
 # dodaje objavu iz forme u bazu
 @login_required(login_url="login")
@@ -705,8 +716,9 @@ def dodajObjavu(request: HttpRequest):
         # id = Objava.objects.aggregate(max_idobjava=Max('idobjava'))['max_idobjava'] + 1
         sadrzaj = form.cleaned_data["sadrzaj"]
         slika = form.cleaned_data["slika"]
-        Objava(sadrzaj=sadrzaj, datumobjave=datetime.now(), slika=slika, korime=request.user).save()
+        Objava(sadrzaj=sadrzaj, datumobjave=dt.now(), slika=slika, korime=request.user).save()
     return redirect("mojProfil")
+
 
 # dodaje knjigu iz forme u bazu
 @login_required(login_url="login")
@@ -724,8 +736,9 @@ def dodajKnjigu(request: HttpRequest):
             Napisao(isbn_id=isbn, idautor_id=autor).save()
             if not Povezani.objects.filter(Q(idautor_id=autor) & Q(idizdkuca_id=request.user.pk)).exists():
                 Povezani(idautor_id=autor, idizdkuca_id=request.user.pk).save()
-        Objava(sadrzaj=sadrzaj, datumobjave=datetime.now(), slika=slika, korime=request.user).save()
+        Objava(sadrzaj=sadrzaj, datumobjave=dt.now(), slika=slika, korime=request.user).save()
     return redirect("mojProfil")
+
 
 # dodaje promene knjige iz forme u bazu
 @login_required(login_url="login")
@@ -770,29 +783,45 @@ def promeniInfoKnjige(request: HttpRequest):
 def licitacije(request: HttpRequest):
     autor: Autor = Autor.objects.filter(username=request.user.pk).first()
     izd_kuca: IzdavackaKuca=IzdavackaKuca.objects.filter(username=request.user.pk).first()
-    if autor:
-        tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__gt=dt.now()))
-        protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__lt=dt.now()))
+    errorTekst = None
+    form = LicitacijaPonudaForm(request.POST or None)
+
+    if form.is_valid():
+        iznos = form.cleaned_data['iznos']
+        licId = form.cleaned_data['hiddenIdLic']
+        licitacija = Licitacija.objects.get(idlicitacija=licId)
+        if (iznos <= licitacija.trenutniiznos):
+            errorTekst = 'Morate uneti iznos veći od trenutnog!'
+        else:
+            kuca = IzdavackaKuca.objects.get(username = request.user.username)
+            Ponuda(iznos=iznos, idizdkuca=kuca, idlicitacija=licitacija).save()
+            licitacija.trenutniiznos = iznos
+            licitacija.idpobednik = izd_kuca
+            licitacija.save()
+
+    if autor or izd_kuca:
+        if autor:
+            tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__gt=dt.now()))
+            protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__lt=dt.now()))
+        elif izd_kuca:
+            tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(datumkraja__gt=dt.now()))
+            protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(idpobednik=izd_kuca) & Q(datumkraja__lt=dt.now()))
+
         return render(request, "entities/licitacije.html", {
             "pretragaForm": SearchForm(),
             "tekuce_licitacije": tekuce_licitacije,
-            "protekle_licitacije": protekle_licitacije}
-        )
-    elif izd_kuca:
-        tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(datumkraja__gt=dt.now()))
-        protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(idpobednik=izd_kuca) & Q(datumkraja__lt=dt.now()))
-        return render(request, "entities/licitacije.html", {
-            "pretragaForm": SearchForm(),
-            "tekuce_licitacije": tekuce_licitacije,
-            "protekle_licitacije": protekle_licitacije}
-        )
+            "protekle_licitacije": protekle_licitacije,
+            "dodajLicitacijuForm": DodajLicitacijuForm(),
+            'errorTekst': errorTekst,
+            'licitacijaForm': LicitacijaPonudaForm()
+        })
     return redirect("mojProfil")
 
 
 def pretragaAjax(request: HttpRequest):
-    naziv = request.POST.get("naziv")
-    tip = request.POST.get("tip")
-    znak = ("-" if request.POST.get("filter") == "Ocena opadajuće" else "")
+    naziv = request.GET.get("naziv")
+    tip = request.GET.get("tip")
+    znak = ("-" if request.GET.get("filter") == "Ocena opadajuće" else "")
     objekti = []
     if tip == "Knjiga" or tip == "Sve":
         objektiz = Knjiga.objects.filter(Q(naziv__icontains=naziv) | Q(isbn__icontains=naziv)).order_by(znak + 'prosecnaocena')
@@ -828,7 +857,7 @@ def dodajLicitaciju(request: HttpRequest):
             datumpocetka=dt.now(),
             datumkraja=datumkraja,
             pocetnacena=pocetnacena,
-            trenutniiznos=0,
-            idautor=request.user
+            trenutniiznos=pocetnacena,
+            idautor=Autor.objects.get(username=request.user.username)
         ).save()
     return redirect("licitacije")

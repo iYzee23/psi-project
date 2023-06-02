@@ -1,3 +1,9 @@
+<!-- Autori:
+- Predrag Pešić 0023/2020
+- Aleksa Mićanović 0282/2020
+- Luka Nevajda 0370/2020
+- Ljubica Muravljov 0071/2020
+-->
 <!--
 <div class="myModal" id="addObjavaModal">
         <div class="modalDiv" id="dodajObjavu">
@@ -50,7 +56,7 @@
             <div class="modal-body">
                 <form method="POST" id="dodajKnjiguForm" action="{% url "dodajKnjigu" %}">
                     {% csrf_token %}
-                    {{ knjigaForm }}
+                    {{ knjigaForm.as_p }}
                 </form>
             </div>
             <div class="modal-footer">

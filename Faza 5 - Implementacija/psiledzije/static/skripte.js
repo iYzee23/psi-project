@@ -72,14 +72,11 @@ $(document).ready(function () {
     $("#id_naziv").keyup(function() {
         $.ajax({
             url: "http://127.0.0.1:8000/pretragaAjax/",
-            type: "POST",
+            type: "GET",
             data: {
                 naziv: $("#id_naziv").val(),
                 tip: $("#id_tip").val(),
                 znak: $("#id_filter").val()
-            },
-            headers: {
-                "X-CSRFToken": getCSRFToken()
             },
             success: function(response) {
                 $("#id_naziv").autocomplete({
@@ -129,6 +126,10 @@ function showModalDelete(idRec) {
     $("#deleteRecenzijaModal").show()
 }
 
+function showLicitacijaInfo(idLic) {
+    $("#id_hiddenIdLic").val(idLic);
+}
+/*
 function getCSRFToken() {
   const cookieValue = document.cookie
     .split("; ")
@@ -139,7 +140,7 @@ function getCSRFToken() {
   } else {
     return null;
   }
-}
+}*/
 
 function showModalDelete(idRec) {
     $("#hiddenIdDeleteRec").val(idRec);

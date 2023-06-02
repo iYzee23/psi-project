@@ -2,6 +2,14 @@ from django.contrib import admin
 from django.urls import path
 from .views import *
 
+'''
+Autori: 
+- Predrag Pešić 0023/2020
+- Aleksa Mićanović 0282/2020
+- Luka Nevajda 0370/2020
+- Ljubica Muravljov 0071/2020
+'''
+
 urlpatterns = [
     path('', index, name="home"),
     path('reg/', reg, name="reg"),

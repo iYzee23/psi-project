@@ -1,3 +1,8 @@
+<!-- Autori:
+- Predrag Pešić 0023/2020
+- Aleksa Mićanović 0282/2020
+- Ljubica Muravljov 0071/2020
+-->
 {% extends 'base.html' %}
 
 {% block title %}
@@ -5,11 +10,9 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container-fluid p-0 m-0" >
-        <div class="row p-0 m-0" >
+    <div class="container-fluid p-0 m-0">
+        <div class="row p-0 m-0">
             <!-- Najbolje knjige -->
-
-
             {% if user.is_authenticated %}
                 <div class="col-sm-6">
                     {% include 'snippets/knjige_autori_izdKuce_pocStrana.html' %}
@@ -22,14 +25,10 @@
                             {% if feed %}
                                 {% for f in feed %}
                                     <div class="row col-sm-12">
-
                                         <a href="/profil/{{ f.korime }}" class="link-secondary">
                                             <h4 style="float:left; color:black;">@{{ f.korime }}</h4>
                                         </a>
-
-
                                     </div>
-
                                     <div class="row col-sm-12">
                                         <div class="col-sm-8 " style="background-color:rgba(255,255,255,0.66);">
                                             <h4 class="card-text">{{ f.sadrzaj }}<br> - {{ f.datumobjave }}</h4>
@@ -40,27 +39,21 @@
                                                      style=" height:180px; width:180px;" alt=" ">
                                             </div>
                                         {% endif %}
-
                                     </div>
-                                    {#                                    </div#}
                                 {% endfor %}
                             {% else %}
                                 <h1>Nažalost, Vaš zid je prazan <3</h1>
                             {% endif %}
                         </div>
                     {% endif %}
-
-
                 </div>
             {% else %}
                 <div class="col-sm-2"></div>
                 <div class="col-sm-8">
                     {% include 'snippets/knjige_autori_izdKuce_pocStrana.html' %}
-
                 </div>
                 <div class="col-sm-2"></div>
             {% endif %}
-
         </div>
     </div>
 {% endblock %}
