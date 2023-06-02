@@ -12,7 +12,10 @@ import string
 from django.core.mail import send_mail
 
 
-# Create your views here.
+# Create your views here
+
+
+# Dohvata najpopularnije knjige, autore i kuce - kao i feed za ulogovane korisnike
 def index(request: HttpRequest):
     feed = []
     knjige = [Knjiga.objects.get(pk=naj.idocenjenog) for naj in
@@ -36,6 +39,7 @@ def index(request: HttpRequest):
     return render(request, 'index.html', context)
 
 
+# Pomocna funkcija za generisanje najbolje ocenjenih knjiga, autora i kuca u trenutku pokretanja
 def generisiMesec(request: HttpRequest):
     NajpopularnijiMesec.objects.all().delete()
 
@@ -51,6 +55,7 @@ def generisiMesec(request: HttpRequest):
     return HttpResponse("Generisano <3")
 
 
+# render stranice za registraciju
 def reg(request: HttpRequest):
     if request.user.is_authenticated:
         return redirect('home')
@@ -59,6 +64,7 @@ def reg(request: HttpRequest):
     })
 
 
+# render stranice za registraciju korisnika / registracija korisnika iz forme
 def regKorisnik(request: HttpRequest):
     if request.user.is_authenticated:
         return redirect('home')
@@ -77,6 +83,7 @@ def regKorisnik(request: HttpRequest):
     })
 
 
+# render stranice za registraciju autora / registracija autora iz forme
 def regAutor(request: HttpRequest):
     if request.user.is_authenticated:
         return redirect('home')
@@ -96,6 +103,7 @@ def regAutor(request: HttpRequest):
     })
 
 
+# render stranice za registraciju izdavacke kuce / registracija izdavacke kuce iz forme
 def regKuca(request: HttpRequest):
     if request.user.is_authenticated:
         return redirect('home')
@@ -119,6 +127,7 @@ def regKuca(request: HttpRequest):
     })
 
 
+# render stranice za login / autorizacija usera
 def login_req(request: HttpRequest):
     if request.user.is_authenticated:
         return redirect('home')
@@ -136,11 +145,14 @@ def login_req(request: HttpRequest):
     })
 
 
+# logout usera
 def logout_req(request: HttpRequest):
     logout(request)
     return redirect('home')
 
 
+# render stranice knjige - dohvatanje informacija o samoj knjizi, da li korisnik ima knjigu u kolekciji,
+# dohvatanje recenzija, kao i obrada POST zahteva za ostavljanje, menjanje i brisanje recenzije
 def knjiga(request: HttpRequest, knjiga_id: str):
     try:
         knjiga = Knjiga.objects.get(isbn=knjiga_id)
@@ -153,6 +165,7 @@ def knjiga(request: HttpRequest, knjiga_id: str):
     autori = Autor.objects.filter(napisao__isbn=knjiga)
     errorTekst = None
 
+    # provera da li je knjiga u kolekciji
     korisnik = request.user
     imaUkolekciji = Kolekcija.objects.filter(Q(isbn=knjiga) & Q(korime=korisnik)).exists()
 
@@ -163,7 +176,9 @@ def knjiga(request: HttpRequest, knjiga_id: str):
         Kolekcija.objects.create(isbn=knjiga, korime=korisnik)
         imaUkolekciji = True
 
+    # ukoliko je forma validna, znaci da je korisnik POSTovao iz 'Dodaj' ili 'Izmeni' recenziju
     if recenzijaForm.is_valid():
+        # ako je dodaj ili izmeni
         if "obrisi" not in request.POST:
             ocena = recenzijaForm.cleaned_data["ocena"]
             tekst = recenzijaForm.cleaned_data["tekst"]
@@ -178,6 +193,7 @@ def knjiga(request: HttpRequest, knjiga_id: str):
                 recenzija.tekst = tekst
                 recenzija.ocena = ocena
                 recenzija.save()
+        # ako je obrisi (na recenziji ciji je korisnik autor)
         elif "obrisi" in request.POST:
             Recenzija.objects.get(Q(idprimalacknjiga=knjiga) & Q(iddavalac=korisnik)).delete()
 
@@ -193,6 +209,8 @@ def knjiga(request: HttpRequest, knjiga_id: str):
 
             knjiga.prosecnaocena = round(prosecnaOcena, 2)
             knjiga.save()
+
+    # ako je stiglo obrisi (od strane admina)
     elif "obrisi" in request.POST:
         idRec = request.POST.get('hiddenIdDeleteRec')
         Recenzija.objects.get(idrec=idRec).delete()
@@ -210,6 +228,7 @@ def knjiga(request: HttpRequest, knjiga_id: str):
             knjiga.prosecnaocena = round(prosecnaOcena, 2)
             knjiga.save()
 
+    # dohvatanje recenzija i stavljanje korisnikove recenzije kao prve
     try:
         recenzija = list(Recenzija.objects.get(Q(idprimalacknjiga=knjiga) & Q(iddavalac=korisnik)))
         recenzije = list(Recenzija.objects.filter(idprimalacknjiga=knjiga).exclude(recenzija))
@@ -232,6 +251,10 @@ def knjiga(request: HttpRequest, knjiga_id: str):
     return render(request, 'entities/knjiga.html', context)
 
 
+# redner stranice profila - dohvatanje informacija o profilu,
+# obrada zahteva za postavljanje, izmenu i brisanje recenzije,
+# flag da li trenutni user prati profil koji pregleda,
+# kao i da li je ovo profil od ulogovanog usera
 def profil(request: HttpRequest, profil_id: str):
     try:
         recenzijaForm = RecenzijaForm(data=request.POST or None, prefix='edit')
@@ -243,14 +266,17 @@ def profil(request: HttpRequest, profil_id: str):
         objave = Objava.objects.filter(korime=uloga)
         errorTekst = None
 
+        # provera da li je profil pracen od strane usera
         if request.user.is_authenticated and request.user != uloga:
             if Prati.objects.filter(idpracen=uloga, idpratilac=request.user).exists():
                 flag = 2
             else:
                 flag = 1
 
+        # ukoliko je forma validna, znaci da je korisnik POSTovao iz 'Dodaj' ili 'Izmeni' recenziju
         if recenzijaForm.is_valid():
             if "obrisi" not in request.POST:
+                # ako je dodaj ili izmeni
                 ocena = recenzijaForm.cleaned_data["ocena"]
                 tekst = recenzijaForm.cleaned_data["tekst"]
                 try:
@@ -264,7 +290,7 @@ def profil(request: HttpRequest, profil_id: str):
                     recenzija.tekst = tekst
                     recenzija.ocena = ocena
                     recenzija.save()
-
+            # ako je obrisi (na recenziji ciji je korisnik autor)
             elif "obrisi" in request.POST:
                 Recenzija.objects.get(Q(idprimalaculoga=uloga) & Q(iddavalac=korisnik)).delete()
 
@@ -280,6 +306,7 @@ def profil(request: HttpRequest, profil_id: str):
 
                 uloga.prosecnaocena = round(prosecnaOcena, 2)
                 uloga.save()
+        # ako je stiglo obrisi (od strane admina)
         elif "obrisi" in request.POST:
             idRec = request.POST.get('hiddenIdDeleteRec')
             Recenzija.objects.get(idrec=idRec).delete()
@@ -297,6 +324,7 @@ def profil(request: HttpRequest, profil_id: str):
                 uloga.prosecnaocena = round(prosecnaOcena, 2)
                 uloga.save()
 
+        # dohvatanje recenzija i stavljanje korisnikove recenzije kao prve
         try:
             recenzija = list(Recenzija.objects.get(Q(idprimalaculoga=uloga) & Q(iddavalac=korisnik)))
             recenzije = list(Recenzija.objects.filter(idprimalaculoga=uloga).exclude(recenzija))
@@ -304,7 +332,9 @@ def profil(request: HttpRequest, profil_id: str):
         except:
             recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
 
-        pratioci = []; praceni = []
+        # generisanje listi pratilaca i pracenih
+        pratioci = [];
+        praceni = []
         pratiociz = [pratilac.idpratilac for pratilac in Prati.objects.filter(idpracen_id=profil_id)]
         praceniz = [pracen.idpracen for pracen in Prati.objects.filter(idpratilac_id=profil_id)]
         for pratilac in pratiociz:
@@ -312,16 +342,16 @@ def profil(request: HttpRequest, profil_id: str):
                 "username": pratilac.username,
                 "slika": pratilac.slika,
                 "naziv": Korisnik.objects.get(username=pratilac.username).imeprezime if pratilac.tip == "K"
-                        else (Autor.objects.get(username=pratilac.username).imeprezime if pratilac.tip == "A"
-                        else IzdavackaKuca.objects.get(username=pratilac.username).naziv)
+                else (Autor.objects.get(username=pratilac.username).imeprezime if pratilac.tip == "A"
+                      else IzdavackaKuca.objects.get(username=pratilac.username).naziv)
             })
         for pracen in praceniz:
             praceni.append({
                 "username": pracen.username,
                 "slika": pracen.slika,
                 "naziv": Korisnik.objects.get(username=pracen.username).imeprezime if pracen.tip == "K"
-                        else (Autor.objects.get(username=pracen.username).imeprezime if pracen.tip == "A"
-                        else IzdavackaKuca.objects.get(username=pracen.username).naziv)
+                else (Autor.objects.get(username=pracen.username).imeprezime if pracen.tip == "A"
+                      else IzdavackaKuca.objects.get(username=pracen.username).naziv)
             })
 
         context = {
@@ -344,7 +374,8 @@ def profil(request: HttpRequest, profil_id: str):
             context['profil'] = autor
             context['knjige'] = Knjiga.objects.filter(napisao__idautor=profil_id).order_by('-prosecnaocena')
             context['licna_kolekcija'] = Knjiga.objects.filter(kolekcija__korime=autor)
-            context['kuce'] = IzdavackaKuca.objects.filter(povezani__idautor=autor).order_by('-prosecnaocena').distinct()
+            context['kuce'] = IzdavackaKuca.objects.filter(povezani__idautor=autor).order_by(
+                '-prosecnaocena').distinct()
             return render(request, 'entities/autor.html', context)
         elif uloga.tip == 'K':
             korisnik: Korisnik = Korisnik.objects.get(pk=profil_id)
@@ -362,11 +393,13 @@ def profil(request: HttpRequest, profil_id: str):
         raise Http404("Ne postoji profil sa tim ID :(")
 
 
+# redirect na profil usera
 @login_required(login_url="login")
 def mojProfil(request: HttpRequest):
     return redirect("profil", profil_id=request.user.username)
 
 
+# render stranice za promenu sifre / promena sifre u bazi
 @login_required(login_url="login")
 def promeniSifru(request: HttpRequest):
     form = PromenaSifreForm(request.POST or None)
@@ -390,6 +423,8 @@ def promeniSifru(request: HttpRequest):
     })
 
 
+# menja informacija o profilu u bazi na osnovu POSTovane forme
+# forme se razlikuju u zavisnosti od tipa profila
 @login_required(login_url="login")
 def promeniInfo(request: HttpRequest):
     uloga: Uloga = Uloga.objects.get(pk=request.user.pk)
@@ -470,12 +505,14 @@ def promeniInfo(request: HttpRequest):
     })
 
 
+# pomocna funkcija za generisanje nove sifre na zahtev
 def generate_random_string(length):
     letters = string.ascii_letters + string.digits
     random_string = ''.join(random.choice(letters) for _ in range(length))
     return random_string
 
 
+# funkcija za slanje nove lozinke mailom
 def posaljiMejlLozinka(lozinka, primalac):
     subject = "[Čitaj, ne skitaj] Vaša lozinka je uspešno resetovana"
     message = "Nova privremena lozinka: " + lozinka
@@ -484,6 +521,7 @@ def posaljiMejlLozinka(lozinka, primalac):
     send_mail(subject, message, from_email, recipient_list)
 
 
+# funkcija za slanje obavestenja o banovanju mailom
 def posaljiMejlBanovan(tekst, primalac):
     subject = "[Čitaj, ne skitaj] Nažalost, morali smo da onesposobimo Vaš nalog"
     message = "Zbog narušene politike našeg sajta, suspendovani ste sa istog.\n\n" + tekst
@@ -492,6 +530,7 @@ def posaljiMejlBanovan(tekst, primalac):
     send_mail(subject, message, from_email, recipient_list)
 
 
+# reset lozinke od strane admina - ukoliko se poklapaju uneti username i email, generise se nova lozinka
 @login_required(login_url="login")
 def admResetujLozinku(request: HttpRequest):
     form = AdminResetForm(request.POST or None)
@@ -517,6 +556,7 @@ def admResetujLozinku(request: HttpRequest):
     })
 
 
+# banovanje / odbanovanje naloga od strane admina
 @login_required(login_url="login")
 def admBanujNalog(request: HttpRequest):
     form = AdminBanForm(request.POST or None)
@@ -543,6 +583,7 @@ def admBanujNalog(request: HttpRequest):
     })
 
 
+# izvrsavanje pretrage (forma u headeru) - u zavisnosti od kriterijuma prosledjuje rezultate
 def pretraga(request: HttpRequest):
     form = SearchForm(request.POST or None)
     if form.is_valid():
@@ -561,7 +602,8 @@ def pretraga(request: HttpRequest):
                     "naziv": obj.naziv
                 })
         if tip == "Korisnik" or tip == "Sve":
-            objektiz = Korisnik.objects.filter(Q(imeprezime__icontains=naziv) | Q(username__icontains=naziv)).order_by(znak + 'prosecnaocena')
+            objektiz = Korisnik.objects.filter(Q(imeprezime__icontains=naziv) | Q(username__icontains=naziv)) \
+                .order_by(znak + 'prosecnaocena')
             for obj in objektiz:
                 objekti.append({
                     "tip": "profil",
@@ -571,7 +613,8 @@ def pretraga(request: HttpRequest):
                     "naziv": obj.imeprezime
                 })
         if tip == "Kuća" or tip == "Sve":
-            objektiz = IzdavackaKuca.objects.filter(Q(naziv__icontains=naziv) | Q(username__icontains=naziv)).order_by(znak + 'prosecnaocena')
+            objektiz = IzdavackaKuca.objects.filter(Q(naziv__icontains=naziv) | Q(username__icontains=naziv)) \
+                .order_by(znak + 'prosecnaocena')
             for obj in objektiz:
                 objekti.append({
                     "tip": "profil",
@@ -581,7 +624,8 @@ def pretraga(request: HttpRequest):
                     "naziv": obj.naziv
                 })
         if tip == "Autor" or tip == "Sve":
-            objektiz = Autor.objects.filter(Q(imeprezime__icontains=naziv) | Q(username__icontains=naziv)).order_by(znak + 'prosecnaocena')
+            objektiz = Autor.objects.filter(Q(imeprezime__icontains=naziv) | Q(username__icontains=naziv)) \
+                .order_by(znak + 'prosecnaocena')
             for obj in objektiz:
                 objekti.append({
                     "tip": "profil",
@@ -597,7 +641,7 @@ def pretraga(request: HttpRequest):
     else:
         return redirect(request.META.get("HTTP_REFERER"))
 
-
+# evidentira pracenje profila od strane usera
 @login_required(login_url="login")
 def zaprati(request: HttpRequest):
     if request.method == 'POST':
@@ -616,7 +660,7 @@ def zaprati(request: HttpRequest):
 
     return redirect('home')
 
-
+# evidentira odpracivanje profila od strane usera
 @login_required(login_url="login")
 def otprati(request: HttpRequest):
     if request.method == 'POST':
@@ -633,23 +677,23 @@ def otprati(request: HttpRequest):
             return redirect('profil', praceni_id)
     return redirect('home')
 
-
+# pomocna funkcija za generisanje sledeceg ISBNa
 def procitajISBN():
     with open('static/ISBN.txt', 'r') as file:
         return file.read().strip()
 
-
+# pomocna funkcija za generisanje sledeceg  ISBNa
 def upisiISBN(novISBN):
     with open('static/ISBN.txt', 'w') as file:
         file.write(novISBN)
 
-
+# pomocna funkcija za generisanjes sledeceg ISBNa
 def generisiISBN():
     ISBN = str(int(procitajISBN()) + 1).zfill(13)
     upisiISBN(ISBN)
     return ISBN
 
-
+# dodaje objavu iz forme u bazu
 @login_required(login_url="login")
 def dodajObjavu(request: HttpRequest):
     form = TextObjavaForm(request.POST or None, request.FILES or None)
@@ -660,7 +704,7 @@ def dodajObjavu(request: HttpRequest):
         Objava(sadrzaj=sadrzaj, datumobjave=datetime.now(), slika=slika, korime=request.user).save()
     return redirect("mojProfil")
 
-
+# dodaje knjigu iz forme u bazu
 @login_required(login_url="login")
 def dodajKnjigu(request: HttpRequest):
     form = KnjigaObjavaForm(request.POST or None, request.FILES or None, prefix='novaKnjiga')
@@ -679,7 +723,7 @@ def dodajKnjigu(request: HttpRequest):
         Objava(sadrzaj=sadrzaj, datumobjave=datetime.now(), slika=slika, korime=request.user).save()
     return redirect("mojProfil")
 
-
+# dodaje promene knjige iz forme u bazu
 @login_required(login_url="login")
 def promeniInfoKnjige(request: HttpRequest):
     izd_kuca: IzdavackaKuca = IzdavackaKuca.objects.get(username=request.user.pk)
@@ -698,7 +742,7 @@ def promeniInfoKnjige(request: HttpRequest):
             num_knjiga_autora_i_izd_kuce = Knjiga.objects.filter(
                 Q(idizdkuca=izd_kuca) & Q(napisao__idautor=autor)).count()
             if num_knjiga_autora_i_izd_kuce == 1:
-               Povezani.objects.get(idizdkuca=izd_kuca, idautor=autor).delete()
+                Povezani.objects.get(idizdkuca=izd_kuca, idautor=autor).delete()
             Napisao.objects.get(idautor=autor, isbn=knjiga).delete()
         for novi_autor_id in novi_autori_id:
             novi_autor = Autor.objects.get(username=novi_autor_id)

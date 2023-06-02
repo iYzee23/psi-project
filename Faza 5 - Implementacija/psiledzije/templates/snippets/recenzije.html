@@ -18,7 +18,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" name="postavi" class="green" data-bs-dismiss="modal" form="dodajRecenzijuForm">
+                <button type="submit" name="postavi" class="green" form="dodajRecenzijuForm">
                     Dodaj
                 </button>
                 <button type="button" class="gray" data-bs-dismiss="modal">Odustani</button>
@@ -48,7 +48,7 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" name="izmeni" class="green" form="izmeniRecenzijuForm">Izmeni</button>
-                <button type="submit" name="obrisi" class="red" form="izmeniRecenzijuForm">Obriši</button>
+                <button type="submit" name="obrisi" class="red" form="izmeniRecenzijuForm" onclick="$('#id_edit-tekst').val('tekst')">Obriši</button>
                 <button type="button" class="gray" data-bs-dismiss="modal">Odustani</button>
             </div>
         </div>

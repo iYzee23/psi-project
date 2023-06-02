@@ -148,3 +148,6 @@ class KnjigaObjavaForm(ModelForm):
         model = Knjiga
         fields = ["naziv", "slika", "autori", "opis"]
 
+class LicitacijaPonudaForm(ModelForm):
+    iznos = IntegerField(label='Iznos', required=True)
+
