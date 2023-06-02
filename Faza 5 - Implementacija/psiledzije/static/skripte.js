@@ -69,14 +69,51 @@ $(document).ready(function () {
         $(tripleCarouselElementIzdate).addClass("slide");
     }
 
+    $("#id_naziv").keyup(function() {
+        $.ajax({
+            url: "http://127.0.0.1:8000/pretragaAjax/",
+            type: "POST",
+            data: {
+                naziv: $("#id_naziv").val(),
+                tip: $("#id_tip").val(),
+                znak: $("#id_filter").val()
+            },
+            headers: {
+                "X-CSRFToken": getCSRFToken()
+            },
+            success: function(response) {
+                $("#id_naziv").autocomplete({
+                    source: response,
+                    delay: 0,
+                    select: function(event, ui) {
+                        var value = ui.item.value.split(" - @")[1];
+                        $(this).val(value);
+                        return false;
+                    }
+                }).data("ui-autocomplete")._renderItem = function(ul, item) {
+                    var term = this.term.toLowerCase();
+                    var value = item.value.split(" - ")[1];
+                    var label = item.label.replace(
+                        new RegExp("(" + $.ui.autocomplete.escapeRegex(term) + ")", "gi"),
+                        "<b>$1</b>"
+                    );
+                    label = label.replace(
+                        new RegExp("(" + $.ui.autocomplete.escapeRegex(value) + ")", "gi"),
+                        "<b>$1</b>"
+                    );
+                    return $("<li></li>")
+                        .data("ui-autocomplete-item", item)
+                        .append("<div>" + label + "</div>")
+                        .appendTo(ul);
+                    };
+            }
+        })
+    });
 });
-
 function showModalEdit(idRec, tekst, ocena) {
-
     $("#id_edit-tekst").val(tekst)
     $("#id_edit-hiddenIdRec").val(idRec)
     $("#id_edit-ocena").val(parseInt(ocena))
-
     $("#editRecenzijaModal").show()
 }
 
@@ -86,6 +123,22 @@ function showModalEditFancy(idRec, tekst, ocena) {
     $("#izmeniRecenzijuForm #id_edit-hiddenIdRec").val(idRec);
     $("#izmeniRecenzijuForm #id_edit-ocena").val(parseInt(ocena));
 
+}
+function showModalDelete(idRec) {
+    $("#hiddenIdDeleteRec").val(idRec)
+    $("#deleteRecenzijaModal").show()
+}
+
+function getCSRFToken() {
+  const cookieValue = document.cookie
+    .split("; ")
+    .find(row => row.startsWith("csrftoken="));
+
+  if (cookieValue) {
+    return cookieValue.split("=")[1];
+  } else {
+    return null;
+  }
 }
 
 function showModalDelete(idRec) {

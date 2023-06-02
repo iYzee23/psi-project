@@ -2,14 +2,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login, authenticate, update_session_auth_hash
 from django.contrib.auth.models import Group
 from django.db.models import Q, Max
-from django.http import HttpRequest, Http404, HttpResponse
+from django.http import HttpRequest, Http404, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import *
-from datetime import datetime
-import random
-import string
 from django.core.mail import send_mail
+from datetime import datetime
+from .forms import *
+import random, string
 
 
 # Create your views here
@@ -592,7 +591,7 @@ def pretraga(request: HttpRequest):
         znak = ("-" if form.cleaned_data["filter"] == "Ocena opadajuće" else "")
         objekti = []
         if tip == "Knjiga" or tip == "Sve":
-            objektiz = Knjiga.objects.filter(Q(naziv__icontains=naziv)).order_by(znak + 'prosecnaocena')
+            objektiz = Knjiga.objects.filter(Q(naziv__icontains=naziv) | Q(isbn__icontains=naziv)).order_by(znak + 'prosecnaocena')
             for obj in objektiz:
                 objekti.append({
                     "tip": "knjiga",
@@ -602,8 +601,7 @@ def pretraga(request: HttpRequest):
                     "naziv": obj.naziv
                 })
         if tip == "Korisnik" or tip == "Sve":
-            objektiz = Korisnik.objects.filter(Q(imeprezime__icontains=naziv) | Q(username__icontains=naziv)) \
-                .order_by(znak + 'prosecnaocena')
+            objektiz = Korisnik.objects.filter((Q(imeprezime__icontains=naziv) | Q(username__icontains=naziv)) & Q(is_active=1)).order_by(znak + 'prosecnaocena')
             for obj in objektiz:
                 objekti.append({
                     "tip": "profil",
@@ -613,8 +611,7 @@ def pretraga(request: HttpRequest):
                     "naziv": obj.imeprezime
                 })
         if tip == "Kuća" or tip == "Sve":
-            objektiz = IzdavackaKuca.objects.filter(Q(naziv__icontains=naziv) | Q(username__icontains=naziv)) \
-                .order_by(znak + 'prosecnaocena')
+            objektiz = IzdavackaKuca.objects.filter((Q(naziv__icontains=naziv) | Q(username__icontains=naziv)) & Q(is_active=1)).order_by(znak + 'prosecnaocena')
             for obj in objektiz:
                 objekti.append({
                     "tip": "profil",
@@ -624,8 +621,7 @@ def pretraga(request: HttpRequest):
                     "naziv": obj.naziv
                 })
         if tip == "Autor" or tip == "Sve":
-            objektiz = Autor.objects.filter(Q(imeprezime__icontains=naziv) | Q(username__icontains=naziv)) \
-                .order_by(znak + 'prosecnaocena')
+            objektiz = Autor.objects.filter((Q(imeprezime__icontains=naziv) | Q(username__icontains=naziv)) & Q(is_active=1)).order_by(znak + 'prosecnaocena')
             for obj in objektiz:
                 objekti.append({
                     "tip": "profil",
@@ -761,6 +757,7 @@ def promeniInfoKnjige(request: HttpRequest):
         })
     return render(request, "entities/promenaInfoKnjige.html", {"form": izmenaForm})
 
+
 @login_required(login_url="login")
 def licitacije(request: HttpRequest):
     autor: Autor = Autor.objects.filter(username=request.user.pk).first()
@@ -778,3 +775,26 @@ def licitacije(request: HttpRequest):
         return redirect("mojProfil")
 
 
+def pretragaAjax(request: HttpRequest):
+    naziv = request.POST.get("naziv")
+    tip = request.POST.get("tip")
+    znak = ("-" if request.POST.get("filter") == "Ocena opadajuće" else "")
+    objekti = []
+    if tip == "Knjiga" or tip == "Sve":
+        objektiz = Knjiga.objects.filter(Q(naziv__icontains=naziv) | Q(isbn__icontains=naziv)).order_by(znak + 'prosecnaocena')
+        for obj in objektiz:
+            objekti.append({"id": obj.isbn, "naziv": obj.naziv})
+    if tip == "Korisnik" or tip == "Sve":
+        objektiz = Korisnik.objects.filter((Q(imeprezime__icontains=naziv) | Q(username__icontains=naziv)) & Q(is_active=1)).order_by(znak + 'prosecnaocena')
+        for obj in objektiz:
+            objekti.append({"id": obj.username, "naziv": obj.imeprezime})
+    if tip == "Kuća" or tip == "Sve":
+        objektiz = IzdavackaKuca.objects.filter((Q(naziv__icontains=naziv) | Q(username__icontains=naziv)) & Q(is_active=1)).order_by(znak + 'prosecnaocena')
+        for obj in objektiz:
+            objekti.append({"id": obj.username, "naziv": obj.naziv})
+    if tip == "Autor" or tip == "Sve":
+        objektiz = Autor.objects.filter((Q(imeprezime__icontains=naziv) | Q(username__icontains=naziv)) & Q(is_active=1)).order_by(znak + 'prosecnaocena')
+        for obj in objektiz:
+            objekti.append({"id": obj.username, "naziv": obj.imeprezime})
+    response = [obj.get("naziv") + " - @" + obj.get("id") for obj in objekti]
+    return JsonResponse(response, safe=False)

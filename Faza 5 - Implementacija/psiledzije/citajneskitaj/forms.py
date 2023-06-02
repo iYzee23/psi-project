@@ -114,12 +114,9 @@ class AdminBanForm(Form):
 class SearchForm(Form):
     tipChoices = [("Sve", "Sve"), ("Knjiga", "Knjiga"), ("Korisnik", "Korisnik"), ("Kuća", "Kuća"), ("Autor", "Autor")]
     filterChoices = [("Ocena opadajuće", "Ocena opadajuće"), ("Ocena rastuće", "Ocena rastuće")]
-    naziv = fields.CharField(
-        widget=TextInput(attrs={"style": "float:left; height:38px;", "placeholder": "Pretraga..."}), required=False)
-    tip = fields.ChoiceField(choices=tipChoices,
-                             widget=Select(attrs={"class": "form-select", "style": "width:fit-content; float:left;"}))
-    filter = fields.ChoiceField(choices=filterChoices, widget=Select(
-        attrs={"class": "form-select", "style": "width:fit-content; float:left; height:fit-content;"}))
+    naziv = fields.CharField(widget=TextInput(attrs={"style": "float:left; height:38px;", "placeholder": "Pretraga...", "autocomplete": "off"}), required=False)
+    tip = fields.ChoiceField(choices=tipChoices, widget=Select(attrs={"class": "form-select", "style": "width:fit-content; float:left;"}))
+    filter = fields.ChoiceField(choices=filterChoices, widget=Select(attrs={"class": "form-select", "style": "width:fit-content; float:left; height:fit-content;"}))
 
 
 class PretplataForm(Form):
