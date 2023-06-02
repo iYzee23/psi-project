@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
+from django.core.validators import MinValueValidator
 from django.forms import *
 from .models import *
 from django import forms
@@ -135,7 +136,6 @@ class AutoriField(forms.ModelMultipleChoiceField):
         return f"{obj.imeprezime}-[@{obj.username}]"
 
 class KnjigaObjavaForm(ModelForm):
-
     naziv = CharField(label='Naziv knjige', widget=TextInput(attrs={"size": "50"}))
     slika = ImageField(label='Slika knjige', required=False)
     autori = AutoriField(queryset=Autor.objects.all(), widget=CheckboxSelectMultiple)
@@ -148,3 +148,15 @@ class KnjigaObjavaForm(ModelForm):
 class LicitacijaPonudaForm(ModelForm):
     iznos = IntegerField(label='Iznos', required=True)
 
+
+class DodajLicitacijuForm(ModelForm):
+    nazivdela = CharField(label='Naziv dela', widget=TextInput(attrs={"size": "50"}))
+    pdf = FileField(label="PDF")
+    datumkraja = DateTimeField(label="Datum kraja", widget=DateTimeInput)
+    pocetnacena = IntegerField(label="Pocetna cena", validators=[
+        MinValueValidator(1, message='Morate uneti vrednost veću od 0 kao početnu cenu.')
+    ])
+
+    class Meta:
+        model = Licitacija
+        fields = ["nazivdela", "pdf", "datumkraja", "pocetnacena"]

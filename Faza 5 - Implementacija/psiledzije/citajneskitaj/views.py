@@ -6,7 +6,7 @@ from django.http import HttpRequest, Http404, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.mail import send_mail
-from datetime import datetime
+from datetime import datetime as dt
 from .forms import *
 import random, string
 
@@ -763,16 +763,22 @@ def licitacije(request: HttpRequest):
     autor: Autor = Autor.objects.filter(username=request.user.pk).first()
     izd_kuca: IzdavackaKuca=IzdavackaKuca.objects.filter(username=request.user.pk).first()
     if autor:
-        tekuce_licitacije: Licitacija=Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__gt=datetime.now()))
-        protekle_licitacije: Licitacija=Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__lt=datetime.now()))
-        return render(request, "entities/licitacije.html",{'pretragaForm': SearchForm(), "tekuce_licitacije":tekuce_licitacije, "protekle_licitacije":protekle_licitacije})
+        tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__gt=dt.now()))
+        protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__lt=dt.now()))
+        return render(request, "entities/licitacije.html", {
+            "pretragaForm": SearchForm(),
+            "tekuce_licitacije": tekuce_licitacije,
+            "protekle_licitacije": protekle_licitacije}
+        )
     elif izd_kuca:
-        tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(idpobednik=izd_kuca) & Q(datumkraja__gt=datetime.now()))
-        protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(idpobednik=izd_kuca) & Q(datumkraja__lt=datetime.now()))
-        return render(request, "entities/licitacije.html",
-                      {'pretragaForm': SearchForm(),"tekuce_licitacije": tekuce_licitacije, "protekle_licitacije": protekle_licitacije})
-    else:
-        return redirect("mojProfil")
+        tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(datumkraja__gt=dt.now()))
+        protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(idpobednik=izd_kuca) & Q(datumkraja__lt=dt.now()))
+        return render(request, "entities/licitacije.html", {
+            "pretragaForm": SearchForm(),
+            "tekuce_licitacije": tekuce_licitacije,
+            "protekle_licitacije": protekle_licitacije}
+        )
+    return redirect("mojProfil")
 
 
 def pretragaAjax(request: HttpRequest):
@@ -798,3 +804,23 @@ def pretragaAjax(request: HttpRequest):
             objekti.append({"id": obj.username, "naziv": obj.imeprezime})
     response = [obj.get("naziv") + " - @" + obj.get("id") for obj in objekti]
     return JsonResponse(response, safe=False)
+
+
+@login_required(login_url="login")
+def dodajLicitaciju(request: HttpRequest):
+    form = DodajLicitacijuForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        nazivdela = form.cleaned_data["nazivdela"]
+        pdf = form.cleaned_data["pdf"]
+        datumkraja = form.cleaned_data["datumkraja"]
+        pocetnacena = form.cleaned_data["pocetnacena"]
+        Licitacija(
+            nazivdela=nazivdela,
+            pdf=pdf,
+            datumpocetka=dt.now(),
+            datumkraja=datumkraja,
+            pocetnacena=pocetnacena,
+            trenutniiznos=0,
+            idautor=request.user
+        ).save()
+    return redirect("licitacije")
