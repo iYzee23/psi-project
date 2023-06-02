@@ -143,6 +143,7 @@ class KnjigaObjavaForm(ModelForm):
     slika = ImageField(label='Slika knjige', required=False)
     autori = AutoriField(queryset=Autor.objects.all(), widget=CheckboxSelectMultiple)
     opis = CharField(label='Opis', widget=Textarea)
+    sadrzaj = CharField(label='Sadržaj objave za knjigu', widget=Textarea)
     class Meta:
         model = Knjiga
         fields = ["naziv", "slika", "autori", "opis"]

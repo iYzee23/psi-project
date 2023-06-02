@@ -332,7 +332,7 @@ def profil(request: HttpRequest, profil_id: str):
             'recenzijaFormEdit': RecenzijaForm(prefix='edit'),
             'pretragaForm': SearchForm(),
             'objavaForm': TextObjavaForm(),
-            'knjigaForm': KnjigaObjavaForm(),
+            'knjigaForm': KnjigaObjavaForm(prefix='novaKnjiga'),
             'flag': flag,
             'errorTekst': errorTekst,
             'pratioci': pratioci,
@@ -663,9 +663,9 @@ def dodajObjavu(request: HttpRequest):
 
 @login_required(login_url="login")
 def dodajKnjigu(request: HttpRequest):
-    form = KnjigaObjavaForm(request.POST or None, request.FILES or None)
+    form = KnjigaObjavaForm(request.POST or None, request.FILES or None, prefix='novaKnjiga')
     if form.is_valid():
-        sadrzaj = "Upravo smo objavili novu knjigu. Stranici nove knjige možete pristupiti preko kataloga izdatih dela na našem profilu."
+        sadrzaj = form.cleaned_data["sadrzaj"]
         isbn = generisiISBN()
         naziv = form.cleaned_data["naziv"]
         slika = form.cleaned_data["slika"]

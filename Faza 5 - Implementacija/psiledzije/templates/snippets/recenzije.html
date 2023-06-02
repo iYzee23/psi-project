@@ -1,7 +1,93 @@
+<!-- dodajRecenzijuModal -->
+<div class="modal fade" id="dodajRecenzijuModalBS" tabindex="-1" aria-labelledby="dodajRecenzijuModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="dodajRecenzijuModalHeader">Nova recenzija</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="dodajRecenzijuForm">
+                    {% csrf_token %}
+                    <p style="font-weight: bold">Ocena (1-5): </p>
+                    {{ recenzijaFormAdd.ocena }}
+                    {#            <pre style="font-weight: bold">1     2     3     4     5</pre>#}
+                    <p style="font-weight: bold">Komentar: </p>
+                    {{ recenzijaFormAdd.tekst }}
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" name="postavi" class="green" data-bs-dismiss="modal" form="dodajRecenzijuForm">
+                    Dodaj
+                </button>
+                <button type="button" class="gray" data-bs-dismiss="modal">Odustani</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- izmeniRecenzijuModal -->
+<div class="modal fade" id="izmeniRecenzijuModalBS" tabindex="-1" aria-labelledby="izmeniRecenzijuModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="izmeniRecenzijuModalHeader">Izmena recenzije</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="izmeniRecenzijuForm">
+                    {% csrf_token %}
+                    {{ recenzijaFormEdit.hiddenIdRec }}
+                    <p style="font-weight: bold">Ocena (1-5): </p>
+                    {{ recenzijaFormEdit.ocena }}
+                    <p style="font-weight: bold">Komentar: </p>
+                    {{ recenzijaFormEdit.tekst }}
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" name="izmeni" class="green" form="izmeniRecenzijuForm">Izmeni</button>
+                <button type="submit" name="obrisi" class="red" form="izmeniRecenzijuForm">Obriši</button>
+                <button type="button" class="gray" data-bs-dismiss="modal">Odustani</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- izbrisiRecenzijuModal -->
+<div class="modal fade" id="izbrisiRecenzijuModalBS" tabindex="-1" aria-labelledby="izbrisiRecenzijuModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="izbrisiRecenzijuModalHeader">Brisanje recenzije</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="izbrisiRecenzijuForm">
+                    {% csrf_token %}
+                    <h3>Želite li da obrišete izabranu recenziju?</h3>
+                    <input type="hidden" id="hiddenIdDeleteRec" name="hiddenIdDeleteRec" form="izbrisiRecenzijuForm">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" name="obrisi" class="red" form="izbrisiRecenzijuForm">Obriši</button>
+                <button type="button" class="gray" data-bs-dismiss="modal">Odustani</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <h1 style="font-weight: bold;"><u>Recenzije</u></h1>
 <div class="col-sm-2">
     {% if user.is_authenticated %}
-        <button class="katalogbtn" id="dodajRec" onclick="$('#addRecenzijaModal').show()">Dodaj recenziju</button>
+        <!-- Dugme za dodajRecenzijuModal -->
+        {#  <button class="katalogbtn" id="dodajRec" onclick="$('#addRecenzijaModal').show()">Dodaj recenziju</button> #}
+        <button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#dodajRecenzijuModalBS">Dodaj
+            recenziju
+        </button>
     {% endif %}
 </div>
 {% if errorTekst != None %}
@@ -27,9 +113,19 @@
                 <i>@banovan</i>
             {% endif %}
             {% if rec.iddavalac == request.user %}
-                <button class="editBtn" onclick="showModalEdit({{ rec.idrec }},'{{ rec.tekst }}',{{ rec.ocena }})">...</button>
+                <button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#izmeniRecenzijuModalBS"
+                        onclick="showModalEditFancy({{ rec.idrec }},'{{ rec.tekst }}',{{ rec.ocena }})"
+                >
+                    ...
+                </button>
+                <!-- <button class="editBtn" onclick="showModalEdit({{ rec.idrec }},'{{ rec.tekst }}',{{ rec.ocena }})" >...</button> -->
             {% elif user.is_superuser %}
-                <button class="editBtn" onclick="showModalDelete({{ rec.idrec }})">...</button>
+                <button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#izbrisiRecenzijuModalBS"
+                        onclick="showModalDeleteFancy({{ rec.idrec }})"
+                >
+                    ...
+                </button>
+                {# <button class="editBtn" onclick="showModalDelete({{ rec.idrec }})">...</button> #}
             {% endif %}
         </h2>
         <div style="font-style: italic">{{ rec.tekst }}</div>

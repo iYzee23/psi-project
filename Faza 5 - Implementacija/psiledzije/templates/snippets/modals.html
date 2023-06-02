@@ -1,112 +1,190 @@
-<div class="modal" id="addRecenzijaModal">
-    <div class="modalDiv" id="popupRecenzija">
-        <form method="POST">
-            {% csrf_token %}
-            <h3 style="font-weight: bold">Nova recenzija</h3>
-            <p style="font-weight: bold">Ocena (1-5): </p>
-            {{ recenzijaFormAdd.ocena }}
-{#            <pre style="font-weight: bold">1     2     3     4     5</pre>#}
-            <p style="font-weight: bold">Komentar: </p>
-            {{ recenzijaFormAdd.tekst }}
-            <input type="submit" name="postavi" value="Postavi recenziju" class="dodaj">
-            <input type="reset" value="Odustani" class="odustani" style="background-color:grey" onclick="$('#addRecenzijaModal').hide()">
-        </form>
-    </div>
-</div>
-
-<div class="modal" id="editRecenzijaModal">
-    <div class="modalDiv" id="editRec">
-        <form method="POST">
-            {% csrf_token  %}
-            {{ recenzijaFormEdit.hiddenIdRec }}
-            <h3 style="font-weight: bold">Izmena recenzije</h3>
-            <p style="font-weight: bold">Ocena (1-5): </p>
-            {{ recenzijaFormEdit.ocena }}
-            <p style="font-weight: bold">Komentar: </p>
-            {{ recenzijaFormEdit.tekst }}
-            <input type="submit" name="izmeni" value="Izmeni recenziju" class="dodaj">
-            <input type="submit" name="obrisi" value="Obrisi recenziju" class="odustani">
-            <input type="reset" value="Odustani" class="odustani" style="background-color:grey" onclick="$('#editRecenzijaModal').hide()">
-        </form>
-    </div>
-</div>
-
-<div class="modal" id="deleteRecenzijaModal">
-    <div class="modalDiv" id="deleteRec">
-        <form method="POST" id="deleteRecenzijaForm">
-            {% csrf_token  %}
-            <input type="hidden" id="hiddenIdDeleteRec" name="hiddenIdDeleteRec" form="deleteRecenzijaForm">
-            <h3>Želite li da obrišete izabranu recenziju?</h3>
-            <input type="submit" name="obrisi" value="Obrisi recenziju" class="odustani">
-            <input type="reset" value="Odustani" class="odustani" style="background-color:grey" onclick="$('#deleteRecenzijaModal').hide()">
-        </form>
-    </div>
-</div>
-
- <div class="modal" id="addObjavaModal">
+<!--
+<div class="myModal" id="addObjavaModal">
         <div class="modalDiv" id="dodajObjavu">
             <h1>DODAJ NOVU OBJAVU</h1><br><br>
             <form method="POST" enctype="multipart/form-data" action="{% url "dodajObjavu" %}">
-                {% csrf_token %}
-                {{ objavaForm.as_p }}
+                {# {% csrf_token %}  {{ objavaForm.as_p }}#}
+
                 <button class="btn-success">Dodaj objavu</button>
                 <input type="reset" name="odustani" value="Odustani" class="odustani" style="background-color:grey"
                        onclick="$('#addObjavaModal').hide()">
             </form>
         </div>
- </div>
-
-<div class="modal" id="addKnjigaModal">
-    <div id="dodajKnjigu">
-        <h1>DODAJ NOVU KNJIGU</h1><br><br>
-            <form method="POST" enctype="multipart/form-data" action="{% url "dodajKnjigu" %}">
-                {% csrf_token %}
-                {{ knjigaForm.as_p }}
-                <button class="btn-success">Dodaj knjigu</button>
-                <input type="reset" name="odustani" value="Odustani" class="odustani" style="background-color:grey"
-                       onclick="$('#addKnjigaModal').hide()">
-            </form>
+</div>
+-->
+<!-- dodajObjavuModal -->
+<div class="modal fade" id="dodajObjavuModalBS" tabindex="-1" aria-labelledby="dodajObjavuModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="dodajObjavuModalHeader">Nova objava</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="dodajObjavuForm" enctype="multipart/form-data" action="{% url "dodajObjavu" %}">
+                    {% csrf_token %}
+                    {{ objavaForm.as_p }}
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" name="submit" class="green" data-bs-dismiss="modal" form="dodajObjavuForm">
+                    Dodaj
+                </button>
+                <button type="button" class="gray" data-bs-dismiss="modal">Odustani</button>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="modal" id="prikaziPratioceModal">
-    <div id="prikaziPratioce">
-        <h3>PRATIOCI</h3>
-        <div class="modalSredina">
-            <ul>
-                {% for pratilac in pratioci %}
-                    <li>
-                        <h5>
-                            <img src="{% if pratilac.slika %}{{ pratilac.slika.url }}{% else %}../../media/ulogaImgs/default.png{% endif %}" style="width: 50px; height: 50px; object-fit: cover">
-                            <a href="{% url 'profil' pratilac.username %}" class="profilLink">
-                            {{ pratilac.naziv }} [@{{ pratilac.username }}]
-                            </a>
-                        </h5>
-                    </li>
-                {% endfor %}
-            </ul>
+
+<!-- dodajKnjiguModal -->
+<div class="modal fade" id="dodajKnjiguModalBS" tabindex="-1" aria-labelledby="dodajKnjiguModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="dodajKnjiguModalHeader">Nova objava</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="dodajKnjiguForm" action="{% url "dodajKnjigu" %}">
+                    {% csrf_token %}
+                    {{ knjigaForm }}
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="green" data-bs-dismiss="modal" form="dodajKnjiguForm">
+                    Dodaj
+                </button>
+                <button type="button" class="gray" data-bs-dismiss="modal">Odustani</button>
+            </div>
         </div>
-        <input type="button" value="Odustani" class="odustani" style="background-color:grey; margin-top: 20px" onclick="$('#prikaziPratioceModal').hide()">
     </div>
 </div>
 
-<div class="modal" id="prikaziPraceneModal">
-    <div id="prikaziPracene">
-        <h3>PRACENI</h3>
-        <div class="modalSredina">
-            <ul>
-                {% for pracen in praceni %}
-                    <li>
-                        <h5>
-                            <img src="{% if pracen.slika %}{{ pracen.slika.url }}{% else %}../../media/ulogaImgs/default.png{% endif %}" style="width: 50px; height: 50px; object-fit: cover">
-                            <a href="{% url 'profil' pracen.username %}" class="profilLink">
-                            {{ pracen.naziv }} [@{{ pracen.username }}]
-                            </a>
-                        </h5>
-                    </li>
-                {% endfor %}
-            </ul>
+
+{#<div class="myModal" id="addKnjigaModal">#}
+{#    <div id="dodajKnjigu">#}
+{#        <h5>DODAJ NOVU KNJIGU</h5><br><br>#}
+{#            <form method="POST" enctype="multipart/form-data" action="{% url "dodajKnjigu" %}">#}
+{#                 {% csrf_token %} {{ knjigaForm.as_table }} #}
+{#                <table>#}
+{#                    #}
+{#                </table>#}
+{#                <button class="btn-success">Dodaj knjigu</button>#}
+{#                <input type="reset" name="odustani" value="Odustani" class="odustani" style="background-color:grey"#}
+{#                       onclick="$('#addKnjigaModal').hide()">#}
+{#            </form>#}
+{#    </div>#}
+{#</div>#}
+
+{##}
+{#<div class="myModal" id="prikaziPratioceModal">#}
+{#    <div id="prikaziPratioce">#}
+{#        <h3>PRATIOCI</h3>#}
+{#        <div class="modalSredina">#}
+{#            <ul>#}
+{#                {% for pratilac in pratioci %}#}
+{#                    <li>#}
+{#                        <h5>#}
+{#                            <img src="{% if pratilac.slika %}{{ pratilac.slika.url }}{% else %}../../media/ulogaImgs/default.png{% endif %}" style="width: 50px; height: 50px; object-fit: cover">#}
+{#                            <a href="{% url 'profil' pratilac.username %}" class="profilLink">#}
+{#                            {{ pratilac.naziv }} [@{{ pratilac.username }}]#}
+{#                            </a>#}
+{#                        </h5>#}
+{#                    </li>#}
+{#                {% endfor %}#}
+{#            </ul>#}
+{#        </div>#}
+{#        <input type="button" value="Odustani" class="odustani" style="background-color:grey; margin-top: 20px" onclick="$('#prikaziPratioceModal').hide()">#}
+{#    </div>#}
+{#</div>#}
+
+<!-- prikaziPratioceModal -->
+<div class="modal fade" id="prikaziPratioceModalBS" tabindex="-1" aria-labelledby="prikaziPratioceModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="prikaziPratioceModalHeader">Pratioci</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    {% for pratilac in pratioci %}
+                        <li>
+                            <h5>
+                                <img src="{% if pratilac.slika %}{{ pratilac.slika.url }}{% else %}../../media/ulogaImgs/default.png{% endif %}"
+                                     style="width: 50px; height: 50px; object-fit: cover">
+                                <a href="{% url 'profil' pratilac.username %}" class="profilLink">
+                                    {{ pratilac.naziv }} [@{{ pratilac.username }}]
+                                </a>
+                            </h5>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gray" data-bs-dismiss="modal">Nazad</button>
+            </div>
         </div>
-        <input type="button" value="Odustani" class="odustani" style="background-color:grey; margin-top: 20px" onclick="$('#prikaziPraceneModal').hide()">
+    </div>
+</div>
+
+
+{#<div class="myModal" id="prikaziPraceneModal">#}
+{#    <div id="prikaziPracene">#}
+{#        <h3>PRACENI</h3>#}
+{#        <div class="modalSredina">#}
+{#            <ul>#}
+{#                {% for pracen in praceni %}#}
+{#                    <li>#}
+{#                        <h5>#}
+{#                            <img src="#}
+{##}
+{#                                    {% if pracen.slika %}{{ pracen.slika.url }}{% else %}../../media/ulogaImgs/default.png{% endif %}"#}
+{#                                 style="width: 50px; height: 50px; object-fit: cover">#}
+{#                            <a href="{% url 'profil' pracen.username %}" class="profilLink">#}
+{#                                {{ pracen.naziv }} [@{{ pracen.username }}]#}
+{#                            </a>#}
+{#                        </h5>#}
+{#                    </li>#}
+{#                {% endfor %}#}
+{#            </ul>#}
+{#        </div>#}
+{#        <input type="button" value="Odustani" class="odustani" style="background-color:grey; margin-top: 20px"#}
+{#               onclick="$('#prikaziPraceneModal').hide()">#}
+{#    </div>#}
+{#</div>#}
+
+<!-- prikaziPraceneModal -->
+<div class="modal fade" id="prikaziPraceneModalBS" tabindex="-1" aria-labelledby="prikaziPraceneModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="prikaziPraceneModalHeader">Praćeni</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    {% for pracen in praceni %}
+                        <li>
+                            <h5>
+                                <img src="{% if pracen.slika %}{{ pracen.slika.url }}{% else %}../../media/ulogaImgs/default.png{% endif %}"
+                                     style="width: 50px; height: 50px; object-fit: cover">
+                                <a href="{% url 'profil' pracen.username %}" class="profilLink">
+                                    {{ pracen.naziv }} [@{{ pracen.username }}]
+                                </a>
+                            </h5>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gray" data-bs-dismiss="modal">Nazad</button>
+            </div>
+        </div>
     </div>
 </div>

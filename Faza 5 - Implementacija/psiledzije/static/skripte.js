@@ -1,9 +1,9 @@
 //Autor: Ljubica Muravljov
 
-// $('#myModal').on('shown.bs.modal', function () {
+// $('#myModal').on('shown.bs.myModal', function () {
 //     $('#myInput').trigger('focus')
 //   })
-//   $(function () { $('#myModal').modal({
+//   $(function () { $('#myModal').myModal({
 //     keyboard: true
 //  })});
 $(document).ready(function () {
@@ -80,8 +80,20 @@ function showModalEdit(idRec, tekst, ocena) {
     $("#editRecenzijaModal").show()
 }
 
-function showModalDelete(idRec) {
-    $("#hiddenIdDeleteRec").val(idRec)
-    $("#deleteRecenzijaModal").show()
+function showModalEditFancy(idRec, tekst, ocena) {
 
+    $("#izmeniRecenzijuForm #id_edit-tekst").val(tekst);
+    $("#izmeniRecenzijuForm #id_edit-hiddenIdRec").val(idRec);
+    $("#izmeniRecenzijuForm #id_edit-ocena").val(parseInt(ocena));
+
+}
+
+function showModalDelete(idRec) {
+    $("#hiddenIdDeleteRec").val(idRec);
+    $("#deleteRecenzijaModal").show();
+
+}
+function showModalDeleteFancy(idRec) {
+    $("#hiddenIdDeleteRec").val(idRec);
+    console.log($("#hiddenIdDeleteRec").val())
 }
