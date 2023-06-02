@@ -8,6 +8,12 @@
             <button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#dodajKnjiguModalBS">Dodaj knjigu</button>
             <!--<button class="katalogbtn" onclick="$('#addKnjigaModal').show()">Dodaj knjigu</button>-->
         {% endif %}
+        {% if uloga.tip == "A" or uloga.tip == "I" %}
+            <form action="{% url 'licitacije' %}" method="post">
+                {% csrf_token %}
+                <button class="katalogbtn" type="submit">Prikaži licitacije</button>
+            </form>
+        {% endif %}
         <form action="{% url "promeniSifru" %}" method="POST">
             {% csrf_token %}
             <button class="katalogbtn">Promena sifre</button>
