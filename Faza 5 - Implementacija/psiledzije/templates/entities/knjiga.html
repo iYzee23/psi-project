@@ -18,12 +18,15 @@
                 <span><a href="{% url 'profil' autor.username %}" class="profilLink"> {{ autor.imeprezime }}</a> </span>
             {% endfor %}
         </h5>
-        <h5><b>Izdavačka kuća:</b> <a href="{% url 'profil' knjiga.idizdkuca.username %}" class="profilLink"> {{ knjiga.idizdkuca.naziv }} </a></h5>
+        <h5><b>Izdavačka kuća:</b> <a href="{% url 'profil' knjiga.idizdkuca.username %}"
+                                      class="profilLink"> {{ knjiga.idizdkuca.naziv }} </a></h5>
         <h5><b>Opis: </b>
             {{ knjiga.opis }}
         </h5><br><br>
-        <div class="col-sm-12" style="display: flex;" >
-            {% include 'snippets/dodaj_u_kolekciju.html' %}
+        <div class="col-sm-12" style="display: flex;">
+            {% if user.tip != 'I' %}
+                {% include 'snippets/dodaj_u_kolekciju.html' %}
+            {% endif %}
             {% include 'snippets/izmeni_knjigu.html' %}
         </div>
     </div>

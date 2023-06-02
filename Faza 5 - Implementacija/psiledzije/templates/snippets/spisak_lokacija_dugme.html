@@ -1,0 +1,38 @@
+{#<form action=method="POST">#}
+{#    {% csrf_token %}#}
+{#    <button class="katalogbtn">Spisak lokacija</button>#}
+{#</form>#}
+
+<button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#prikaziLokacijeModalBS">
+  Spisak lokacija
+</button>
+<!-- prikaziLokacijeModal -->
+<div class="modal fade" id="prikaziLokacijeModalBS" tabindex="-1" aria-labelledby="prikaziLokacijeModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="prikaziLokacijeModalHeader">Prodajna mesta</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    {% if lokacije %}
+                        {% for lokacija in lokacije %}
+                            <li>
+                                <h5>
+                                    {{ lokacija.adresa }}
+                                </h5>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <h5>Ova izdavačka kuća nema upisane lokacije</h5>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gray" data-bs-dismiss="modal">Nazad</button>
+            </div>
+        </div>
+    </div>
+</div>

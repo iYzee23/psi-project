@@ -138,7 +138,7 @@ class AutoriField(forms.ModelMultipleChoiceField):
 class KnjigaObjavaForm(ModelForm):
     naziv = CharField(label='Naziv knjige', widget=TextInput(attrs={"size": "50"}))
     slika = ImageField(label='Slika knjige', required=False)
-    autori = AutoriField(queryset=Autor.objects.all(), widget=CheckboxSelectMultiple)
+    autori = AutoriField(queryset=Autor.objects.all(), widget=SelectMultiple(attrs={"class": "form-control"}))
     opis = CharField(label='Opis', widget=Textarea)
     sadrzaj = CharField(label='Sadržaj objave za knjigu', widget=Textarea)
     class Meta:

@@ -185,8 +185,12 @@ def knjiga(request: HttpRequest, knjiga_id: str):
                 recenzija = Recenzija.objects.get(Q(idprimalacknjiga=knjiga) & Q(iddavalac=korisnik))
                 if "postavi" in request.POST:
                     errorTekst = 'Ne mozete upisati više od 1 recenzije!'
+
             except:
                 recenzija = Recenzija(idprimalacknjiga=knjiga, iddavalac=korisnik)
+
+            if autori.filter(username=korisnik.username).exists() or knjiga.idizdkuca_id==korisnik.username:
+                errorTekst = 'Ne mozete ostaviti recenziju na Vasoj knjizi!'
 
             if errorTekst is None:
                 recenzija.tekst = tekst
@@ -282,9 +286,12 @@ def profil(request: HttpRequest, profil_id: str):
                     recenzija = Recenzija.objects.get(Q(idprimalaculoga=uloga) & Q(iddavalac=korisnik))
                     if "postavi" in request.POST:
                         errorTekst = 'Ne mozete upisati više od 1 recenzije!'
+
                 except:
                     recenzija = Recenzija(idprimalaculoga=uloga, iddavalac=korisnik)
 
+                if recenzija.idprimalaculoga==korisnik:
+                    errorTekst = 'Ne mozete ostaviti recenziju sami sebi!'
                 if errorTekst is None:
                     recenzija.tekst = tekst
                     recenzija.ocena = ocena
@@ -387,6 +394,7 @@ def profil(request: HttpRequest, profil_id: str):
             context['licna_kolekcija'] = Knjiga.objects.filter(kolekcija__korime=korisnik)
             context['knjige'] = Knjiga.objects.filter(idizdkuca=kuca).order_by('-prosecnaocena')
             context['autori'] = Autor.objects.filter(povezani__idizdkuca=kuca).order_by('imeprezime').distinct()
+            context['lokacije'] = ProdajnaMesta.objects.filter(idizdkuca=profil_id)
             return render(request, 'entities/izdavackakuca.html', context)
     except Autor.DoesNotExist:
         raise Http404("Ne postoji profil sa tim ID :(")

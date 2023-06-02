@@ -428,6 +428,19 @@ body {
     width: 450px;
 }
 
+#prikaziLokacije {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(129, 118, 118);
+    padding: 20px;
+    border: 1px solid #ccc;
+    height: 450px;
+    width: 450px;
+}
+
+
 .modalSredina {
     padding-top: 20px;
     height: 80%;

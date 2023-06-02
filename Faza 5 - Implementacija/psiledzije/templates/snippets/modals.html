@@ -115,7 +115,15 @@
                     {% for pratilac in pratioci %}
                         <li>
                             <h5>
-                                <img src="{% if pratilac.slika %}{{ pratilac.slika.url }}{% else %}../../media/ulogaImgs/default.png{% endif %}"
+                                <img src="
+
+
+
+
+
+
+
+                                        {% if pratilac.slika %}{{ pratilac.slika.url }}{% else %}../../media/ulogaImgs/default.png{% endif %}"
                                      style="width: 50px; height: 50px; object-fit: cover">
                                 <a href="{% url 'profil' pratilac.username %}" class="profilLink">
                                     {{ pratilac.naziv }} [@{{ pratilac.username }}]
@@ -172,7 +180,10 @@
                     {% for pracen in praceni %}
                         <li>
                             <h5>
-                                <img src="{% if pracen.slika %}{{ pracen.slika.url }}{% else %}../../media/ulogaImgs/default.png{% endif %}"
+                                <img src="
+
+
+                                        {% if pracen.slika %}{{ pracen.slika.url }}{% else %}../../media/ulogaImgs/default.png{% endif %}"
                                      style="width: 50px; height: 50px; object-fit: cover">
                                 <a href="{% url 'profil' pracen.username %}" class="profilLink">
                                     {{ pracen.naziv }} [@{{ pracen.username }}]
@@ -188,3 +199,5 @@
         </div>
     </div>
 </div>
+
+
