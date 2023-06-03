@@ -831,11 +831,11 @@ def licitacije(request: HttpRequest):
 
     if autor or izd_kuca:
         if autor:
-            tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__gt=dt.now()))
-            protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__lt=dt.now()))
+            tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__gt=dt.now())).order_by("datumkraja")
+            protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__lt=dt.now())).order_by("-datumkraja")
         elif izd_kuca:
-            tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(datumkraja__gt=dt.now()))
-            protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(idpobednik=izd_kuca) & Q(datumkraja__lt=dt.now()))
+            tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(datumkraja__gt=dt.now())).order_by("datumkraja")
+            protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(idpobednik=izd_kuca) & Q(datumkraja__lt=dt.now())).order_by("-datumkraja")
 
         return render(request, "entities/licitacije.html", {
             "pretragaForm": SearchForm(),
