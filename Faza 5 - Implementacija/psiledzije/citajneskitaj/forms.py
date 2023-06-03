@@ -134,10 +134,14 @@ class PretplataForm(Form):
 class TextObjavaForm(ModelForm):
     slika = ImageField(label='Slika objave (opciono)', required=False)
     sadrzaj = CharField(label='Sadrzaj', widget=Textarea)
+    hiddenIdObjave = forms.CharField(widget=forms.HiddenInput(), required=False, initial=-1)
 
     class Meta:
         model = Objava
         fields = ["slika", "sadrzaj"]
+class ObjavaDeleteForm(Form):
+    hiddenIdObjave = forms.CharField(widget=forms.HiddenInput(), required=False, initial=-1)
+
 class AutoriField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
         return f"{obj.imeprezime}-[@{obj.username}]"

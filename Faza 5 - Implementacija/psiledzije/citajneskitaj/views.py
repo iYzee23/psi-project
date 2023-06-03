@@ -33,6 +33,8 @@ def index(request: HttpRequest):
         for pracenje in pracenja:
             objave = Objava.objects.filter(korime=pracenje.idpracen)
             feed.extend(objave)
+    if feed:
+        feed.sort(key=lambda x: x.datumobjave,reverse=True)
     context = {
         'knjige': knjige,
         'autori': autori,
@@ -271,7 +273,7 @@ def profil(request: HttpRequest, profil_id: str):
         uloga = Uloga.objects.get(pk=profil_id)
         korisnik = request.user
         flag = 0
-        objave = Objava.objects.filter(korime=uloga)
+        objave = Objava.objects.filter(korime=uloga).order_by('-datumobjave')
         errorTekst = None
 
         # provera da li je profil pracen od strane usera
@@ -373,6 +375,8 @@ def profil(request: HttpRequest, profil_id: str):
             'recenzijaFormEdit': RecenzijaForm(prefix='edit'),
             'pretragaForm': SearchForm(),
             'objavaForm': TextObjavaForm(),
+            'objavaFormEdit': TextObjavaForm(prefix='objavaEdit'),
+            'objavaFormDelete': ObjavaDeleteForm(),
             'knjigaForm': KnjigaObjavaForm(prefix='novaKnjiga'),
             'flag': flag,
             'errorTekst': errorTekst,
@@ -711,13 +715,39 @@ def generisiISBN():
 # dodaje objavu iz forme u bazu
 @login_required(login_url="login")
 def dodajObjavu(request: HttpRequest):
-    form = TextObjavaForm(request.POST or None, request.FILES or None)
-    if form.is_valid():
+    izmenaForm = TextObjavaForm(request.POST or None, request.FILES or None)
+    if izmenaForm.is_valid():
         # id = Objava.objects.aggregate(max_idobjava=Max('idobjava'))['max_idobjava'] + 1
-        sadrzaj = form.cleaned_data["sadrzaj"]
-        slika = form.cleaned_data["slika"]
+        sadrzaj = izmenaForm.cleaned_data["sadrzaj"]
+        slika = izmenaForm.cleaned_data["slika"]
         Objava(sadrzaj=sadrzaj, datumobjave=dt.now(), slika=slika, korime=request.user).save()
     return redirect("mojProfil")
+
+# menja objavu i dodaje je u bazu
+@login_required(login_url="login")
+def izmeniObjavu(request: HttpRequest):
+    form = TextObjavaForm(request.POST or None, request.FILES or None, prefix='objavaEdit')
+    if form.is_valid():
+        id=form.cleaned_data["hiddenIdObjave"]
+        sadrzaj = form.cleaned_data["sadrzaj"]
+        slika = form.cleaned_data["slika"]
+        objava = Objava.objects.get(idobjava=id)
+        objava.datumobjave=dt.now()
+        objava.sadrzaj=sadrzaj
+        if slika:
+            objava.slika=slika
+        objava.save()
+    return redirect("mojProfil")
+
+@login_required(login_url="login")
+def obrisiObjavu(request: HttpRequest):
+    form = ObjavaDeleteForm(request.POST or None)
+    if form.is_valid():
+        id=form.cleaned_data["hiddenIdObjave"]
+        objava = Objava.objects.get(idobjava=id)
+        objava.delete()
+    return redirect(request.META.get("HTTP_REFERER"))
+
 
 
 # dodaje knjigu iz forme u bazu

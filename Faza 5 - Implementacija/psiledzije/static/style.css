@@ -4,6 +4,7 @@ div#dodajKnjigu th, div#dodajKnjigu th > * {
     vertical-align: text-top;
     text-align: right;
 }
+
 div#dodajKnjigu td, div#dodajKnjigu td > * {
     padding: 0;
     vertical-align: text-top;
@@ -306,7 +307,6 @@ body {
 }
 
 
-
 .profilLink {
     color: black;
 }
@@ -449,4 +449,19 @@ body {
 
 #id_ban_1 {
     margin-bottom: 35px;
+}
+
+.green {
+    border-width: 0;
+    background-color: #7abe7a;
+}
+
+.gray {
+    border-width: 0;
+    background-color: #b4b4b4;
+}
+
+.red {
+    border-width: 0;
+    background-color: #ee9393;
 }

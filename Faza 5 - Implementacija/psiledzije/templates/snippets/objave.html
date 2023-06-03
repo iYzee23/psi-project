@@ -1,5 +1,6 @@
 <!-- Autori:
 - Aleksa Mićanović 0282/2020
+- Ljubica Muravljov 0071/2020
 -->
 <div class="col-sm-11 main" style="margin-bottom: 15px;">
     <h1><b>Objave</b></h1>
@@ -10,6 +11,107 @@
             {% endif %}
             {{ objava.sadrzaj }}
             <span> - {{ objava.datumobjave }}</span>
+            {% if objava.korime == request.user %}
+
+                <button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#izmeniObjavuModalBS"
+                        onclick="showModalEditFancyObjava('{{ objava.idobjava }}','{{ objava.sadrzaj }}','{{ objava.slika }}')"
+
+                >
+                    ...
+                </button>
+            {% elif user.is_superuser %}
+                <button type="button" class="katalogbtn" data-bs-toggle="modal"
+                        data-bs-target="#izbrisiObjavuModalBS"
+                        onclick="showModalDeleteFancyObjava({{ objava.idobjava }})"
+
+                >
+                    ...
+                </button>
+            {% endif %}
         </div>
     {% endfor %}
+</div>
+
+
+<!-- dodajObjavuModal -->
+<div class="modal fade" id="dodajObjavuModalBS" tabindex="-1" aria-labelledby="dodajObjavuModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="dodajObjavuModalHeader">Nova objava</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="dodajObjavuForm" enctype="multipart/form-data" action="{% url "dodajObjavu" %}">
+                    {% csrf_token %}
+                    {{ objavaForm.as_p }}
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" name="submit" class="green" form="dodajObjavuForm">
+                    Dodaj
+                </button>
+                <button type="button" class="gray" data-bs-dismiss="modal">Odustani</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- izmeniObjavuModal -->
+<div class="modal fade" id="izmeniObjavuModalBS" tabindex="-1" aria-labelledby="izmeniObjavuModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="izmeniObjavuModalHeader">Izmena objave</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="izmeniObjavuForm"
+                      action="{% url "izmeniObjavu" %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ objavaFormEdit.as_p }}
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" name="submit" class="green" form="izmeniObjavuForm">
+                    Izmeni
+                </button>
+                <button type="button" name="obrisi" class="red" onclick="
+
+                        $('#izmeniObjavuModalBS').modal('hide');
+                        $('#izbrisiObjavuModalBS').modal('show');
+                        $('#izbrisiObjavuForm #id_hiddenIdObjave').val($('#izmeniObjavuForm #id_objavaEdit-hiddenIdObjave').val()) ; ">
+                    Obriši
+                </button>
+                <button type="button" class="gray" data-bs-dismiss="modal">Odustani</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- izbrisiObjavuModal -->
+<div class="modal fade" id="izbrisiObjavuModalBS" tabindex="-1" aria-labelledby="izbrisiObjavuModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="izbrisiObjavuModalHeader">Brisanje recenzije</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="izbrisiObjavuForm" action="{% url 'obrisiObjavu' %}">
+                    {% csrf_token %}
+                    <h3>Želite li da obrišete izabranu objavu?</h3>
+                    {{ objavaFormDelete.hiddenIdObjave }}
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" name="obrisi" class="red" form="izbrisiObjavuForm">Obriši</button>
+                <button type="button" class="gray" data-bs-dismiss="modal">Odustani</button>
+            </div>
+        </div>
+    </div>
 </div>

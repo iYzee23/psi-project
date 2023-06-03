@@ -69,7 +69,8 @@ $(document).ready(function () {
         $(tripleCarouselElementIzdate).addClass("slide");
     }
 
-    $("#id_naziv").keyup(function() {
+
+    $("#id_naziv").keyup(function () {
         $.ajax({
             url: "http://127.0.0.1:8000/pretragaAjax/",
             type: "GET",
@@ -78,16 +79,16 @@ $(document).ready(function () {
                 tip: $("#id_tip").val(),
                 znak: $("#id_filter").val()
             },
-            success: function(response) {
+            success: function (response) {
                 $("#id_naziv").autocomplete({
                     source: response,
                     delay: 0,
-                    select: function(event, ui) {
+                    select: function (event, ui) {
                         var value = ui.item.value.split(" - @")[1];
                         $(this).val(value);
                         return false;
                     }
-                }).data("ui-autocomplete")._renderItem = function(ul, item) {
+                }).data("ui-autocomplete")._renderItem = function (ul, item) {
                     var term = this.term.toLowerCase();
                     var value = item.value.split(" - ")[1];
                     var label = item.label.replace(
@@ -102,11 +103,12 @@ $(document).ready(function () {
                         .data("ui-autocomplete-item", item)
                         .append("<div>" + label + "</div>")
                         .appendTo(ul);
-                    };
+                };
             }
         })
     });
 });
+
 function showModalEdit(idRec, tekst, ocena) {
     $("#id_edit-tekst").val(tekst)
     $("#id_edit-hiddenIdRec").val(idRec)
@@ -115,12 +117,24 @@ function showModalEdit(idRec, tekst, ocena) {
 }
 
 function showModalEditFancy(idRec, tekst, ocena) {
-
     $("#izmeniRecenzijuForm #id_edit-tekst").val(tekst);
     $("#izmeniRecenzijuForm #id_edit-hiddenIdRec").val(idRec);
     $("#izmeniRecenzijuForm #id_edit-ocena").val(parseInt(ocena));
 
 }
+
+function showModalEditFancyObjava(idObjave, sadrzaj, slika) {
+    $("#izmeniObjavuForm #id_objavaEdit-hiddenIdObjave").val(parseInt(idObjave));
+    $("#izmeniObjavuForm #id_objavaEdit-sadrzaj").val(sadrzaj);
+    $("#izmeniObjavuForm #id_objavaEdit-slika").val(slika);
+    $("#izbrisiObjavuForm #id_hiddenIdObjave").val(idObjave);
+
+}
+
+function showModalDeleteFancyObjava(idObjave) {
+    $("#izbrisiObjavuForm #id_hiddenIdObjave").val(idObjave);
+}
+
 function showModalDelete(idRec) {
     $("#hiddenIdDeleteRec").val(idRec)
     $("#deleteRecenzijaModal").show()
@@ -129,25 +143,27 @@ function showModalDelete(idRec) {
 function showLicitacijaInfo(idLic) {
     $("#id_hiddenIdLic").val(idLic);
 }
-/*
-function getCSRFToken() {
-  const cookieValue = document.cookie
-    .split("; ")
-    .find(row => row.startsWith("csrftoken="));
 
-  if (cookieValue) {
-    return cookieValue.split("=")[1];
-  } else {
-    return null;
-  }
-}*/
+function getCSRFToken() {
+    const cookieValue = document.cookie
+        .split("; ")
+        .find(row => row.startsWith("csrftoken="));
+
+    if (cookieValue) {
+        return cookieValue.split("=")[1];
+    } else {
+        return null;
+    }
+}
 
 function showModalDelete(idRec) {
     $("#hiddenIdDeleteRec").val(idRec);
     $("#deleteRecenzijaModal").show();
 
 }
+
 function showModalDeleteFancy(idRec) {
     $("#hiddenIdDeleteRec").val(idRec);
     console.log($("#hiddenIdDeleteRec").val())
 }
+

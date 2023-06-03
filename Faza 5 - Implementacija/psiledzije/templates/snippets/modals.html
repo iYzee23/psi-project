@@ -18,30 +18,8 @@
         </div>
 </div>
 -->
-<!-- dodajObjavuModal -->
-<div class="modal fade" id="dodajObjavuModalBS" tabindex="-1" aria-labelledby="dodajObjavuModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="dodajObjavuModalHeader">Nova objava</h3>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
-            </div>
-            <div class="modal-body">
-                <form method="POST" id="dodajObjavuForm" enctype="multipart/form-data" action="{% url "dodajObjavu" %}">
-                    {% csrf_token %}
-                    {{ objavaForm.as_p }}
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" name="submit" class="green" form="dodajObjavuForm">
-                    Dodaj
-                </button>
-                <button type="button" class="gray" data-bs-dismiss="modal">Odustani</button>
-            </div>
-        </div>
-    </div>
-</div>
+
+
 
 
 <!-- dodajKnjiguModal -->
@@ -122,13 +100,6 @@
                         <li>
                             <h5>
                                 <img src="
-
-
-
-
-
-
-
                                         {% if pratilac.slika %}{{ pratilac.slika.url }}{% else %}../../media/ulogaImgs/default.png{% endif %}"
                                      style="width: 50px; height: 50px; object-fit: cover">
                                 <a href="{% url 'profil' pratilac.username %}" class="profilLink">
