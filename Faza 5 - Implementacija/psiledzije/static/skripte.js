@@ -90,7 +90,7 @@ $(document).ready(function () {
                     }
                 }).data("ui-autocomplete")._renderItem = function (ul, item) {
                     var term = this.term.toLowerCase();
-                    var value = item.value.split(" - ")[1];
+                    var value = item.value.split(" - @")[1];
                     var label = item.label.replace(
                         new RegExp("(" + $.ui.autocomplete.escapeRegex(term) + ")", "gi"),
                         "<b>$1</b>"
@@ -107,6 +107,88 @@ $(document).ready(function () {
             }
         })
     });
+
+    $("#id_novaKnjiga-autori").keyup(function() {
+        $.ajax({
+            url: "http://127.0.0.1:8000/pretragaAutori/",
+            type: "GET",
+            data: {
+                naziv: $("#id_novaKnjiga-autori").val()
+            },
+            success: function(response) {
+                $("#id_novaKnjiga-autori").autocomplete({
+                    source: response,
+                    delay: 0,
+                    select: function(event, ui) {
+                        var value = ui.item.value.split(" - @")[1];
+                        $(this).val(value);
+                        return false;
+                    }
+                }).data("ui-autocomplete")._renderItem = function(ul, item) {
+                    var term = this.term.toLowerCase();
+                    var value = item.value.split(" - @")[1];
+                    var label = item.label.replace(
+                        new RegExp("(" + $.ui.autocomplete.escapeRegex(term) + ")", "gi"),
+                        "<b>$1</b>"
+                    );
+                    label = label.replace(
+                        new RegExp("(" + $.ui.autocomplete.escapeRegex(value) + ")", "gi"),
+                        "<b>$1</b>"
+                    );
+                    return $("<li></li>")
+                        .data("ui-autocomplete-item", item)
+                        .append("<div>" + label + "</div>")
+                        .appendTo(ul);
+                    };
+            }
+        })
+    });
+
+    let autori = [];
+
+    $("#id_novaKnjiga-dodaj").on("click", function() {
+        const value = $("#id_novaKnjiga-autori").val().trim();
+        if (value !== '' && !autori.includes(value)) {
+            $.ajax({
+                url: "http://127.0.0.1:8000/pretragaAutori/",
+                type: "GET",
+                data: {
+                    naziv: $("#id_novaKnjiga-autori").val()
+                },
+                success: function(response) {
+                    if (JSON.stringify(response) !== "[]") {
+                        autori.push(value);
+                        let liItem = $('<li></li>');
+                        let hidden = $('<input type="hidden" name="mojiAutori" value="' + value + '">')
+                        let prikaz = $('<button type="button" class="btn btn-light dugmence"></button>');
+                        let bedz = $('<span class="badge bg-danger">X</span>');
+                        prikaz.text(value + " ");
+                        prikaz.append(bedz);
+                        liItem.append(hidden);
+                        liItem.append(prikaz);
+                        $('#mojiAutori').append(liItem);
+                        $('#id_novaKnjiga-autori').val("");
+                    }
+                }
+            });
+        }
+    });
+
+    $('#mojiAutori').on('click', 'li .dugmence .badge', function() {
+        let val = $(this).parent().text().split(" ")[0];
+        let index = autori.indexOf(val);
+        autori.splice(index, 1);
+        $(this).closest('li').remove();
+    });
+
+    $('#dodajKnjiguForm').on("submit", function(event) {
+        let ul = $("#mojiAutori");
+        if (ul.children().length == 0) {
+          event.preventDefault();
+          alert('Morate da unesete barem jednog autora');
+        }
+    });
+
 });
 
 function showModalEdit(idRec, tekst, ocena) {
@@ -120,7 +202,6 @@ function showModalEditFancy(idRec, tekst, ocena) {
     $("#izmeniRecenzijuForm #id_edit-tekst").val(tekst);
     $("#izmeniRecenzijuForm #id_edit-hiddenIdRec").val(idRec);
     $("#izmeniRecenzijuForm #id_edit-ocena").val(parseInt(ocena));
-
 }
 
 function showModalEditFancyObjava(idObjave, sadrzaj, slika) {
@@ -144,6 +225,7 @@ function showLicitacijaInfo(idLic) {
     $("#id_hiddenIdLic").val(idLic);
 }
 
+/*
 function getCSRFToken() {
     const cookieValue = document.cookie
         .split("; ")
@@ -155,15 +237,9 @@ function getCSRFToken() {
         return null;
     }
 }
-
-function showModalDelete(idRec) {
-    $("#hiddenIdDeleteRec").val(idRec);
-    $("#deleteRecenzijaModal").show();
-
-}
+*/
 
 function showModalDeleteFancy(idRec) {
     $("#hiddenIdDeleteRec").val(idRec);
-    console.log($("#hiddenIdDeleteRec").val())
 }
 

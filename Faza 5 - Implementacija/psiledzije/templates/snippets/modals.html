@@ -32,13 +32,42 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" id="dodajKnjiguForm" action="{% url "dodajKnjigu" %}">
+                <form method="POST" id="dodajKnjiguForm" action="{% url "dodajKnjigu" %}" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ knjigaForm.as_p }}
+                    <div>
+                        {{ knjigaForm.naziv.label_tag }}<br>
+                        {{ knjigaForm.naziv }}
+                      </div><br>
+
+                      <div>
+                        {{ knjigaForm.slika.label_tag }}
+                        {{ knjigaForm.slika }}
+                      </div>
+
+                        {{ knjigaForm.dodaj.label_tag }}<br>
+                      <div style="display: flex; align-items: center;">
+                        {{ knjigaForm.autori }}
+                        {{ knjigaForm.dodaj }}
+                      </div><br>
+
+                        {{ knjigaForm.autori.label_tag }}<br>
+                        <div>
+                            <ul id="mojiAutori" style="display: flex; padding-left: 0;"></ul>
+                        </div>
+
+                      <div>
+                        {{ knjigaForm.opis.label_tag }}
+                        {{ knjigaForm.opis }}
+                      </div>
+
+                      <div>
+                        {{ knjigaForm.sadrzaj.label_tag }}
+                        {{ knjigaForm.sadrzaj }}
+                      </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="green" form="dodajKnjiguForm">
+                <button type="submit" class="green" form="dodajKnjiguForm" id="dodajKnjiguDugme">
                     Dodaj
                 </button>
                 <button type="button" class="gray" data-bs-dismiss="modal">Odustani</button>

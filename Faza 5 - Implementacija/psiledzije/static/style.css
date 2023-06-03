@@ -465,3 +465,27 @@ body {
     border-width: 0;
     background-color: #ee9393;
 }
+
+.ui-autocomplete {
+    z-index: 1060;
+}
+
+#mojiAutori li {
+    list-style-type: none;
+    margin-bottom: 5px;
+    margin-right: 10px;
+}
+
+#mojiAutoriOpet li {
+    list-style-type: none;
+    margin-bottom: 5px;
+    margin-right: 10px;
+}
+
+.dugmence {
+    pointer-events: none;
+}
+
+.dugmence > .badge {
+    pointer-events: auto;
+}

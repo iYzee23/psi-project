@@ -12,6 +12,7 @@ Autori:
 - Ljubica Muravljov 0071/2020
 '''
 
+
 class KorisnikRegForm(UserCreationForm):
     email = EmailField(label="Email")
     username = CharField(label='Korisničko ime')
@@ -139,22 +140,24 @@ class TextObjavaForm(ModelForm):
     class Meta:
         model = Objava
         fields = ["slika", "sadrzaj"]
+
+
 class ObjavaDeleteForm(Form):
     hiddenIdObjave = forms.CharField(widget=forms.HiddenInput(), required=False, initial=-1)
 
-class AutoriField(forms.ModelMultipleChoiceField):
-    def label_from_instance(self, obj):
-        return f"{obj.imeprezime}-[@{obj.username}]"
 
 class KnjigaObjavaForm(ModelForm):
     naziv = CharField(label='Naziv knjige', widget=TextInput(attrs={"size": "50"}))
     slika = ImageField(label='Slika knjige', required=False)
-    autori = AutoriField(queryset=Autor.objects.all(), widget=SelectMultiple(attrs={"class": "form-control"}))
+    autori = CharField(label='Autori', widget=TextInput(attrs={"autocomplete": "off", "style": "margin-right: 10px"}), required=False)
+    dodaj = CharField(label='Dodavanje autora', widget=TextInput(attrs={"class": "btn btn-light", "type": "button", "value": "Dodaj autora"}), required=False)
     opis = CharField(label='Opis', widget=Textarea)
     sadrzaj = CharField(label='Sadržaj objave za knjigu', widget=Textarea)
+
     class Meta:
         model = Knjiga
-        fields = ["naziv", "slika", "autori", "opis"]
+        fields = ["naziv", "slika", "autori", "dodaj", "opis"]
+
 
 class LicitacijaPonudaForm(Form):
     hiddenIdLic = forms.CharField(widget=forms.HiddenInput(), required=False, initial=-1)

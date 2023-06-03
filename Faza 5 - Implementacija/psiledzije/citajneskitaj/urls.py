@@ -37,5 +37,6 @@ urlpatterns = [
     path('otprati', otprati, name="otprati"),
     path('licitacije/', licitacije, name="licitacije"),
     path('pretragaAjax/', pretragaAjax, name="pretragaAjax"),
+    path('pretragaAutori/', pretragaAutori, name="pretragaAutori"),
     path('dodajLicitaciju/', dodajLicitaciju, name="dodajLicitaciju")
 ]

@@ -759,8 +759,10 @@ def dodajKnjigu(request: HttpRequest):
         isbn = generisiISBN()
         naziv = form.cleaned_data["naziv"]
         slika = form.cleaned_data["slika"]
+        print(slika)
         opis = form.cleaned_data["opis"]
-        autori = form.cleaned_data["autori"]
+        # autori = form.cleaned_data["autori"]
+        autori = request.POST.getlist("mojiAutori")
         Knjiga(isbn=isbn, naziv=naziv, slika=slika, opis=opis, prosecnaocena=0, idizdkuca_id=request.user.pk).save()
         for autor in autori:
             Napisao(isbn_id=isbn, idautor_id=autor).save()
@@ -778,12 +780,15 @@ def promeniInfoKnjige(request: HttpRequest):
     autori = Autor.objects.filter(napisao__isbn=knjiga)
     izmenaForm = KnjigaObjavaForm(request.POST or None, request.FILES or None)
     if izmenaForm.is_valid():
+        sadrzaj = izmenaForm.cleaned_data["sadrzaj"]
+        slika = izmenaForm.cleaned_data["slika"]
         knjiga.naziv = izmenaForm.cleaned_data["naziv"]
         knjiga.opis = izmenaForm.cleaned_data["opis"]
         if request.FILES:
-            knjiga.slika = izmenaForm.cleaned_data["slika"]
+            knjiga.slika = slika
 
-        novi_autori_id = izmenaForm.cleaned_data["autori"]
+        # novi_autori_id = izmenaForm.cleaned_data["autori"]
+        novi_autori_id = request.POST.getlist("mojiAutoriOpet")
 
         for autor in autori:
             num_knjiga_autora_i_izd_kuce = Knjiga.objects.filter(
@@ -797,16 +802,19 @@ def promeniInfoKnjige(request: HttpRequest):
             if not Povezani.objects.filter(Q(idautor=novi_autor) & Q(idizdkuca_id=request.user.pk)).exists():
                 Povezani(idautor=novi_autor, idizdkuca_id=request.user.pk).save()
         knjiga.save()
-
+        Objava(sadrzaj=sadrzaj, datumobjave=dt.now(), slika=slika, korime=request.user).save()
         return redirect("knjiga", knjiga_id=knjiga.pk)
     else:
         izmenaForm = KnjigaObjavaForm(initial={
             "naziv": knjiga.naziv,
-            "autori": autori,
-            "slika": knjiga.slika,
+            #"autori": autori,
+            #"slika": knjiga.slika,
             "opis": knjiga.opis
         })
-    return render(request, "entities/promenaInfoKnjige.html", {"form": izmenaForm})
+    return render(request, "entities/promenaInfoKnjige.html", {
+        "form": izmenaForm,
+        "sviAutori": autori
+    })
 
 
 @login_required(login_url="login")
@@ -848,6 +856,8 @@ def licitacije(request: HttpRequest):
     return redirect("mojProfil")
 
 
+# na osnovu zahteva koji se asinhrono salje sa klijenta
+# dohvata informacije o pretrazi i vraca nazad kao odgovor
 def pretragaAjax(request: HttpRequest):
     naziv = request.GET.get("naziv")
     tip = request.GET.get("tip")
@@ -869,6 +879,17 @@ def pretragaAjax(request: HttpRequest):
         objektiz = Autor.objects.filter((Q(imeprezime__icontains=naziv) | Q(username__icontains=naziv)) & Q(is_active=1)).order_by(znak + 'prosecnaocena')
         for obj in objektiz:
             objekti.append({"id": obj.username, "naziv": obj.imeprezime})
+    response = [obj.get("naziv") + " - @" + obj.get("id") for obj in objekti]
+    return JsonResponse(response, safe=False)
+
+
+# analogno funkciji pretragaAjax, samo sa drugacijim filterima
+def pretragaAutori(request: HttpRequest):
+    naziv = request.GET.get("naziv")
+    objekti = []
+    objektiz = Autor.objects.filter(Q(imeprezime__icontains=naziv) | Q(username__icontains=naziv))
+    for obj in objektiz:
+        objekti.append({"id": obj.username, "naziv": obj.imeprezime})
     response = [obj.get("naziv") + " - @" + obj.get("id") for obj in objekti]
     return JsonResponse(response, safe=False)
 
