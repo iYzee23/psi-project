@@ -1,0 +1,39 @@
+<!-- Autori:
+- Predrag Pešić 0023/2020
+- Aleksa Mićanović 0282/2020
+- Ljubica Muravljov 0071/2020
+-->
+
+{% if uloga == user %}
+    <div >
+        {% if uloga.tip == "I" %}
+            <button type="button" class="settingsButton" data-bs-toggle="modal" data-bs-target="#dodajKnjiguModalBS">
+                Dodaj knjigu
+            </button>
+        {% endif %}
+
+        <div>
+            <form action="{% url "promeniSifru" %}" method="POST">
+                {% csrf_token %}
+                <button class="settingsButton">Promena sifre</button>
+            </form>
+        </div>
+        <div>
+            <form action="{% url "promeniInfo" %}" method="POST">
+                {% csrf_token %}
+                <button class="settingsButton">Promena informacija o profilu</button>
+            </form>
+        </div>
+        {% if uloga.is_superuser %}
+            <form action="{% url "admResetujLozinku" %}" method="POST">
+                {% csrf_token %}
+                <button class="settingsButton">Admin - Resetuj lozinku</button>
+            </form>
+            <form action="{% url "admBanujNalog" %}" method="POST">
+                {% csrf_token %}
+                <button class="settingsButton">Admin - Banuj nalog</button>
+            </form>
+        {% endif %}
+    </div>
+    <hr>
+{% endif %}

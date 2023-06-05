@@ -12,24 +12,41 @@
         <img class="profilnaU" src="{% if uloga.slika %}{{ uloga.slika.url }}{% endif %}" alt="No image :(">
     </div>
     <div class="col-sm-8" style="margin-bottom: 5%;">
-        <h1 style="font-weight: bold">{{ profil.imeprezime }}</h1>
-        <h3 style="margin-bottom: 5%;">{{ profil.prosecnaocena }}/5.00</h3>
-        <h3 style="margin-bottom: 5%;"><b>Broj pratilaca:</b> {{ uloga.brpratilaca }}</h3>
-        <div>
-            {% include 'snippets/zaprati_otprati_dugme.html' %}
+        <div class="row col-sm-12">
+            <div class="col-sm-8">
+                <h1 style="font-weight: bold">{{ profil.imeprezime }} </h1>
+                <h3 style="margin-bottom: 5%;">{{ profil.prosecnaocena }}/5.00</h3>
+                <h3 style="margin-bottom: 5%;"><b>Broj pratilaca:</b> {{ uloga.brpratilaca }}</h3>
+            </div>
+            <div class="col-sm-4">
+                {% if uloga.banovan == 1 %}
+
+                    <h1 style="color:red; font-weight: bold">BANOVAN</h1>
+                {% else %}
+                    {% include 'snippets/zaprati_otprati_dugme.html' %}
+                {% endif %}
+
+            </div>
         </div>
 
-        {% include 'snippets/mojprofil_dugmad.html' %}
-    </div>
-    {% include 'snippets/modals.html' %}
-{% endblock %}
 
+    </div>
+
+{% endblock %}
+<div class="row col-sm-12">
+
+</div>
 {% block lowerLeft %}
+    {% include 'snippets/mojprofil_dugmad.html' %}
+    {% include 'snippets/modals.html' %}
+    {% if uloga.banovan == 0  %}
     {% include 'snippets/licna_kolekcija_carousel.html' %}
+    {% endif %}
     {% include 'snippets/objave.html' %}
 {% endblock %}
 
 {% block rightPanel %}
+    {% include 'snippets/settings_profil_dugmad.html' %}
     {% include 'snippets/recenzije.html' %}
 {% endblock %}
 

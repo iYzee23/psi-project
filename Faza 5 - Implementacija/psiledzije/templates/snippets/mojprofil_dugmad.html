@@ -3,49 +3,11 @@
 - Aleksa Mićanović 0282/2020
 -->
 {% if uloga == user %}
-    <div class="col-sm-12" style="display: flex; justify-content: space-between">
-        <button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#dodajObjavuModalBS">Dodaj
-            objavu
+    <div class="col-sm-12 p-0" style="display: flex; justify-content: space-between">
+        <button type="button" class="addButton align-middle m-0" data-bs-toggle="modal"
+                data-bs-target="#dodajObjavuModalBS">
+            <span class="align-middle" style="font-size:40px;">+</span> <span class="align-middle"> Nova objava </span>
         </button>
-        <!--
-        <button class="katalogbtn" onclick="$('#addObjavaModal').show()">Dodaj objavu</button>
-        -->
-        {% if uloga.tip == "I" %}
-            <button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#dodajKnjiguModalBS">Dodaj
-                knjigu
-            </button>
-            <a href="{% url 'licitacije' %}">
-                <button class="katalogbtn">Licitacije</button>
-            </a>
-        {% elif uloga.tip == "A" %}
-            <a href="{% url 'licitacije' %}">
-                <button class="katalogbtn">Licitacije</button>
-            </a>
-        {% endif %}
-        {% if uloga.tip == "A" or uloga.tip == "I" %}
-            <form action="{% url 'licitacije' %}" method="post">
-                {% csrf_token %}
-                <button class="katalogbtn" type="submit">Prikaži licitacije</button>
-            </form>
-        {% endif %}
-        <form action="{% url "promeniSifru" %}" method="POST">
-            {% csrf_token %}
-            <button class="katalogbtn">Promena sifre</button>
-        </form>
-        <form action="{% url "promeniInfo" %}" method="POST">
-            {% csrf_token %}
-            <button class="katalogbtn">Promena informacija o profilu</button>
-        </form>
-        {% if uloga.is_superuser %}
-            <form action="{% url "admResetujLozinku" %}" method="POST">
-                {% csrf_token %}
-                <button class="katalogbtn">Admin - Resetuj zaboravljenu lozinku</button>
-            </form>
-            <form action="{% url "admBanujNalog" %}" method="POST">
-                {% csrf_token %}
-                <button class="katalogbtn">Admin - Banuj nalog</button>
-            </form>
-        {% endif %}
     </div>
 {% endif %}
 

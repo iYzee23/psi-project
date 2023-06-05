@@ -2,10 +2,11 @@
 - Aleksa Mićanović 0282/2020
 - Luka Nevajda 0370/2020
 -->
-<div class="col-sm-10 main" style="margin-bottom: 15px;">
     <h1><b>Tekuće licitacije</b></h1>
+<div class="col-sm-10 main " style="margin-bottom: 15px; height:50vh; overflow: auto;">
+
     {% for licitacija in tekuce_licitacije %}
-        <div class="card tekuca_lic" style="width: 100%;">
+        <div class="card tekuca_lic m-2" style="width: 20vw; ">
             <div class="card-body">
                 <b>Autor</b>: {{ licitacija.idautor.imeprezime }} [<a
                     href="{% url 'profil' licitacija.idautor.username %}"

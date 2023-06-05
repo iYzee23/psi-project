@@ -5,17 +5,11 @@
 <div class="col-sm-11 main" style="margin-bottom: 15px;">
     <h1><b>Objave</b></h1>
     {% for objava in objave %}
-        <div class="objava">
-            {% if objava.slika %}
-                <img src="{{ objava.slika.url }}" style="max-width: 100px;">
-            {% endif %}
-            {{ objava.sadrzaj }}
-            <span> - {{ objava.datumobjave }}</span>
-            {% if objava.korime == request.user %}
 
+        <div class="float-right m-0 p-0">
+            {% if objava.korime == request.user %}
                 <button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#izmeniObjavuModalBS"
                         onclick="showModalEditFancyObjava('{{ objava.idobjava }}','{{ objava.sadrzaj }}','{{ objava.slika }}')"
-
                 >
                     ...
                 </button>
@@ -28,11 +22,53 @@
                     ...
                 </button>
             {% endif %}
+
+
         </div>
+        <div class="row col-sm-12">
+            {% if objava.slika %}
+                <div class="col-sm-4  text-center m-0 p-0">
+                    <img src="{{ objava.slika.url }}"
+                         style=" height:30vh; width:15vw;" alt=" ">
+                </div>
+            {% endif %}
+            <div class="col-sm-8 m-0 p-0" style="background-color:rgba(255,255,255,0.66);">
+                <h4 class="card-text">{{ objava.sadrzaj }}<br> - {{ objava.datumobjave }}</h4>
+            </div>
+
+        </div>
+
+
+
+        <hr>
+        {#        <div class="objava">#}
+        {#            {% if objava.slika %}#}
+        {#                <img src="{{ objava.slika.url }}" style="max-width: 100px;">#}
+        {#            {% endif %}#}
+        {#            {{ objava.sadrzaj }}#}
+        {#            <span> - {{ objava.datumobjave }}</span>#}
+        {#            {% if objava.korime == request.user %}#}
+        {##}
+        {#                <button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#izmeniObjavuModalBS"#}
+        {#                        onclick="showModalEditFancyObjava('{{ objava.idobjava }}','{{ objava.sadrzaj }}','{{ objava.slika }}')"#}
+        {##}
+        {#                >#}
+        {#                    ...#}
+        {#                </button>#}
+        {#            {% elif user.is_superuser %}#}
+        {#                <button type="button" class="katalogbtn" data-bs-toggle="modal"#}
+        {#                        data-bs-target="#izbrisiObjavuModalBS"#}
+        {#                        onclick="showModalDeleteFancyObjava({{ objava.idobjava }})"#}
+        {##}
+        {#                >#}
+        {#                    ...#}
+        {#                </button>#}
+        {#            {% endif %}#}
+        {#        </div>#}
     {% endfor %}
 </div>
 
-    
+
 <!-- dodajObjavuModal -->
 <div class="modal fade" id="dodajObjavuModalBS" tabindex="-1" aria-labelledby="dodajObjavuModalLabel"
      aria-hidden="true">

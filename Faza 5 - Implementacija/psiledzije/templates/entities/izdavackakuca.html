@@ -11,31 +11,39 @@
         <img class="profilnaU" src="{% if uloga.slika %}{{ uloga.slika.url }}{% endif %}" alt="No image :(">
     </div>
     <div class="col-sm-8" style="margin-bottom: 3%;">
-        <h1 style="font-weight: bold">{{ profil.naziv }}</h1>
-        <h3 style="margin-bottom: 5%;">{{ profil.prosecnaocena }}/5.00</h3>
-        <h5 style="margin-bottom: 5%;"><b>Broj pratilaca:</b> {{ profil.brpratilaca }}</h5>
-        <h5><b>Istorija: </b>{{ profil.istorija }}</h5>
-        <h5><b>Adresa: </b>{{ profil.adresa }}</h5>
-        <div>
-            {% include 'snippets/povezani_autori2.html' %}
-        </div>
-        <div>
-            {% include 'snippets/zaprati_otprati_dugme.html' %}
+        <div class="row col-sm-12">
+            <div class="col-sm-8">
+                <h1 style="font-weight: bold">{{ profil.naziv }}</h1>
+                <h3 style="margin-bottom: 5%;">{{ profil.prosecnaocena }}/5.00</h3>
+                <h5 style="margin-bottom: 5%;"><b>Broj pratilaca:</b> {{ profil.brpratilaca }}</h5>
+                <h5><b>Istorija: </b>{{ profil.istorija }}</h5>
+                <h5><b>Adresa: </b>{{ profil.adresa }}</h5>
+                <div>
+                    {% include 'snippets/povezani_autori2.html' %}
+                </div>
+
+            </div>
+            <div class="col-sm-4">
+                {% include 'snippets/zaprati_otprati_dugme.html' %}
+
+            </div>
         </div>
 
-        {% include 'snippets/mojprofil_dugmad.html' %}
 
-        {% include 'snippets/spisak_lokacija_dugme.html' %}
     </div>
     {% include 'snippets/modals.html' %}
 {% endblock %}
 
 {% block lowerLeft %}
+    {% include 'snippets/spisak_lokacija_dugme.html' %}
+    {% include 'snippets/mojprofil_dugmad.html' %}
+
     {% include 'snippets/izdate_knjige_carousel.html' %}
     {% include 'snippets/objave.html' %}
 {% endblock %}
 
 {% block rightPanel %}
+    {% include 'snippets/settings_profil_dugmad.html' %}
     {% include 'snippets/recenzije.html' %}
 {% endblock %}
 

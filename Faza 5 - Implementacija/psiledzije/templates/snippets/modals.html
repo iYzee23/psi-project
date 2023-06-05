@@ -4,23 +4,6 @@
 - Luka Nevajda 0370/2020
 - Ljubica Muravljov 0071/2020
 -->
-<!--
-<div class="myModal" id="addObjavaModal">
-        <div class="modalDiv" id="dodajObjavu">
-            <h1>DODAJ NOVU OBJAVU</h1><br><br>
-            <form method="POST" enctype="multipart/form-data" action="{% url "dodajObjavu" %}">
-                {# {% csrf_token %}  {{ objavaForm.as_p }}#}
-
-                <button class="btn-success">Dodaj objavu</button>
-                <input type="reset" name="odustani" value="Odustani" class="odustani" style="background-color:grey"
-                       onclick="$('#addObjavaModal').hide()">
-            </form>
-        </div>
-</div>
--->
-
-
-
 
 <!-- dodajKnjiguModal -->
 <div class="modal fade" id="dodajKnjiguModalBS" tabindex="-1" aria-labelledby="dodajKnjiguModalLabel"
@@ -37,33 +20,36 @@
                     <div>
                         {{ knjigaForm.naziv.label_tag }}<br>
                         {{ knjigaForm.naziv }}
-                      </div><br>
+                    </div>
+                    <br>
 
-                      <div>
+                    <div>
                         {{ knjigaForm.slika.label_tag }}
                         {{ knjigaForm.slika }}
-                      </div>
+                    </div>
 
-                        {{ knjigaForm.dodaj.label_tag }}<br>
-                      <div style="display: flex; align-items: center;">
+                    {{ knjigaForm.dodaj.label_tag }}
+                    <br>
+                    <div style="display: flex; align-items: center;">
                         {{ knjigaForm.autori }}
                         {{ knjigaForm.dodaj }}
-                      </div><br>
+                    </div>
+                    <br>
 
-                        {{ knjigaForm.autori.label_tag }}<br>
-                        <div>
-                            <ul id="mojiAutori" style="display: flex; padding-left: 0;"></ul>
-                        </div>
+                    {{ knjigaForm.autori.label_tag }}<br>
+                    <div>
+                        <ul id="mojiAutori" style="display: flex; padding-left: 0;"></ul>
+                    </div>
 
-                      <div>
+                    <div>
                         {{ knjigaForm.opis.label_tag }}
                         {{ knjigaForm.opis }}
-                      </div>
+                    </div>
 
-                      <div>
+                    <div>
                         {{ knjigaForm.sadrzaj.label_tag }}
                         {{ knjigaForm.sadrzaj }}
-                      </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -75,44 +61,6 @@
         </div>
     </div>
 </div>
-
-
-{#<div class="myModal" id="addKnjigaModal">#}
-{#    <div id="dodajKnjigu">#}
-{#        <h5>DODAJ NOVU KNJIGU</h5><br><br>#}
-{#            <form method="POST" enctype="multipart/form-data" action="{% url "dodajKnjigu" %}">#}
-{#                 {% csrf_token %} {{ knjigaForm.as_table }} #}
-{#                <table>#}
-{#                    #}
-{#                </table>#}
-{#                <button class="btn-success">Dodaj knjigu</button>#}
-{#                <input type="reset" name="odustani" value="Odustani" class="odustani" style="background-color:grey"#}
-{#                       onclick="$('#addKnjigaModal').hide()">#}
-{#            </form>#}
-{#    </div>#}
-{#</div>#}
-
-{##}
-{#<div class="myModal" id="prikaziPratioceModal">#}
-{#    <div id="prikaziPratioce">#}
-{#        <h3>PRATIOCI</h3>#}
-{#        <div class="modalSredina">#}
-{#            <ul>#}
-{#                {% for pratilac in pratioci %}#}
-{#                    <li>#}
-{#                        <h5>#}
-{#                            <img src="{% if pratilac.slika %}{{ pratilac.slika.url }}{% else %}../../media/ulogaImgs/default.png{% endif %}" style="width: 50px; height: 50px; object-fit: cover">#}
-{#                            <a href="{% url 'profil' pratilac.username %}" class="profilLink">#}
-{#                            {{ pratilac.naziv }} [@{{ pratilac.username }}]#}
-{#                            </a>#}
-{#                        </h5>#}
-{#                    </li>#}
-{#                {% endfor %}#}
-{#            </ul>#}
-{#        </div>#}
-{#        <input type="button" value="Odustani" class="odustani" style="background-color:grey; margin-top: 20px" onclick="$('#prikaziPratioceModal').hide()">#}
-{#    </div>#}
-{#</div>#}
 
 <!-- prikaziPratioceModal -->
 <div class="modal fade" id="prikaziPratioceModalBS" tabindex="-1" aria-labelledby="prikaziPratioceModalLabel"
@@ -129,6 +77,7 @@
                         <li>
                             <h5>
                                 <img src="
+
                                         {% if pratilac.slika %}{{ pratilac.slika.url }}{% else %}../../media/ulogaImgs/default.png{% endif %}"
                                      style="width: 50px; height: 50px; object-fit: cover">
                                 <a href="{% url 'profil' pratilac.username %}" class="profilLink">
@@ -146,32 +95,6 @@
     </div>
 </div>
 
-
-{#<div class="myModal" id="prikaziPraceneModal">#}
-{#    <div id="prikaziPracene">#}
-{#        <h3>PRACENI</h3>#}
-{#        <div class="modalSredina">#}
-{#            <ul>#}
-{#                {% for pracen in praceni %}#}
-{#                    <li>#}
-{#                        <h5>#}
-{#                            <img src="#}
-{##}
-{#                                    {% if pracen.slika %}{{ pracen.slika.url }}{% else %}../../media/ulogaImgs/default.png{% endif %}"#}
-{#                                 style="width: 50px; height: 50px; object-fit: cover">#}
-{#                            <a href="{% url 'profil' pracen.username %}" class="profilLink">#}
-{#                                {{ pracen.naziv }} [@{{ pracen.username }}]#}
-{#                            </a>#}
-{#                        </h5>#}
-{#                    </li>#}
-{#                {% endfor %}#}
-{#            </ul>#}
-{#        </div>#}
-{#        <input type="button" value="Odustani" class="odustani" style="background-color:grey; margin-top: 20px"#}
-{#               onclick="$('#prikaziPraceneModal').hide()">#}
-{#    </div>#}
-{#</div>#}
-
 <!-- prikaziPraceneModal -->
 <div class="modal fade" id="prikaziPraceneModalBS" tabindex="-1" aria-labelledby="prikaziPraceneModalLabel"
      aria-hidden="true">
@@ -187,6 +110,7 @@
                         <li>
                             <h5>
                                 <img src="
+
 
 
                                         {% if pracen.slika %}{{ pracen.slika.url }}{% else %}../../media/ulogaImgs/default.png{% endif %}"

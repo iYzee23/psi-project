@@ -54,7 +54,9 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" name="izmeni" class="green" form="izmeniRecenzijuForm">Izmeni</button>
-                <button type="submit" name="obrisi" class="red" form="izmeniRecenzijuForm" onclick="$('#id_edit-tekst').val('tekst')">Obriši</button>
+                <button type="submit" name="obrisi" class="red" form="izmeniRecenzijuForm"
+                        onclick="$('#id_edit-tekst').val('tekst')">Obriši
+                </button>
                 <button type="button" class="gray" data-bs-dismiss="modal">Odustani</button>
             </div>
         </div>
@@ -85,56 +87,62 @@
         </div>
     </div>
 </div>
+<div class="row col-sm-12">
 
-<h1 style="font-weight: bold;"><u>Recenzije</u></h1>
-<div class="col-sm-2">
-    {% if user.is_authenticated %}
-        <!-- Dugme za dodajRecenzijuModal -->
-        {#  <button class="katalogbtn" id="dodajRec" onclick="$('#addRecenzijaModal').show()">Dodaj recenziju</button> #}
-        <button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#dodajRecenzijuModalBS">Dodaj
-            recenziju
-        </button>
-    {% endif %}
-</div>
-{% if errorTekst != None %}
 
-    <div class="alert alert-danger alert-info alert-dismissible fade show" role="alert" style="width:100%;">
+    <h1 style="font-weight: bold;"><u>Recenzije</u></h1>
+    <div class="col-sm-2">
+        {% if user.is_authenticated %}
+            <!-- Dugme za dodajRecenzijuModal -->
+            {#  <button class="katalogbtn" id="dodajRec" onclick="$('#addRecenzijaModal').show()">Dodaj recenziju</button> #}
+            <button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#dodajRecenzijuModalBS">
+                Dodaj
+                recenziju
+            </button>
+        {% endif %}
+    </div>
+    {% if errorTekst != None %}
+
+        <div class="alert alert-danger alert-info alert-dismissible fade show" role="alert" style="width:100%;">
                                 <span>
                                   {{ errorTekst }}
                                 </span>
-        <button type="button" class="close text-right" data-bs-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true" style="float:right">&times;</span>
-        </button>
-    </div>
-{% endif %}
+            <button type="button" class="close text-right" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true" style="float:right">&times;</span>
+            </button>
+        </div>
+    {% endif %}
 
-{% for rec in recenzije %}
-    <div class="recenzija">
-        <h2>⭐{{ rec.ocena }} -
-            {% if rec.iddavalac.banovan == 0 %}
-                <i>
-                    <a class="profilLink"
-                       href="{% url 'profil' rec.iddavalac.username %}">@{{ rec.iddavalac.username }} </a>
-                </i>
-            {% else %}
-                <i>@banovan</i>
-            {% endif %}
-            {% if rec.iddavalac == request.user %}
-                <button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#izmeniRecenzijuModalBS"
-                        onclick="showModalEditFancy({{ rec.idrec }},'{{ rec.tekst }}',{{ rec.ocena }})"
-                >
-                    ...
-                </button>
-                <!-- <button class="editBtn" onclick="showModalEdit({{ rec.idrec }},'{{ rec.tekst }}',{{ rec.ocena }})" >...</button> -->
-            {% elif user.is_superuser %}
-                <button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#izbrisiRecenzijuModalBS"
-                        onclick="showModalDeleteFancy({{ rec.idrec }})"
-                >
-                    ...
-                </button>
-                {# <button class="editBtn" onclick="showModalDelete({{ rec.idrec }})">...</button> #}
-            {% endif %}
-        </h2>
-        <div style="font-style: italic">{{ rec.tekst }}</div>
-    </div>
-{% endfor %}
+    {% for rec in recenzije %}
+        <div class="recenzija">
+            <h2>⭐{{ rec.ocena }} -
+                {% if rec.iddavalac.banovan == 0 %}
+                    <i>
+                        <a class="profilLink"
+                           href="{% url 'profil' rec.iddavalac.username %}">@{{ rec.iddavalac.username }} </a>
+                    </i>
+                {% else %}
+                    <i>@banovan</i>
+                {% endif %}
+                {% if rec.iddavalac == request.user %}
+                    <button type="button" class="katalogbtn m-0" data-bs-toggle="modal" style="float:right;"
+                            data-bs-target="#izmeniRecenzijuModalBS"
+                            onclick="showModalEditFancy({{ rec.idrec }},'{{ rec.tekst }}',{{ rec.ocena }})"
+                    >
+                        ...
+                    </button>
+                    <!-- <button class="editBtn" onclick="showModalEdit({{ rec.idrec }},'{{ rec.tekst }}',{{ rec.ocena }})" >...</button> -->
+                {% elif user.is_superuser %}
+                    <button type="button" class="katalogbtn" data-bs-toggle="modal"
+                            data-bs-target="#izbrisiRecenzijuModalBS" style="float:right;"
+                            onclick="showModalDeleteFancy({{ rec.idrec }})"
+                    >
+                        ...
+                    </button>
+                    {# <button class="editBtn" onclick="showModalDelete({{ rec.idrec }})">...</button> #}
+                {% endif %}
+            </h2>
+            <div class="m-0 p-0" style="font-style: italic; font-size:large;">{{ rec.tekst }}</div>
+        </div>
+    {% endfor %}
+</div>

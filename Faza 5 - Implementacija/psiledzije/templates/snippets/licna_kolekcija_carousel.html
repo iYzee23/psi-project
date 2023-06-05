@@ -2,29 +2,37 @@
 - Aleksa Mićanović 0282/2020
 -->
 <!-- Carousel za licnu kolekciju profila -->
+
 <div class="col-sm-11 main tripleCarousel licna" style="margin-bottom: 15px;">
     <h1 style="padding-bottom: 5%;"><b>Lična kolekcija</b></h1>
     {% if licna_kolekcija %}
         <div id="carouselExampleControlsLicna" class="carousel" data-bs-ride="carousel">
             <div class="carousel-inner licna">
                 {% for knjiga in licna_kolekcija %}
-                    <div class="carousel-item licna">
-                        <div class="card">
-                            <a href="{% url 'knjiga' knjiga.isbn %}">
-                                <div class="img-wrapper">
-                                    <img src="
+                    <div class="carousel-item licna" style="width:10%;">
+                        <a class="link-secondary" href="{% url 'knjiga' knjiga.isbn %}">
+                            <div class="card"
+                                 style="background-color:rgba(255,255,255,0.66); max-width:14vw; height:100%;">
 
-                                            {% if knjiga.slika %}{{ knjiga.slika.url }}{% else %}../../../media/KnjigaImgs/default.png{% endif %}"
-                                         class="d-block w-100" alt="...">
+                                <div style="width:100%; height:100%;">
+
+                                    <div class="img-wrapper">
+                                        <img src="
+
+
+
+                                                {% if knjiga.slika %}{{ knjiga.slika.url }}{% else %}../../../media/KnjigaImgs/default.png{% endif %}"
+                                             class="d-block w-100 h-100" alt=" ">
+                                    </div>
+
                                 </div>
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">{{ knjiga.naziv }}</h5>
-                                <p class="card-text">
-                                <p>⭐{{ knjiga.prosecnaocena }}</p>
-                                </p>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                    <p>⭐{{ knjiga.prosecnaocena }} - {{ knjiga.naziv }}</p>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 {% endfor %}
             </div>

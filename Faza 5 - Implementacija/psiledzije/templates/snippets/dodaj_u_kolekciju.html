@@ -6,12 +6,16 @@
     {% if imaUkolekciji == False %}
         <form method="POST">
             {% csrf_token %}
-            <button type="submit" name="dodajUkolekciju" class="katalogbtn">Dodaj u kolekciju</button>
+            <button type="submit" name="dodajUkolekciju" style="background-color:transparent; border:0" >
+                <img src="../../static/slike/button/emptyHeart.png" style="width:50px;height:50px;">
+            </button>
         </form>
     {% else %}
         <form method="POST" action="{% url "knjiga" knjiga_id=knjiga.isbn %}">
             {% csrf_token %}
-            <button type="submit" name="brisiIzKolekcije" class="katalogbtn">Izbaci iz kolekcije</button>
+            <button type="submit" name="brisiIzKolekcije" style="background-color:transparent; border:0" >
+                <img src="../../static/slike/button/fullHeart.png" style="width:50px;height:50px;">
+            </button>
         </form>
     {% endif %}
 {% endif %}

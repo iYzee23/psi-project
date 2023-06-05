@@ -1,21 +1,32 @@
 <!-- Autori:
 - Aleksa Mićanović 0282/2020
 - Luka Nevajda 0370/2020
+- Ljubica Muravljov 0071/2020
 -->
+
 {% if flag == 1 %}
     <form action="{% url 'zaprati' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="praceni" value="{{ uloga }}">
-        <button class="katalogbtn" type="submit">Zaprati</button>
+        <button class="btn btn-outline-dark  bigCenter" type="submit">Zaprati</button>
     </form>
 {% elif flag == 2 %}
     <form action="{% url 'otprati' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="praceni" value="{{ uloga }}">
-        <button class="katalogbtn" type="submit">Otprati</button>
+        <button class="btn btn-outline-dark bigCenter" type="submit">Otprati </button>
     </form>
 {% endif %}
-<button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#prikaziPratioceModalBS">Prikaži profile pratilaca</button>
-<button type="button" class="katalogbtn" data-bs-toggle="modal" data-bs-target="#prikaziPraceneModalBS">Prikaži profile pratilaca</button>
+{% if user != uloga %}
+<div>
+    <span><button type="button" class="btn btn-outline-dark praceniPratiocibtn" data-bs-toggle="modal" data-bs-target="#prikaziPratioceModalBS">Pratioci</button></span>
+    <span><button type="button" class="btn btn-outline-dark praceniPratiocibtn" data-bs-toggle="modal" data-bs-target="#prikaziPraceneModalBS">Praćeni</button></span>
+</div>
+{% else %}
+<div class="w-100 mt-5">
+    <span><button type="button" class="btn btn-outline-dark praceniPratiocibtn" data-bs-toggle="modal" data-bs-target="#prikaziPratioceModalBS">Pratioci</button></span>
+    <span><button type="button" class="btn btn-outline-dark praceniPratiocibtn" data-bs-toggle="modal" data-bs-target="#prikaziPraceneModalBS">Praćeni</button></span>
+</div>
+{% endif %}
 {#<button class="katalogbtn" type="button" onclick="$('#prikaziPratioceModal').show()">Prikazi profile pratilaca</button>#}
 {#<button class="katalogbtn" type="button" onclick="$('#prikaziPraceneModal').show()">Prikazi praćene profile</button>#}

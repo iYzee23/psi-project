@@ -19,7 +19,10 @@
         <h5><b>ISBN:</b> {{ knjiga.isbn }}</h5>
         <h5><b>Autori:</b>
             {% for autor in autori %}
-                <span><a href="{% url 'profil' autor.username %}" class="profilLink"> {{ autor.imeprezime }}</a> </span>
+                <span><a href="{% url 'profil' autor.username %}" class="profilLink"> {{ autor.imeprezime }}</a></span>
+                {% if autor != autori.all.last %}
+                    <span>,</span>
+                {% endif %}
             {% endfor %}
         </h5>
         <h5><b>Izdavačka kuća:</b> <a href="{% url 'profil' knjiga.idizdkuca.username %}"

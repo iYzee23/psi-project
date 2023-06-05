@@ -36,7 +36,7 @@ body {
 
 .mainPanel {
     height: fit-content;
-    background-color: rgba(122, 116, 116, 0.9);
+    background-color: rgba(134, 129, 129, 0.97);
     padding: 20px;
 }
 
@@ -49,8 +49,9 @@ body {
 .main {
     height: fit-content;
 
-    background-color: rgba(122, 116, 116, 0.9);
+    background-color: rgb(166, 159, 159);
     padding: 20px;
+    margin:0;
 }
 
 .recenzije {
@@ -64,12 +65,6 @@ body {
     padding: 5px;
 }
 
-
-.objava {
-    background-color: rgba(122, 76, 53, 0.8);
-    margin: 5px;
-    padding: 5px;
-}
 
 .cardPic {
     width: 25%;
@@ -226,8 +221,8 @@ body {
 
 .profilnaU {
     float: left;
-    width: 250px;
-    height: 250px;
+    width: 300px;
+    height: 300px;
 }
 
 .profilnaKnj {
@@ -250,6 +245,11 @@ body {
     width: fit-content;
     height: fit-content;
 
+
+}
+
+.katalogbtn:hover {
+    background-color: #522006;
 }
 
 .editBtn {
@@ -488,4 +488,58 @@ body {
 
 .dugmence > .badge {
     pointer-events: auto;
+}
+
+.float-right {
+    float: right;
+}
+
+.addButton {
+    background-color: rgba(166, 175, 162, 0);
+    color: black;
+    /*padding: 1% 1.75%;*/
+    /*margin-bottom: 10%;*/
+    font-weight: bold;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+    width: fit-content;
+    height: fit-content;
+
+
+}
+
+.addButton:hover {
+    background-color: #6b6b6b;
+}
+
+.settingsButton {
+    background-color: transparent;
+    color: black;
+    font-size: 30px;
+        font-weight: bold;
+    width: fit-content;
+    height: fit-content;
+    border: none;
+    margin:2%;
+  box-shadow: 0px 3px 2px #464545;
+}
+.settingsButton:hover {
+    background-color: dimgrey;
+}
+.bigCenter{
+    margin-top:10%;
+    margin-bottom: 10%;
+    align-self: center;
+    margin-left:25%;
+    font-weight: bold;
+    font-size:21px;
+    /*width:fit-content;*/
+}
+.praceniPratiocibtn{
+    margin:0%;
+    font-weight: bold;
+    font-size:medium;
+    width:48%;
+
 }

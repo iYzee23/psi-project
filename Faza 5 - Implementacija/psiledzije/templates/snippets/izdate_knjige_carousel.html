@@ -8,23 +8,28 @@
         <div id="carouselExampleControlsIzdate" class="carousel" data-bs-ride="carousel">
             <div class="carousel-inner izdate">
                 {% for knjiga in knjige %}
-                    <div class="carousel-item izdate">
-                        <div class="card">
-                                <a href="{% url 'knjiga' knjiga.isbn %}">
-                                    <div class="img-wrapper">
-                                        <img src="
+                    <div class="carousel-item izdate" tyle="width:10%;">
+                        <a  class = "link-secondary" href="{% url 'knjiga' knjiga.isbn %}">
+                            <div class="card"
+                                 style="background-color:rgba(255,255,255,0.66); max-width:14vw; height:100%;">
 
-                                                {% if knjiga.slika %}{{ knjiga.slika.url }}{% else %}../../../media/KnjigaImgs/default.png{% endif %}"
-                                             class="d-block w-100" alt="...">
-                                    </div>
-                                </a>
-                            <div class="card-body">
-                                <h5 class="card-title">{{ knjiga.naziv }}</h5>
-                                <p class="card-text">
-                                    <p>⭐{{ knjiga.prosecnaocena }}</p>
-                                </p>
+                                <div style="width:100%; height:100%;">
+                                <div class="img-wrapper">
+                                    <img src="
+
+
+                                            {% if knjiga.slika %}{{ knjiga.slika.url }}{% else %}../../../media/KnjigaImgs/default.png{% endif %}"
+                                         class="d-block w-100 h-100" alt=" ">
+                                </div>
+                                </div>
+
+                                <div class="card-body">
+                                    <p class="card-text">
+                                    <p>⭐{{ knjiga.prosecnaocena }} - {{ knjiga.naziv }}</p>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 {% endfor %}
             </div>
