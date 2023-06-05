@@ -28,20 +28,13 @@
             </div>
             <div class="col-sm-4">
                 {% if uloga.banovan == 1 %}
-
                     <h1 style="color:red; font-weight: bold">BANOVAN</h1>
                 {% else %}
                     {% include 'snippets/zaprati_otprati_dugme.html' %}
                 {% endif %}
-
-
             </div>
         </div>
-
-
     </div>
-
-
 {% endblock %}
 
 {% block lowerLeft %}
@@ -51,13 +44,10 @@
         {% include 'snippets/licna_kolekcija_carousel.html' %}
     {% endif %}
     {% include 'snippets/objave.html' %}
-
+    {% include 'snippets/modals.html' %}
 {% endblock %}
 
 {% block rightPanel %}
-
     {% include 'snippets/settings_profil_dugmad.html' %}
     {% include 'snippets/recenzije.html' %}
 {% endblock %}
-
-{% include 'snippets/modals.html' %}
