@@ -6,6 +6,18 @@
     {{ uloga.username }}
 {% endblock %}
 {% block upperLeft %}
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="alert alert-danger alert-info alert-dismissible fade show" role="alert" style="width:100%;">
+                                    <span>
+                                      {{ msg }}
+                                    </span>
+                <button type="button" class="close text-right" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true" style="float:right">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
 
     {% if errorTekst != None %}
         <div class="alert alert-danger alert-info alert-dismissible fade show" role="alert" style="width:100%;">

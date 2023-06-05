@@ -169,8 +169,6 @@ class DodajLicitacijuForm(Form):
     pdf = FileField(label="PDF")
     datumkraja = forms.DateTimeField(
         label='Datum kraja',
-        widget=forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}),
     )
-    pocetnacena = IntegerField(label="Pocetna cena", validators=[
-        MinValueValidator(1, message='Morate uneti vrednost veću od 0 kao početnu cenu.')
-    ])
+    pocetnacena = IntegerField(label="Pocetna cena", min_value=1)

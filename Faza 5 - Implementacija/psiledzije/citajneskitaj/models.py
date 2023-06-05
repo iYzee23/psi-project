@@ -11,7 +11,7 @@ import datetime
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from django.utils import timezone
 '''
 Autori:
 - Predrag Pešić 0023/2020
@@ -173,7 +173,7 @@ class ProdajnaMesta(models.Model):
 class Recenzija(models.Model):
     idrec = models.AutoField(db_column='IDRec', primary_key=True)
     ocena = models.DecimalField(db_column='Ocena', max_digits=5 ,decimal_places=1)
-    datumobjave = models.DateTimeField(db_column='DatumObjave', default=datetime.datetime.now())
+    datumobjave = models.DateTimeField(db_column='DatumObjave', auto_now_add=True)
     tekst = models.CharField(db_column='Tekst', max_length=1000)
     iddavalac = models.ForeignKey(db_column='IDDavalac', max_length=20, to='Uloga', on_delete=models.CASCADE, related_name='related_to_davalac_uloga')
     idprimalaculoga = models.ForeignKey(db_column='IDPrimalacUloga', max_length=20, blank=True, null=True, to='Uloga', on_delete=models.CASCADE, related_name='related_to_primalac_uloga')

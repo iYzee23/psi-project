@@ -9,6 +9,7 @@ from django.core.mail import send_mail
 from datetime import datetime as dt
 from .forms import *
 import random, string
+from django.utils import timezone
 
 '''
 Autori: 
@@ -720,7 +721,7 @@ def dodajObjavu(request: HttpRequest):
         # id = Objava.objects.aggregate(max_idobjava=Max('idobjava'))['max_idobjava'] + 1
         sadrzaj = izmenaForm.cleaned_data["sadrzaj"]
         slika = izmenaForm.cleaned_data["slika"]
-        Objava(sadrzaj=sadrzaj, datumobjave=dt.now(), slika=slika, korime=request.user).save()
+        Objava(sadrzaj=sadrzaj, datumobjave=timezone.now(), slika=slika, korime=request.user).save()
     return redirect("mojProfil")
 
 # menja objavu i dodaje je u bazu
@@ -732,7 +733,7 @@ def izmeniObjavu(request: HttpRequest):
         sadrzaj = form.cleaned_data["sadrzaj"]
         slika = form.cleaned_data["slika"]
         objava = Objava.objects.get(idobjava=id)
-        objava.datumobjave=dt.now()
+        objava.datumobjave=timezone.now()
         objava.sadrzaj=sadrzaj
         if slika:
             objava.slika=slika
@@ -768,7 +769,7 @@ def dodajKnjigu(request: HttpRequest):
             Napisao(isbn_id=isbn, idautor_id=autor).save()
             if not Povezani.objects.filter(Q(idautor_id=autor) & Q(idizdkuca_id=request.user.pk)).exists():
                 Povezani(idautor_id=autor, idizdkuca_id=request.user.pk).save()
-        Objava(sadrzaj=sadrzaj, datumobjave=dt.now(), slika=slika, korime=request.user).save()
+        Objava(sadrzaj=sadrzaj, datumobjave=timezone.now(), slika=slika, korime=request.user).save()
     return redirect("mojProfil")
 
 
@@ -802,7 +803,7 @@ def promeniInfoKnjige(request: HttpRequest):
             if not Povezani.objects.filter(Q(idautor=novi_autor) & Q(idizdkuca_id=request.user.pk)).exists():
                 Povezani(idautor=novi_autor, idizdkuca_id=request.user.pk).save()
         knjiga.save()
-        Objava(sadrzaj=sadrzaj, datumobjave=dt.now(), slika=slika, korime=request.user).save()
+        Objava(sadrzaj=sadrzaj, datumobjave=timezone.now(), slika=slika, korime=request.user).save()
         return redirect("knjiga", knjiga_id=knjiga.pk)
     else:
         izmenaForm = KnjigaObjavaForm(initial={
@@ -839,14 +840,14 @@ def licitacije(request: HttpRequest):
 
     if autor or izd_kuca or request.user.is_superuser:
         if autor:
-            tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__gt=dt.now())).order_by("datumkraja")
-            protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__lt=dt.now())).order_by("-datumkraja")
+            tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__gt=timezone.now())).order_by("datumkraja")
+            protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(idautor=autor) & Q(datumkraja__lt=timezone.now())).order_by("-datumkraja")
         elif izd_kuca :
-            tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(datumkraja__gt=dt.now())).order_by("datumkraja")
-            protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(idpobednik=izd_kuca) & Q(datumkraja__lt=dt.now())).order_by("-datumkraja")
+            tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(datumkraja__gt=timezone.now())).order_by("datumkraja")
+            protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(idpobednik=izd_kuca) & Q(datumkraja__lt=timezone.now())).order_by("-datumkraja")
         elif request.user.is_superuser:
-            tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(datumkraja__gt=dt.now())).order_by("datumkraja")
-            protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(datumkraja__lt=dt.now())).order_by("-datumkraja")
+            tekuce_licitacije: Licitacija = Licitacija.objects.filter(Q(datumkraja__gt=timezone.now())).order_by("datumkraja")
+            protekle_licitacije: Licitacija = Licitacija.objects.filter(Q(datumkraja__lt=timezone.now())).order_by("-datumkraja")
         return render(request, "entities/licitacije.html", {
             "pretragaForm": SearchForm(),
             "tekuce_licitacije": tekuce_licitacije,
@@ -904,13 +905,16 @@ def dodajLicitaciju(request: HttpRequest):
         pdf = form.cleaned_data["pdf"]
         datumkraja = form.cleaned_data["datumkraja"]
         pocetnacena = form.cleaned_data["pocetnacena"]
-        Licitacija(
-            nazivdela=nazivdela,
-            pdf=pdf,
-            datumpocetka=dt.now(),
-            datumkraja=datumkraja,
-            pocetnacena=pocetnacena,
-            trenutniiznos=pocetnacena,
-            idautor=Autor.objects.get(username=request.user.username)
-        ).save()
+        if timezone.now() > datumkraja:
+            messages.error(request, 'Datum kraja nije validan')
+        else:
+            Licitacija(
+                nazivdela=nazivdela,
+                pdf=pdf,
+                datumpocetka=timezone.now(),
+                datumkraja=datumkraja,
+                pocetnacena=pocetnacena,
+                trenutniiznos=pocetnacena,
+                idautor=Autor.objects.get(username=request.user.username)
+            ).save()
     return redirect("licitacije")
