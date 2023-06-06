@@ -806,7 +806,6 @@ def promeniInfoKnjige(request: HttpRequest):
         Objava(sadrzaj=sadrzaj, datumobjave=timezone.now(), slika=slika, korime=request.user).save()
         return redirect("knjiga", knjiga_id=knjiga.pk)
     else:
-        print('Djoka')
         izmenaForm = KnjigaObjavaForm(initial={
             "naziv": knjiga.naziv,
             #"autori": autori,
