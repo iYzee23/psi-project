@@ -72,7 +72,7 @@ class Knjiga(models.Model):
     isbn = models.CharField(db_column='ISBN', primary_key=True, max_length=20)
     naziv = models.CharField(db_column='Naziv', max_length=40)
     slika = models.ImageField(db_column='Slika', null=True, upload_to='knjigaImgs/')
-    opis = models.CharField(db_column='Opis', max_length=100, blank=True, null=True)
+    opis = models.CharField(db_column='Opis', max_length=1000, blank=True, null=True)
     prosecnaocena = models.DecimalField(db_column='ProsecnaOcena', max_digits=5, decimal_places=2)
     idizdkuca = models.ForeignKey(db_column='IDIzdKuca', max_length=20, to='IzdavackaKuca', on_delete=models.CASCADE)
 
