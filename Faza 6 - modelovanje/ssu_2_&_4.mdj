@@ -4425,7 +4425,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGIj9xfpeVuFx4="
 							},
-							"name": "2.3 Prikaz književnog dela",
+							"name": "2.3 Prikaz književnog dela, kolekcija, recenzije",
 							"ownedElements": [
 								{
 									"_type": "UMLSequenceDiagram",
@@ -4539,9 +4539,9 @@
 															"font": "Arial;13;0",
 															"left": 706,
 															"top": 512,
-															"width": 203.76611328125,
+															"width": 305.626953125,
 															"height": 13,
-															"text": "(from 2.3 Prikaz književnog dela)"
+															"text": "(from 2.3 Prikaz književnog dela, kolekcija, recenzije)"
 														},
 														{
 															"_type": "LabelView",
@@ -4659,9 +4659,9 @@
 															"font": "Arial;13;0",
 															"left": 944,
 															"top": 512,
-															"width": 203.76611328125,
+															"width": 305.626953125,
 															"height": 13,
-															"text": "(from 2.3 Prikaz književnog dela)"
+															"text": "(from 2.3 Prikaz književnog dela, kolekcija, recenzije)"
 														},
 														{
 															"_type": "LabelView",
@@ -4778,9 +4778,9 @@
 															"font": "Arial;13;0",
 															"left": 992,
 															"top": 512,
-															"width": 203.76611328125,
+															"width": 305.626953125,
 															"height": 13,
-															"text": "(from 2.3 Prikaz književnog dela)"
+															"text": "(from 2.3 Prikaz književnog dela, kolekcija, recenzije)"
 														},
 														{
 															"_type": "LabelView",
@@ -6463,9 +6463,9 @@
 															"font": "Arial;13;0",
 															"left": 576,
 															"top": 512,
-															"width": 203.76611328125,
+															"width": 305.626953125,
 															"height": 13,
-															"text": "(from 2.3 Prikaz književnog dela)"
+															"text": "(from 2.3 Prikaz književnog dela, kolekcija, recenzije)"
 														},
 														{
 															"_type": "LabelView",
@@ -6683,9 +6683,9 @@
 															"font": "Arial;13;0",
 															"left": 944,
 															"top": 240,
-															"width": 203.76611328125,
+															"width": 305.626953125,
 															"height": 13,
-															"text": "(from 2.3 Prikaz književnog dela)"
+															"text": "(from 2.3 Prikaz književnog dela, kolekcija, recenzije)"
 														},
 														{
 															"_type": "LabelView",
@@ -6802,9 +6802,9 @@
 															"font": "Arial;13;0",
 															"left": 944,
 															"top": 240,
-															"width": 189.2998046875,
+															"width": 305.626953125,
 															"height": 13,
-															"text": "(from 2.3 Prikaz književnog dela)"
+															"text": "(from 2.3 Prikaz književnog dela, kolekcija, recenzije)"
 														},
 														{
 															"_type": "LabelView",
@@ -13983,7 +13983,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGIkFG/9RVMdy8="
 							},
-							"name": "2.4 Prikaz profila",
+							"name": "2.4 Prikaz profila, praceni, pratioci, zaprati, recenzije, objave",
 							"ownedElements": [
 								{
 									"_type": "UMLSequenceDiagram",
@@ -14097,9 +14097,9 @@
 															"font": "Arial;13;0",
 															"left": 706,
 															"top": 512,
-															"width": 203.76611328125,
+															"width": 385.10595703125,
 															"height": 13,
-															"text": "(from 2.4 Prikaz profila)"
+															"text": "(from 2.4 Prikaz profila, praceni, pratioci, zaprati, recenzije, objave)"
 														},
 														{
 															"_type": "LabelView",
@@ -14217,9 +14217,9 @@
 															"font": "Arial;13;0",
 															"left": 944,
 															"top": 512,
-															"width": 203.76611328125,
+															"width": 385.10595703125,
 															"height": 13,
-															"text": "(from 2.4 Prikaz profila)"
+															"text": "(from 2.4 Prikaz profila, praceni, pratioci, zaprati, recenzije, objave)"
 														},
 														{
 															"_type": "LabelView",
@@ -14336,9 +14336,9 @@
 															"font": "Arial;13;0",
 															"left": 992,
 															"top": 512,
-															"width": 203.76611328125,
+															"width": 385.10595703125,
 															"height": 13,
-															"text": "(from 2.4 Prikaz profila)"
+															"text": "(from 2.4 Prikaz profila, praceni, pratioci, zaprati, recenzije, objave)"
 														},
 														{
 															"_type": "LabelView",
@@ -15235,9 +15235,9 @@
 															"font": "Arial;13;0",
 															"left": 576,
 															"top": 512,
-															"width": 203.76611328125,
+															"width": 385.10595703125,
 															"height": 13,
-															"text": "(from 2.4 Prikaz profila)"
+															"text": "(from 2.4 Prikaz profila, praceni, pratioci, zaprati, recenzije, objave)"
 														},
 														{
 															"_type": "LabelView",
@@ -23453,9 +23453,9 @@
 															},
 															"visible": false,
 															"font": "Arial;13;0",
-															"width": 135.0908203125,
+															"width": 385.10595703125,
 															"height": 13,
-															"text": "(from 2.4 Prikaz profila)"
+															"text": "(from 2.4 Prikaz profila, praceni, pratioci, zaprati, recenzije, objave)"
 														},
 														{
 															"_type": "LabelView",
@@ -23568,9 +23568,9 @@
 															"visible": false,
 															"font": "Arial;13;0",
 															"left": -390,
-															"width": 135.0908203125,
+															"width": 385.10595703125,
 															"height": 13,
-															"text": "(from 2.4 Prikaz profila)"
+															"text": "(from 2.4 Prikaz profila, praceni, pratioci, zaprati, recenzije, objave)"
 														},
 														{
 															"_type": "LabelView",
@@ -23684,9 +23684,9 @@
 															"visible": false,
 															"font": "Arial;13;0",
 															"left": -384,
-															"width": 135.0908203125,
+															"width": 385.10595703125,
 															"height": 13,
-															"text": "(from 2.4 Prikaz profila)"
+															"text": "(from 2.4 Prikaz profila, praceni, pratioci, zaprati, recenzije, objave)"
 														},
 														{
 															"_type": "LabelView",
@@ -23800,9 +23800,9 @@
 															"visible": false,
 															"font": "Arial;13;0",
 															"left": 32,
-															"width": 135.0908203125,
+															"width": 385.10595703125,
 															"height": 13,
-															"text": "(from 2.4 Prikaz profila)"
+															"text": "(from 2.4 Prikaz profila, praceni, pratioci, zaprati, recenzije, objave)"
 														},
 														{
 															"_type": "LabelView",
@@ -24028,9 +24028,9 @@
 															"visible": false,
 															"font": "Arial;13;0",
 															"left": -432,
-															"width": 135.0908203125,
+															"width": 385.10595703125,
 															"height": 13,
-															"text": "(from 2.4 Prikaz profila)"
+															"text": "(from 2.4 Prikaz profila, praceni, pratioci, zaprati, recenzije, objave)"
 														},
 														{
 															"_type": "LabelView",
@@ -24144,9 +24144,9 @@
 															"visible": false,
 															"font": "Arial;13;0",
 															"left": -528,
-															"width": 135.0908203125,
+															"width": 385.10595703125,
 															"height": 13,
-															"text": "(from 2.4 Prikaz profila)"
+															"text": "(from 2.4 Prikaz profila, praceni, pratioci, zaprati, recenzije, objave)"
 														},
 														{
 															"_type": "LabelView",
