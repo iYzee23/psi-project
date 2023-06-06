@@ -43,6 +43,7 @@ def index(request: HttpRequest):
         'pretragaForm': SearchForm(),
         'feed': feed
     }
+    generisiMesec(request)
     return render(request, 'index.html', context)
 
 
@@ -59,7 +60,6 @@ def generisiMesec(request: HttpRequest):
     for i in IzdavackaKuca.objects.all().order_by('-prosecnaocena')[0:3]:
         NajpopularnijiMesec.objects.create(idocenjenog=i.username, prosecnaocena=i.prosecnaocena, tip='I')
 
-    return HttpResponse("Generisano <3")
 
 
 # render stranice za registraciju
@@ -347,7 +347,7 @@ def profil(request: HttpRequest, profil_id: str):
             recenzije = Recenzija.objects.filter(idprimalaculoga=uloga)
 
         # generisanje listi pratilaca i pracenih
-        pratioci = [];
+        pratioci = []
         praceni = []
         pratiociz = [pratilac.idpratilac for pratilac in Prati.objects.filter(idpracen_id=profil_id)]
         praceniz = [pracen.idpracen for pracen in Prati.objects.filter(idpratilac_id=profil_id)]
