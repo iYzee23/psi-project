@@ -1,0 +1,1672 @@
+{
+	"_type": "Project",
+	"_id": "AAAAAAFF+h6SjaM2Hec=",
+	"name": "Untitled",
+	"ownedElements": [
+		{
+			"_type": "UMLModel",
+			"_id": "AAAAAAFF+qBWK6M3Z8Y=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Logical view",
+			"ownedElements": [
+				{
+					"_type": "UMLClassDiagram",
+					"_id": "AAAAAAFF+qBtyKM79qY=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "Logical",
+					"defaultDiagram": true,
+					"ownedViews": [
+						{
+							"_type": "UMLClassView",
+							"_id": "AAAAAAGIlkK246YAGgs=",
+							"_parent": {
+								"$ref": "AAAAAAFF+qBtyKM79qY="
+							},
+							"model": {
+								"$ref": "AAAAAAGIlkK246X+2nw="
+							},
+							"subViews": [
+								{
+									"_type": "UMLNameCompartmentView",
+									"_id": "AAAAAAGIlkK246YBC0Q=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkK246YAGgs="
+									},
+									"model": {
+										"$ref": "AAAAAAGIlkK246X+2nw="
+									},
+									"subViews": [
+										{
+											"_type": "LabelView",
+											"_id": "AAAAAAGIlkK246YC/KM=",
+											"_parent": {
+												"$ref": "AAAAAAGIlkK246YBC0Q="
+											},
+											"font": "Arial;13;0",
+											"left": 637,
+											"top": 485,
+											"width": 83.10986328125,
+											"height": 13,
+											"text": "«server page»"
+										},
+										{
+											"_type": "LabelView",
+											"_id": "AAAAAAGIlkK246YDHJs=",
+											"_parent": {
+												"$ref": "AAAAAAGIlkK246YBC0Q="
+											},
+											"font": "Arial;13;1",
+											"left": 637,
+											"top": 500,
+											"width": 83.10986328125,
+											"height": 13,
+											"text": "index"
+										},
+										{
+											"_type": "LabelView",
+											"_id": "AAAAAAGIlkK246YEH38=",
+											"_parent": {
+												"$ref": "AAAAAAGIlkK246YBC0Q="
+											},
+											"visible": false,
+											"font": "Arial;13;0",
+											"left": 688,
+											"top": 544,
+											"width": 115.5908203125,
+											"height": 13,
+											"text": "(from Server pages)"
+										},
+										{
+											"_type": "LabelView",
+											"_id": "AAAAAAGIlkK246YFvEs=",
+											"_parent": {
+												"$ref": "AAAAAAGIlkK246YBC0Q="
+											},
+											"visible": false,
+											"font": "Arial;13;0",
+											"left": 688,
+											"top": 544,
+											"height": 13,
+											"horizontalAlignment": 1
+										}
+									],
+									"font": "Arial;13;0",
+									"left": 632,
+									"top": 480,
+									"width": 93.10986328125,
+									"height": 38,
+									"stereotypeLabel": {
+										"$ref": "AAAAAAGIlkK246YC/KM="
+									},
+									"nameLabel": {
+										"$ref": "AAAAAAGIlkK246YDHJs="
+									},
+									"namespaceLabel": {
+										"$ref": "AAAAAAGIlkK246YEH38="
+									},
+									"propertyLabel": {
+										"$ref": "AAAAAAGIlkK246YFvEs="
+									}
+								},
+								{
+									"_type": "UMLAttributeCompartmentView",
+									"_id": "AAAAAAGIlkK246YGUkI=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkK246YAGgs="
+									},
+									"model": {
+										"$ref": "AAAAAAGIlkK246X+2nw="
+									},
+									"font": "Arial;13;0",
+									"left": 632,
+									"top": 518,
+									"width": 93.10986328125,
+									"height": 10
+								},
+								{
+									"_type": "UMLOperationCompartmentView",
+									"_id": "AAAAAAGIlkK246YHnMw=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkK246YAGgs="
+									},
+									"model": {
+										"$ref": "AAAAAAGIlkK246X+2nw="
+									},
+									"font": "Arial;13;0",
+									"left": 632,
+									"top": 528,
+									"width": 93.10986328125,
+									"height": 10
+								},
+								{
+									"_type": "UMLReceptionCompartmentView",
+									"_id": "AAAAAAGIlkK246YIp+A=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkK246YAGgs="
+									},
+									"model": {
+										"$ref": "AAAAAAGIlkK246X+2nw="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"left": 344,
+									"top": 272,
+									"width": 10,
+									"height": 10
+								},
+								{
+									"_type": "UMLTemplateParameterCompartmentView",
+									"_id": "AAAAAAGIlkK246YJbpo=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkK246YAGgs="
+									},
+									"model": {
+										"$ref": "AAAAAAGIlkK246X+2nw="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"left": 344,
+									"top": 272,
+									"width": 10,
+									"height": 10
+								}
+							],
+							"font": "Arial;13;0",
+							"containerChangeable": true,
+							"left": 632,
+							"top": 480,
+							"width": 93.10986328125,
+							"height": 58,
+							"nameCompartment": {
+								"$ref": "AAAAAAGIlkK246YBC0Q="
+							},
+							"attributeCompartment": {
+								"$ref": "AAAAAAGIlkK246YGUkI="
+							},
+							"operationCompartment": {
+								"$ref": "AAAAAAGIlkK246YHnMw="
+							},
+							"receptionCompartment": {
+								"$ref": "AAAAAAGIlkK246YIp+A="
+							},
+							"templateParameterCompartment": {
+								"$ref": "AAAAAAGIlkK246YJbpo="
+							}
+						}
+					]
+				},
+				{
+					"_type": "UMLPackage",
+					"_id": "AAAAAAGIlkHh/qTtkhU=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "Server pages",
+					"ownedElements": [
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkK246X+2nw=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "index",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkLoPqYsO60=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "generisiMesec",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkLsG6YwN3k=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "reg",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkL0MqY58IQ=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "regKorisnik",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkL18qY9J9g=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "regAutor",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkL3eqZB98Y=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "regKuca",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkL5y6ZFSP4=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "login_req",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkL7g6ZJ2SI=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "logout_req",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkL8+6ZNdCg=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "knjiga",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkL+mqZRUqI=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "profil",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkMACqZVqxo=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "mojProfil",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkMBcqZZqXg=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "promeniSifru",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkMC4qZd+tg=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "promeniInfo",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkMEQ6ZhfCY=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": " posaljiMejlLozinka",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkMHg6Zl2ho=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "posaljiMejlBanovan",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkMQo6Zp3gs=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "admResetujLozinku",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkMSOqZtp3Y=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "admBanujNalog",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkMT46ZxnoE=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "pretraga",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkMVc6Z1CnU=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "zaprati",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkMWu6Z5szo=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "otprati",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkMX8qZ9+p0=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "dodajObjavu",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkMZOqaBC6E=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "izmeniObjavu",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkMg46aKBAM=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "obrisiObjavu",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkMjkqaOhvA=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "dodajKnjigu",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkMmIqaS0lg=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "promeniInfoKnjige",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkMw4qaWjM0=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "licitacije",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkM30qaaLHc=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "pretragaAjax",
+							"stereotype": "server page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkM/WqaezKE=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkHh/qTtkhU="
+							},
+							"name": "pretragaAutori",
+							"stereotype": "server page"
+						}
+					]
+				},
+				{
+					"_type": "UMLPackage",
+					"_id": "AAAAAAGIlkH8bqTxfcY=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "Client pages",
+					"ownedElements": [
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkmiUqbpb8k=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "base.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkntJabwVFY=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "base_two_panels.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkn0bab0MNM=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "index.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkn5Vab4Snc=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "adminPanel.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkn+fab85vk=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "autor.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkoGtacAEAk=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "izdavackakuca.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkoKVKcETwY=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "knjiga.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkoPpacIIn8=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "korisnik.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlko2GKcM7+w=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "licitacije.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlko6iKcQFVE=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "novaLicitacija.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkpI4KcU7C4=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "pretraga.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkpLcKcYy6E=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "promenaInfo.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkpNeKccAEo=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "promenaInfoKnjige.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkpPQKcg4Ao=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "promenaLozinke.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkpQwKckzQk=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "login.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkpSwKcoxuM=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "reg.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkpUkKcsYVc=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "regAutor.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkpWCKcwxZo=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "regKorisnik.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkpXiKc081U=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "regKuca.html",
+							"stereotype": "client page"
+						},
+						{
+							"_type": "UMLPackage",
+							"_id": "AAAAAAGIlk15jai74ZM=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "Snippets",
+							"ownedElements": [
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk3QQ6jAJCg=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "dodaj_licitaciju_modal.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk3bm6jEc7k=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "dodaj_u_kolekciju.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk3eFKjIszM=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "header_wo_search.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk3hI6jMGeA=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "izdate_knjige_carousel.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk3ju6jQvnU=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "izmeni_knjigu.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk3mM6jUIDI=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "knjige_autori_izdKuce_pocStrana.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk3oq6jYvWQ=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "licitacija_info_modal.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk3vO6jca6g=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "licna_kolekcija_carousel.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk31C6jgr8o=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "modals.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk37M6jkp0M=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "mojprofil_dugmad.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk4B+6joV5c=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "objave.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk4JE6jsMYc=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "postavi_licitaciju_dugme.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk4Oc6jwitw=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "povezane_kuce.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk8R7aj+r0E=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "povezani_autori.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk8mZakCTW0=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "povezani_autori2.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk8tJakGm38=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "protekle_licitacije.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk8zZakKjbE=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "recenzije.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk845akOcj8=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "settings_profil_dugmad.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk8+fakStpE=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "spisak_lokacija_dugme.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk9EAakWHvo=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "tekuce_licitacije.html",
+									"stereotype": "client page"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIlk9LMakaoGI=",
+									"_parent": {
+										"$ref": "AAAAAAGIlk15jai74ZM="
+									},
+									"name": "zaprati_otprati_dugme.html",
+									"stereotype": "client page"
+								}
+							]
+						}
+					]
+				},
+				{
+					"_type": "UMLComponent",
+					"_id": "AAAAAAGIlkKCPqVNex8=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "forms.py",
+					"ownedElements": [
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCPqVO6fM=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "KorisnikRegForm",
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVPyyw=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVO6fM="
+									},
+									"name": "email",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVQUOc=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVO6fM="
+									},
+									"name": "username",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVReVE=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVO6fM="
+									},
+									"name": "password1",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVSuCM=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVO6fM="
+									},
+									"name": "password2",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVTPKg=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVO6fM="
+									},
+									"name": "ime",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVUllg=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVO6fM="
+									},
+									"name": "prezime",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVVAYs=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVO6fM="
+									},
+									"name": "datumrodjenja",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVWRRQ=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVO6fM="
+									},
+									"name": "slika",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCPqVXa38=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "AutorRegForm",
+							"ownedElements": [
+								{
+									"_type": "UMLRealization",
+									"_id": "AAAAAAGIlkKCPqVYaSo=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVXa38="
+									},
+									"source": {
+										"$ref": "AAAAAAGIlkKCPqVXa38="
+									},
+									"target": {
+										"$ref": "AAAAAAGIlkKCPqVO6fM="
+									}
+								}
+							],
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVZ+YY=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVXa38="
+									},
+									"name": "biografija",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCPqVaY5g=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "KucaRegForm",
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVbv0s=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVaY5g="
+									},
+									"name": "email",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVcrxs=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVaY5g="
+									},
+									"name": "username",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVd88Q=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVaY5g="
+									},
+									"name": "password1",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVeVF8=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVaY5g="
+									},
+									"name": "password2",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVfdXc=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVaY5g="
+									},
+									"name": "naziv",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVgly0=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVaY5g="
+									},
+									"name": "slika",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVhKks=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVaY5g="
+									},
+									"name": "istorija",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqViee8=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVaY5g="
+									},
+									"name": "adresa",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVjDzQ=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVaY5g="
+									},
+									"name": "lokacija",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCPqVk4Lk=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "LoginForm",
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVlTHg=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVk4Lk="
+									},
+									"name": "username",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVmyzg=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVk4Lk="
+									},
+									"name": "password",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCPqVna9U=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "PromenaSifreForm",
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVokdk=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVna9U="
+									},
+									"name": "password1",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVp9zM=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVna9U="
+									},
+									"name": "password2",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCPqVqzmM=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "PromenaInfoKorisnikForm",
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVrIl8=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVqzmM="
+									},
+									"name": "email",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVsgbQ=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVqzmM="
+									},
+									"name": "ime",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVtCFk=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVqzmM="
+									},
+									"name": "prezime",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVuOoc=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVqzmM="
+									},
+									"name": "datumrodjenja",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVvmAo=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVqzmM="
+									},
+									"name": "slika",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCPqVwq90=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "PromenaInfoAutorForm",
+							"ownedElements": [
+								{
+									"_type": "UMLRealization",
+									"_id": "AAAAAAGIlkKCPqVxcXI=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVwq90="
+									},
+									"source": {
+										"$ref": "AAAAAAGIlkKCPqVwq90="
+									},
+									"target": {
+										"$ref": "AAAAAAGIlkKCPqVqzmM="
+									}
+								}
+							],
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqVyesU=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVwq90="
+									},
+									"name": "biografija",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCPqVzhgg=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "PromenaInfoKucaForm",
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqV01+w=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVzhgg="
+									},
+									"name": "email",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqV1pKo=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVzhgg="
+									},
+									"name": "naziv",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqV2MpA=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVzhgg="
+									},
+									"name": "slika",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqV39lo=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVzhgg="
+									},
+									"name": "istorija",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqV4FFc=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVzhgg="
+									},
+									"name": "adresa",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqV5QWM=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqVzhgg="
+									},
+									"name": "lokacije",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCPqV6DAk=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "RecenzijaForm",
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqV7gRU=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqV6DAk="
+									},
+									"name": "tekst",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqV8Anw=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqV6DAk="
+									},
+									"name": "ocena",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqV9IB8=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqV6DAk="
+									},
+									"name": "hiddenIdRec",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCPqV+SRY=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "AdminResetForm",
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqV/Oow=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqV+SRY="
+									},
+									"name": "username",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqWAiv4=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqV+SRY="
+									},
+									"name": "email",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqWBthU=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqV+SRY="
+									},
+									"name": "sifra",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCPqWChg0=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "AdminBanForm",
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqWDnb4=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqWChg0="
+									},
+									"name": "username",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqWE5rg=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqWChg0="
+									},
+									"name": "email",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqWFmzc=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqWChg0="
+									},
+									"name": "ban",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqWGAB8=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqWChg0="
+									},
+									"name": "tekst",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCPqWHr9g=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "SearchForm",
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqWIPwA=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqWHr9g="
+									},
+									"name": "tipChoices",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqWJnlo=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqWHr9g="
+									},
+									"name": "filterChoices",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqWKvNI=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqWHr9g="
+									},
+									"name": "naziv",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqWLmTk=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqWHr9g="
+									},
+									"name": "tip",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqWMWzc=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqWHr9g="
+									},
+									"name": "filter",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCPqWNwZY=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "PretplataForm",
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqWOI8w=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqWNwZY="
+									},
+									"name": "praceni",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCPqWP680=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "TextObjavaForm",
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqWQarU=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqWP680="
+									},
+									"name": "slika",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCPqWRfNI=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqWP680="
+									},
+									"name": "sadrzaj",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCP6WSelc=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCPqWP680="
+									},
+									"name": "hiddenIdObjave",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCP6WTUuQ=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "ObjavaDeleteForm",
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCP6WUBzE=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCP6WTUuQ="
+									},
+									"name": "hiddenIdObjave",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCP6WVtVw=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "KnjigaObjavaForm",
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCP6WWzME=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCP6WVtVw="
+									},
+									"name": "naziv",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCP6WXHYw=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCP6WVtVw="
+									},
+									"name": "slika",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCP6WY8rY=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCP6WVtVw="
+									},
+									"name": "autori",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCP6WZMF8=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCP6WVtVw="
+									},
+									"name": "dodaj",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCP6WaiDU=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCP6WVtVw="
+									},
+									"name": "opis",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCP6Wb4nM=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCP6WVtVw="
+									},
+									"name": "sadrzaj",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCP6WcPeE=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "LicitacijaPonudaForm",
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCP6WdEsY=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCP6WcPeE="
+									},
+									"name": "hiddenIdLic",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCP6WeN2Q=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCP6WcPeE="
+									},
+									"name": "iznos",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLClass",
+							"_id": "AAAAAAGIlkKCP6WfAz4=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"name": "DodajLicitacijuForm",
+							"attributes": [
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCP6Wgh40=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCP6WfAz4="
+									},
+									"name": "nazivdela",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCP6WhbnI=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCP6WfAz4="
+									},
+									"name": "pdf",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCP6WiosU=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCP6WfAz4="
+									},
+									"name": "datumkraja",
+									"type": ""
+								},
+								{
+									"_type": "UMLAttribute",
+									"_id": "AAAAAAGIlkKCP6Wjass=",
+									"_parent": {
+										"$ref": "AAAAAAGIlkKCP6WfAz4="
+									},
+									"name": "pocetnacena",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLDependency",
+							"_id": "AAAAAAGIlkKCP6Wkgf0=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"source": {
+								"$ref": "AAAAAAGIlkKCPqVNex8="
+							},
+							"stereotype": "import"
+						}
+					]
+				}
+			]
+		}
+	]
+}
