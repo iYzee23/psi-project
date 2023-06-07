@@ -838,6 +838,142 @@
 									"stereotype": "client page"
 								}
 							]
+						},
+						{
+							"_type": "UMLPackage",
+							"_id": "AAAAAAGIllKxV6lSkJ8=",
+							"_parent": {
+								"$ref": "AAAAAAGIlkH8bqTxfcY="
+							},
+							"name": "Modals",
+							"ownedElements": [
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIllLUCKlX7zA=",
+									"_parent": {
+										"$ref": "AAAAAAGIllKxV6lSkJ8="
+									},
+									"name": "DodajObjavuModal",
+									"stereotype": "modal"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIllR4Cql3RCs=",
+									"_parent": {
+										"$ref": "AAAAAAGIllKxV6lSkJ8="
+									},
+									"name": "IzmeniObjavuModal",
+									"stereotype": "modal"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIllSHaqmAdf8=",
+									"_parent": {
+										"$ref": "AAAAAAGIllKxV6lSkJ8="
+									},
+									"name": "IzbrisiObjavuModal",
+									"stereotype": "modal"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIllRaQqljKN8=",
+									"_parent": {
+										"$ref": "AAAAAAGIllKxV6lSkJ8="
+									},
+									"name": "LicitacijaAddModal",
+									"stereotype": "modal"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIllRhAqln5s4=",
+									"_parent": {
+										"$ref": "AAAAAAGIllKxV6lSkJ8="
+									},
+									"name": "LicitacijaInfoModal",
+									"stereotype": "modal"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIllRmOqlrAgU=",
+									"_parent": {
+										"$ref": "AAAAAAGIllKxV6lSkJ8="
+									},
+									"name": "DodajKnjiguModal",
+									"stereotype": "modal"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIllRt2qlv/Jo=",
+									"_parent": {
+										"$ref": "AAAAAAGIllKxV6lSkJ8="
+									},
+									"name": "PrikaziPratioceModal",
+									"stereotype": "modal"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIllRy6qlzC9A=",
+									"_parent": {
+										"$ref": "AAAAAAGIllKxV6lSkJ8="
+									},
+									"name": "PrikaziPraceneModal",
+									"stereotype": "modal"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIllYq1KmNeaE=",
+									"_parent": {
+										"$ref": "AAAAAAGIllKxV6lSkJ8="
+									},
+									"name": "DodajRecenzijuModal",
+									"stereotype": "modal"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIllYwc6mR5s8=",
+									"_parent": {
+										"$ref": "AAAAAAGIllKxV6lSkJ8="
+									},
+									"name": "IzmeniRecenzijuModal",
+									"stereotype": "modal"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIllY5M6mVycE=",
+									"_parent": {
+										"$ref": "AAAAAAGIllKxV6lSkJ8="
+									},
+									"name": "IzbrisiRecenzijuModal",
+									"stereotype": "modal"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIllZAS6mZztU=",
+									"_parent": {
+										"$ref": "AAAAAAGIllKxV6lSkJ8="
+									},
+									"name": "PrikaziLokacijeModal",
+									"stereotype": "modal"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIllRUxqlf2hQ=",
+									"_parent": {
+										"$ref": "AAAAAAGIllKxV6lSkJ8="
+									},
+									"name": "PovezaniAutoriModal",
+									"stereotype": "modal"
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGIllmBD6nc1bE=",
+									"_parent": {
+										"$ref": "AAAAAAGIllKxV6lSkJ8="
+									},
+									"name": "PovezaneKuceModal",
+									"stereotype": "modal"
+								}
+							]
 						}
 					]
 				},
