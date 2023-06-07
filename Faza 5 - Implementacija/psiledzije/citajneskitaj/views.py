@@ -23,6 +23,7 @@ Autori:
 # Dohvata najpopularnije knjige, autore i kuce - kao i feed za ulogovane korisnike
 def index(request: HttpRequest):
     feed = []
+    generisiMesec(request)
     knjige = [Knjiga.objects.get(pk=naj.idocenjenog) for naj in
               NajpopularnijiMesec.objects.filter(tip='K').order_by('-prosecnaocena')]
     autori = [Autor.objects.get(username=naj.idocenjenog) for naj in
@@ -43,7 +44,6 @@ def index(request: HttpRequest):
         'pretragaForm': SearchForm(),
         'feed': feed
     }
-    generisiMesec(request)
     return render(request, 'index.html', context)
 
 
