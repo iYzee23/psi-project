@@ -697,13 +697,16 @@ def otprati(request: HttpRequest):
 # pomocna funkcija za generisanje sledeceg ISBNa
 def procitajISBN():
     with open('static/ISBN.txt', 'r') as file:
-        return file.read().strip()
+        isbn= file.read().strip()
+        file.close()
+        return isbn
 
 
 # pomocna funkcija za generisanje sledeceg  ISBNa
 def upisiISBN(novISBN):
     with open('static/ISBN.txt', 'w') as file:
         file.write(novISBN)
+        file.close()
 
 
 # pomocna funkcija za generisanjes sledeceg ISBNa
@@ -864,7 +867,7 @@ def licitacije(request: HttpRequest):
 def pretragaAjax(request: HttpRequest):
     naziv = request.GET.get("naziv")
     tip = request.GET.get("tip")
-    znak = ("-" if request.GET.get("filter") == "Ocena opadajuće" else "")
+    znak = ("-" if request.GET.get("znak") == "Ocena opadajuće" else "")
     objekti = []
     if tip == "Knjiga" or tip == "Sve":
         objektiz = Knjiga.objects.filter(Q(naziv__icontains=naziv) | Q(isbn__icontains=naziv)).order_by(znak + 'prosecnaocena')
