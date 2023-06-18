@@ -1,3 +1,4 @@
+
 from django.test import TestCase
 from django.urls import reverse
 from django.http import HttpRequest
@@ -266,4 +267,331 @@ import os
 #             file.write(old_isbn)
 #             file.close()
 
+
+
+from django.contrib.auth.models import Group
+from django.test import TestCase, Client
+from .models import *
+from .forms import *
+#
+
+def napraviKor(username,tip):
+    korisnik = Uloga()
+    korisnik.username = username
+    korisnik.set_password("Pedja123!")
+    korisnik.email = "proba@proba.com"
+    korisnik.imeprezime = "Proba Probic"
+    korisnik.tip=tip
+    korisnik.datumrodjenja= '2001-01-01'
+    korisnik.save()
+    return korisnik
+
+class LjubicaTest(TestCase):
+
+#REG
+    def test_reg_logged(self):
+        c=Client();
+        korisnik = napraviKor("KorisnikProba", "K")
+        c.login(username="KorisnikProba",password="Pedja123!")
+
+        response=c.post("/reg/")
+        self.assertRedirects(response, '/')
+
+    def test_reg_notLogged(self):
+        c = Client();
+
+        response = c.post("/reg/")
+        self.assertTemplateUsed(response, "registration/reg.html")
+
+
+#REG_KORISNIK
+    def test_reg_korisnik(self):
+        c=Client()
+        g = Group(name="Korisnici")
+        g.save()
+        response = c.post('/reg/korisnik', data={
+            'username': 'uspesnaProba',
+            'password1': 'Pedja123!',
+            'password2': 'Pedja123!',
+            'ime': 'Proba',
+            'prezime': 'Uspesna',
+            'email': 'uspesnaProba@uspesnaProba.com',
+            'datumrodjenja': '2001-01-01'
+
+        })
+        success = c.login(username='uspesnaProba', password='Pedja123!')
+        self.assertTrue(success)
+
+    def test_reg_korisnik_vecUlogovan(self):
+        c=Client()
+        g = Group(name="Korisnici")
+        g.save()
+        korisnik = napraviKor("KorisnikProba", "K")
+        c.login(username="KorisnikProba", password="Pedja123!")
+
+        response = c.post('/reg/korisnik', data={
+            'username': 'uspesnaProba',
+            'password1': 'Pedja123!',
+            'password2': 'Pedja123!',
+            'ime': 'Proba',
+            'prezime': 'Uspesna',
+            'email': 'uspesnaProba@uspesnaProba.com',
+            'datumrodjenja': '2001-01-01'
+
+        })
+        self.assertRedirects(response, '/')
+
+    def test_reg_korisnik_slabaSifra(self):
+        c=Client()
+        g = Group(name="Korisnici")
+        g.save()
+        response = c.post('/reg/korisnik', data={
+            'username': 'uspesnaProba',
+            'password1': 'Pedja',
+            'password2': 'Pedja',
+            'ime': 'Proba',
+            'prezime': 'Uspesna',
+            'email': 'uspesnaProba@uspesnaProba.com',
+            'datumrodjenja': '2001-01-01'
+
+        })
+        success = c.login(username='uspesnaProba', password='Pedja')
+        self.assertFalse(success)
+
+    def test_reg_korisnik_dupliUsername(self):
+        c=Client()
+        g = Group(name="Korisnici")
+        g.save()
+        korisnik = napraviKor("neuspesnaProba", "K")
+        response = c.post('/reg/korisnik', data={
+            'username': 'neuspesnaProba',
+            'password1': 'Pedja1234!',
+            'password2': 'Pedja1234!',
+            'ime': 'Proba',
+            'prezime': 'Uspesna',
+            'email': 'neuspesnaProba@neuspesnaProba.com',
+            'datumrodjenja': '2001-01-01'
+
+        })
+
+
+        success = c.login(username='neuspesnaProba', password='Pedja1234!')
+        self.assertFalse(success)
+
+# class RegKorisnikTest(TestCase):
+
+##REG_AUTOR
+    def test_reg_autor(self):
+        c = Client()
+        g = Group(name="Autori")
+        g.save()
+        response = c.post('/reg/autor', data={
+            'username': 'uspesnaProba',
+            'password1': 'Pedja123!',
+            'password2': 'Pedja123!',
+            'ime': 'Proba',
+            'prezime': 'Uspesna',
+            'email': 'uspesnaProba@uspesnaProba.com',
+            'datumrodjenja': '2001-01-01',
+            'biografija':'PROBAPROBAPROBA'
+
+        })
+        success = c.login(username='uspesnaProba', password='Pedja123!')
+        self.assertTrue(success)
+
+    def test_reg_autor_vecUlogovan(self):
+        c = Client()
+        korisnik = napraviKor("KorisnikProba", "K")
+        c.login(username="KorisnikProba", password="Pedja123!")
+
+        response = c.post('/reg/autor', data={
+            'username': 'uspesnaProba',
+            'password1': 'Pedja123!',
+            'password2': 'Pedja123!',
+            'ime': 'Proba',
+            'prezime': 'Uspesna',
+            'email': 'uspesnaProba@uspesnaProba.com',
+            'datumrodjenja': '2001-01-01',
+            'biografija':'PROBAPROBAPROBA'
+
+        })
+
+        self.assertRedirects(response, '/')
+
+    def test_reg_autor_slabaSifra(self):
+        c = Client()
+        g = Group(name="Autori")
+        g.save()
+        response = c.post('/reg/autor', data={
+            'username': 'uspesnaProba',
+            'password1': 'Pedja',
+            'password2': 'Pedja',
+            'ime': 'Proba',
+            'prezime': 'Uspesna',
+            'email': 'uspesnaProba@uspesnaProba.com',
+            'datumrodjenja': '2001-01-01',
+            'biografija':'PROBAPROBAPROBA'
+
+        })
+        success = c.login(username='uspesnaProba', password='Pedja')
+        self.assertFalse(success)
+
+    def test_reg_autor_dupliUsername(self):
+        c=Client()
+        g = Group(name="Autori")
+        g.save()
+        korisnik = napraviKor("neuspesnaProba", "A")
+        response = c.post('/reg/autor', data={
+            'username': 'neuspesnaProba',
+            'password1': 'Pedja1234!',
+            'password2': 'Pedja1234!',
+            'ime': 'Proba',
+            'prezime': 'Uspesna',
+            'email': 'neuspesnaProba@neuspesnaProba.com',
+            'datumrodjenja': '2001-01-01'
+
+        })
+
+
+        success = c.login(username='neuspesnaProba', password='Pedja1234!')
+        self.assertFalse(success)
+
+# class RegIzdKucaTest(TestCase):
+#REG_IZDAVACKA_KUCA
+    def test_reg_izdKuca(self):
+        c = Client()
+        g = Group(name="Kuce")
+        g.save()
+        response = c.post('/reg/kuca', data={
+            'username': 'uspesnaProba',
+            'password1': 'Pedja123!',
+            'password2': 'Pedja123!',
+            'naziv': 'Proba',
+            'email': 'uspesnaProba@uspesnaProba.com',
+            'istorija': 'ISTORIJA',
+            'adresa':'Adresa'
+
+        })
+        success = c.login(username='uspesnaProba', password='Pedja123!')
+        self.assertTrue(success)
+
+    def test_reg_izdKuca_vecUlogovan(self):
+        c = Client()
+        g = Group(name="Kuce")
+        g.save()
+        korisnik = napraviKor("KorisnikProba", "K")
+        c.login(username="KorisnikProba", password="Pedja123!")
+
+        response = c.post('/reg/kuca', data={
+            'username': 'uspesnaProba',
+            'password1': 'Pedja123!',
+            'password2': 'Pedja123!',
+            'naziv': 'Proba',
+            'email': 'uspesnaProba@uspesnaProba.com',
+            'istorija': 'ISTORIJA',
+            'adresa':'Adresa'
+
+        })
+        self.assertRedirects(response, '/')
+
+    def test_reg_izdKuca_slabaSifra(self):
+        c = Client()
+        g = Group(name="Kuce")
+        g.save()
+        response = c.post('/reg/kuca', data={
+            'username': 'uspesnaProba',
+            'password1': 'Pedja',
+            'password2': 'Pedja',
+            'naziv': 'Proba',
+            'email': 'uspesnaProba@uspesnaProba.com',
+            'istorija': 'ISTORIJA',
+            'adresa':'Adresa'
+
+        })
+        success = c.login(username='uspesnaProba', password='Pedja')
+        self.assertFalse(success)
+
+
+    def test_reg_izdKuca_dupliUsername(self):
+        c=Client()
+        g = Group(name="Kuce")
+        g.save()
+        korisnik = napraviKor("neuspesnaProba", "I")
+        response = c.post('/reg/kuca', data={
+            'username': 'neuspesnaProba',
+            'password1': 'Pedja1234!',
+            'password2': 'Pedja1234!',
+            'ime': 'Proba',
+            'prezime': 'Uspesna',
+            'email': 'neuspesnaProba@neuspesnaProba.com',
+            'datumrodjenja': '2001-01-01'
+
+        })
+
+
+        success = c.login(username='neuspesnaProba', password='Pedja1234!')
+        self.assertFalse(success)
+
+
+
+# class LoginTest(TestCase):
+#LOGIN
+    def test_login_succ(self):
+        c = Client()
+        korisnik = napraviKor("KorProba","K")
+        c.login(username="KorProba", password="Pedja123!")
+        response = c.post('/login/')
+        self.assertRedirects(response, '/')
+
+    def test_login_losa_sifra(self):
+        c = Client()
+        korisnik = napraviKor("KorProba", "K")
+
+        c.login(username="KorProba", password="Pedja123")
+        response = c.post('/login/')
+        self.assertTemplateUsed(response,"registration/login.html")
+
+
+    def test_login_los_username(self):
+        c = Client()
+        korisnik = napraviKor("KorProba", "K")
+        c.login(username="PedjaProba", password="Pedja123")
+        response = c.post('/login/')
+        self.assertTemplateUsed(response, "registration/login.html")
+
+
+# class LogoutTest(TestCase):
+#LOGOUT
+    def test_logout(self):
+
+        korisnik = napraviKor('KorProba', 'K')
+        self.client.login(username='KorProba', password='Pedja123!')
+        self.client.get('/logout/')
+
+        # self.client.logout()
+
+        response = self.client.get('/mojProfil/')
+
+        self.assertEqual(response.status_code, 302)
+
+#PROMENI_SIFRU
+    # def test_promeni_sifru_succ(self):
+    #     c=Client();
+    #     korisnik = napraviKor("KorProba", "K")
+    #     c.login(username="KorProba", password="Pedja123!")
+    #     response = c.post('/promeniSifru/', data={
+    #         'password1': 'Pedja1234!',
+    #         'password2': 'Pedja1234!'
+    #     })
+    #     self.assertRedirects(response,'/profil/')
+
+    def test_promeni_sifru_nejednakeSifre(self):
+        c=Client();
+        korisnik = napraviKor("KorProba", "K")
+        c.login(username="KorProba", password="Pedja123!")
+        response = c.post('/promeniSifru/', data={
+            'password1': 'Pedja1234!',
+            'password2': 'Pedja1234'
+        })
+        self.assertTemplateUsed(response,"entities/promenaLozinke.html")
 
