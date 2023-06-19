@@ -622,7 +622,7 @@ def posaljiMejlBanovan(tekst, primalac):
 @login_required(login_url="login")
 def admResetujLozinku(request: HttpRequest):
     form = AdminResetForm(request.POST or None)
-    if form.is_valid():
+    if form.is_valid() and request.user.is_superuser:
         username = form.cleaned_data["username"]
         email = form.cleaned_data["email"]
         uloga: Uloga = Uloga.objects.filter(Q(email=email) & Q(username=username)).first()
@@ -651,7 +651,7 @@ def admResetujLozinku(request: HttpRequest):
 @login_required(login_url="login")
 def admBanujNalog(request: HttpRequest):
     form = AdminBanForm(request.POST or None)
-    if form.is_valid():
+    if form.is_valid() and request.user.is_superuser:
         username = form.cleaned_data["username"]
         email = form.cleaned_data["email"]
         ban = form.cleaned_data["ban"]

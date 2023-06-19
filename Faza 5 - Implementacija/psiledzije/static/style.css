@@ -221,8 +221,8 @@ body {
 
 .profilnaU {
     float: left;
-    width: 300px;
-    height: 300px;
+    width: 20vw;
+    aspect-ratio: 1/1;
 }
 
 .profilnaKnj {
