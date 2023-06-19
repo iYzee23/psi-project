@@ -166,7 +166,6 @@ def knjiga(request: HttpRequest, knjiga_id: str):
         knjiga = Knjiga.objects.get(isbn=knjiga_id)
     except Knjiga.DoesNotExist:
         raise Http404("Ne postoji knjiga sa tim ID :(")
-
     recenzijaForm = RecenzijaForm(data=request.POST or None, prefix='edit')
     if not recenzijaForm.is_valid():
         recenzijaForm = RecenzijaForm(data=request.POST or None, prefix='add')
@@ -176,14 +175,12 @@ def knjiga(request: HttpRequest, knjiga_id: str):
     # provera da li je knjiga u kolekciji
     korisnik = request.user
     imaUkolekciji = Kolekcija.objects.filter(Q(isbn=knjiga) & Q(korime=korisnik)).exists()
-
     if imaUkolekciji and "brisiIzKolekcije" in request.POST:
         Kolekcija.objects.get(Q(isbn=knjiga) & Q(korime=korisnik)).delete()
         imaUkolekciji = False
     elif not imaUkolekciji and "dodajUkolekciju" in request.POST:
-        Kolekcija.objects.create(isbn=knjiga, korime=korisnik)
+        Kolekcija.objects.create(isbn=knjiga, korime=request.user)
         imaUkolekciji = True
-
     # ukoliko je forma validna, znaci da je korisnik POSTovao iz 'Dodaj' ili 'Izmeni' recenziju
     if recenzijaForm.is_valid():
         # ako je dodaj ili izmeni
@@ -263,7 +260,7 @@ def knjiga(request: HttpRequest, knjiga_id: str):
     return render(request, 'entities/knjiga.html', context)
 
 
-# redner stranice profila - dohvatanje informacija o profilu,
+# render stranice profila - dohvatanje informacija o profilu,
 # obrada zahteva za postavljanje, izmenu i brisanje recenzije,
 # flag da li trenutni user prati profil koji pregleda,
 # kao i da li je ovo profil od ulogovanog usera
@@ -370,7 +367,6 @@ def profil(request: HttpRequest, profil_id: str):
             })
 
         context = {
-            'uloga': uloga,
             'recenzije': recenzije,
             'objave': objave,
             'recenzijaFormAdd': RecenzijaForm(prefix='add'),
@@ -388,6 +384,7 @@ def profil(request: HttpRequest, profil_id: str):
 
         if uloga.tip == 'A':
             autor: Autor = Autor.objects.get(pk=profil_id)
+            context['uloga']=autor
             context['profil'] = autor
             context['knjige'] = Knjiga.objects.filter(napisao__idautor=profil_id).order_by('-prosecnaocena')
             context['licna_kolekcija'] = Knjiga.objects.filter(kolekcija__korime=autor)
@@ -396,18 +393,20 @@ def profil(request: HttpRequest, profil_id: str):
             return render(request, 'entities/autor.html', context)
         elif uloga.tip == 'K':
             korisnik: Korisnik = Korisnik.objects.get(pk=profil_id)
+            context['uloga'] = korisnik
             context['profil'] = korisnik
             context['licna_kolekcija'] = Knjiga.objects.filter(kolekcija__korime=korisnik)
             return render(request, 'entities/korisnik.html', context)
         else:
             kuca = IzdavackaKuca.objects.get(pk=profil_id)
+            context['uloga'] = kuca
             context['profil'] = kuca
             context['licna_kolekcija'] = Knjiga.objects.filter(kolekcija__korime=korisnik)
             context['knjige'] = Knjiga.objects.filter(idizdkuca=kuca).order_by('-prosecnaocena')
             context['autori'] = Autor.objects.filter(povezani__idizdkuca=kuca).order_by('imeprezime').distinct()
             context['lokacije'] = ProdajnaMesta.objects.filter(idizdkuca=profil_id)
             return render(request, 'entities/izdavackakuca.html', context)
-    except Autor.DoesNotExist:
+    except Uloga.DoesNotExist:
         raise Http404("Ne postoji profil sa tim ID :(")
 
 
