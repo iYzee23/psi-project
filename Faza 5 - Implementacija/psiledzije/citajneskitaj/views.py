@@ -123,7 +123,7 @@ def regKuca(request: HttpRequest):
         user.groups.add(group)
         lokacije = form.cleaned_data["lokacije"].split("#")
         for lok in lokacije:
-            if lok:
+            if lok and len(lok) <= 60:
                 instance = ProdajnaMesta(idizdkuca=user, adresa=lok)
                 instance.save()
         login(request, user)
@@ -444,10 +444,13 @@ def promeniSifru(request: HttpRequest):
 @login_required(login_url="login")
 def promeniInfo(request: HttpRequest):
     uloga: Uloga = Uloga.objects.get(pk=request.user.pk)
+    dtm = None
     if uloga.tip == 'K':
         korisnik: Korisnik = Korisnik.objects.get(pk=request.user.pk)
         rIndex = korisnik.imeprezime.index(" ")
         form = PromenaInfoKorisnikForm(request.POST or None, request.FILES or None)
+        if "datumrodjenja" in form.errors and "datumrodjenja" in form.data:
+            dtm = "Datum rođenja mora biti manji od trenutnog datuma."
         if form.is_valid():
             korisnik.email = form.cleaned_data["email"]
             korisnik.imeprezime = form.cleaned_data["ime"] + " " + form.cleaned_data["prezime"]
@@ -461,12 +464,14 @@ def promeniInfo(request: HttpRequest):
                 "email": korisnik.email,
                 "ime": korisnik.imeprezime[:rIndex],
                 "prezime": korisnik.imeprezime[rIndex + 1:],
-                "datumrodjenja": korisnik.datumrodjenja
+                "datumrodjenja": korisnik.datumrodjenja,
             })
     elif uloga.tip == 'A':
         autor: Autor = Autor.objects.get(pk=request.user.pk)
         rIndex = autor.imeprezime.index(" ")
         form = PromenaInfoAutorForm(request.POST or None, request.FILES or None)
+        if "datumrodjenja" in form.errors and "datumrodjenja" in form.data:
+            dtm = "Datum rođenja mora biti manji od trenutnog datuma."
         if form.is_valid():
             autor.email = form.cleaned_data["email"]
             autor.imeprezime = form.cleaned_data["ime"] + " " + form.cleaned_data["prezime"]
@@ -482,7 +487,7 @@ def promeniInfo(request: HttpRequest):
                 "ime": autor.imeprezime[:rIndex],
                 "prezime": autor.imeprezime[rIndex + 1:],
                 "datumrodjenja": autor.datumrodjenja,
-                "biografija": autor.biografija
+                "biografija": autor.biografija,
             })
     else:
         kuca: IzdavackaKuca = IzdavackaKuca.objects.get(pk=request.user.pk)
@@ -500,7 +505,7 @@ def promeniInfo(request: HttpRequest):
             ProdajnaMesta.objects.filter(idizdkuca=kuca).delete()
             lokacijes = form.cleaned_data["lokacije"].split("#")
             for lok in lokacijes:
-                if lok:
+                if lok and len(lok) <= 60:
                     instance = ProdajnaMesta(idizdkuca=kuca, adresa=lok)
                     instance.save()
             if request.FILES:
@@ -517,7 +522,8 @@ def promeniInfo(request: HttpRequest):
             })
     return render(request, "entities/promenaInfo.html", {
         "form": form,
-        'pretragaForm': SearchForm()
+        'pretragaForm': SearchForm(),
+        "dtm": dtm
     })
 
 

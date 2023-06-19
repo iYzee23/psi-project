@@ -23,6 +23,12 @@ class KorisnikRegForm(UserCreationForm):
     datumrodjenja = DateField(label='Datum rodjenja', widget=DateInput(attrs={'type': 'date'}))
     slika = ImageField(label='Profilna slika', required=False)
 
+    def clean_datumrodjenja(self):
+        datumrodjenja = self.cleaned_data.get('datumrodjenja')
+        if datumrodjenja and datumrodjenja >= timezone.now().date():
+            raise forms.ValidationError("Datum rođenja mora biti manji od trenutnog datuma.")
+        return datumrodjenja
+
     class Meta:
         model = Korisnik
         fields = ["email", "username", "password1", "password2", "ime", "prezime", "datumrodjenja", "slika"]
@@ -45,8 +51,11 @@ class KucaRegForm(UserCreationForm):
     naziv = CharField(label='Naziv')
     slika = ImageField(label='Profilna slika', required=False)
     istorija = CharField(label='Istorija', widget=Textarea, required=False)
-    adresa = CharField(label='Adresa')
-    lokacije = CharField(label='Lokacije', required=False)
+    adresa = CharField(label='Adresa', max_length=60)
+    lokacije = CharField(
+        label='Lokacije', required=False,
+        widget=TextInput(attrs={"placeholder": "Ukoliko želite da unesete više lokacija, razdvojite ih pomoću #"})
+    )
 
     class Meta:
         model = IzdavackaKuca
@@ -74,6 +83,12 @@ class PromenaInfoKorisnikForm(ModelForm):
     datumrodjenja = DateField(label='Datum rodjenja', widget=DateInput(attrs={'type': 'date'}))
     slika = ImageField(label='Profilna slika', required=False)
 
+    def clean_datumrodjenja(self):
+        datumrodjenja = self.cleaned_data.get('datumrodjenja')
+        if datumrodjenja and datumrodjenja >= timezone.now().date():
+            raise forms.ValidationError("Datum rođenja mora biti manji od trenutnog datuma.")
+        return datumrodjenja
+
     class Meta:
         model = Korisnik
         fields = ["email", "ime", "prezime", "datumrodjenja", "slika"]
@@ -92,8 +107,11 @@ class PromenaInfoKucaForm(ModelForm):
     naziv = CharField(label='Naziv')
     slika = ImageField(label='Profilna slika', required=False)
     istorija = CharField(label='Istorija', widget=Textarea, required=False)
-    adresa = CharField(label='Adresa')
-    lokacije = CharField(label='Lokacije', required=False)
+    adresa = CharField(label='Adresa', max_length=60)
+    lokacije = CharField(
+        label='Lokacije', required=False,
+        widget=TextInput(attrs={"placeholder": "Ukoliko želite da unesete više lokacija, razdvojite ih pomoću #"})
+    )
 
     class Meta:
         model = IzdavackaKuca

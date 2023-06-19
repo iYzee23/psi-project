@@ -19,8 +19,13 @@
             <div class=" col-sm-4">
                 <div class="signUpCont">
                     <h2>Korisnik</h2>
-                    <p>
-                        UNETI OPIS KORISNIKA
+                    <p style="font-size: 23px; font-style: italic">
+                        Korisnik može da, pored osnovnih radnji (pretraga entiteta, citanje recenzija), ostavlja nove
+                        ili menja sopstvene postojeće recenzije knjigama, autorima, izdavačkim kućama i drugim
+                        korisnicima, može da se pretplati na druge profile, nakon čega će mu se na glavnoj strani
+                        pojavljivati objave zapraćenih profila. Ulogovani korisnik može dodati omiljena književna dela
+                        u kolekciju, koja je javno vidljiva na njegovom profilu, zajedno sa slikom i sopstvenim
+                        sadržajem koji može postavljati.
                     </p>
                     <br>
                     <a href="{% url "regKorisnik" %}">
@@ -31,8 +36,12 @@
             <div class="col-sm-4">
                 <div class="signUpCont">
                     <h2>Autor</h2>
-                    <p>
-                        UNETI OPIS AUTORA
+                    <p style="font-size: 23px; font-style: italic">
+                        Svaki autor će takođe, kao i korisnik, imati svoj profil koji će pored slike, opisa i osnovnih
+                        informacija sadržati i povezane izdavačke kuće (u kojima ima barem jednu publikaciju), knjige
+                        koje je napisao, recenzije korisnika, kao i sadržaj koji objavljuje kao što su izdavanje novih
+                        knjiga, lične objave i komentari, citati i slično. Najbolje rangirani autori u prethodnom
+                        mesecu se prikazuju na početnoj strani aplikacije.
                     </p>
                     <br>
                     <a href="{% url "regAutor" %}">
@@ -43,8 +52,13 @@
             <div class="col-sm-4">
                 <div class="signUpCont">
                     <h2>Izdavačka kuća</h2>
-                    <p>
-                        UNETI OPIS KUCE
+                    <p style="font-size: 23px; font-style: italic">
+                        Svaka izdavačka kuća će takođe, kao autor i korisnik, imati svoj profil gde se mogu naći
+                        informacije poput opisa, katalog knjiga, sadržaj koji objavljuje (reklamianje nova izdanja,
+                        popusti, akcije i slično), recenzije kuće od strane korisnika, broj korisnika koji prate kuću,
+                        kao i autori koji su povezani sa datom izdavačkom kućom. Izdavačka kuća takođe može da doda
+                        novu knjigu koju nudi. Najbolje rangirane kuće u prethodnom mesecu se prikazuju na početnoj
+                        strani aplikacije.
                     </p>
                     <br>
                     <a href="{% url "regKuca" %}">
