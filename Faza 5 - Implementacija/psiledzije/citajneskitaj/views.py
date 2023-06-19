@@ -760,6 +760,8 @@ def dodajKnjigu(request: HttpRequest):
     form = KnjigaObjavaForm(request.POST or None, request.FILES or None, prefix='novaKnjiga')
     if form.is_valid():
         sadrzaj = form.cleaned_data["sadrzaj"]
+        if sadrzaj == '':
+            sadrzaj = "Evo našeg novog izdanja!\n Naziv: " + form.cleaned_data["naziv"] + "\nAutor(i):"
         isbn = generisiISBN()
         naziv = form.cleaned_data["naziv"]
         slika = form.cleaned_data["slika"]
@@ -767,6 +769,9 @@ def dodajKnjigu(request: HttpRequest):
         opis = form.cleaned_data["opis"]
         # autori = form.cleaned_data["autori"]
         autori = request.POST.getlist("mojiAutori")
+
+        for a in autori:
+            sadrzaj += a + (", " if a != autori[-1] else "")
         Knjiga(isbn=isbn, naziv=naziv, slika=slika, opis=opis, prosecnaocena=0, idizdkuca_id=request.user.pk).save()
         for autor in autori:
             Napisao(isbn_id=isbn, idautor_id=autor).save()

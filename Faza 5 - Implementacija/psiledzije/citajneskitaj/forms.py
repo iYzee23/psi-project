@@ -152,7 +152,7 @@ class KnjigaObjavaForm(ModelForm):
     autori = CharField(label='Autori', widget=TextInput(attrs={"autocomplete": "off", "style": "margin-right: 10px"}), required=False)
     dodaj = CharField(label='Dodavanje autora', widget=TextInput(attrs={"class": "btn btn-light", "type": "button", "value": "Dodaj autora"}), required=False)
     opis = CharField(label='Opis', widget=Textarea)
-    sadrzaj = CharField(label='Sadržaj objave za knjigu', widget=Textarea)
+    sadrzaj = CharField(label='Sadržaj objave za knjigu', widget=Textarea, required=False)
 
     class Meta:
         model = Knjiga
