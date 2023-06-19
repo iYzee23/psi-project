@@ -153,6 +153,7 @@ def login_req(request: HttpRequest):
 
 
 # logout usera
+@login_required(login_url="login")
 def logout_req(request: HttpRequest):
     logout(request)
     return redirect('home')
@@ -565,6 +566,9 @@ def admResetujLozinku(request: HttpRequest):
                 "sifra": str
             })
             # posaljiMejlLozinka(str, email)
+        else:
+            messages.error(request, "Uneti mejl i korisničko ime se ne podudaraju.")
+            messages.error(request, "Akcija je bez efekta.")
     else:
         form = AdminResetForm()
     return render(request, "entities/adminPanel.html", {
@@ -592,6 +596,9 @@ def admBanujNalog(request: HttpRequest):
             uloga.save()
             # posaljiMejlBanovan(form.cleaned_data["tekst"], email)
             return redirect("mojProfil")
+        else:
+            messages.error(request, "Uneti mejl i korisničko ime se ne podudaraju.")
+            messages.error(request, "Akcija je bez efekta.")
     else:
         form = AdminBanForm()
     return render(request, "entities/adminPanel.html", {
@@ -648,6 +655,11 @@ def pretraga(request: HttpRequest):
                     "prosecnaocena": obj.prosecnaocena,
                     "naziv": obj.imeprezime
                 })
+        if tip == "Sve":
+            if znak != "-":
+                objekti = sorted(objekti, key=lambda x: x['prosecnaocena'])
+            else:
+                objekti = sorted(objekti, key=lambda x: x['prosecnaocena'], reverse=True)
         return render(request, "entities/pretraga.html", {
             'pretragaForm': form,
             'objekti': objekti
@@ -727,6 +739,7 @@ def dodajObjavu(request: HttpRequest):
         Objava(sadrzaj=sadrzaj, datumobjave=timezone.now(), slika=slika, korime=request.user).save()
     return redirect("mojProfil")
 
+
 # menja objavu i dodaje je u bazu
 @login_required(login_url="login")
 def izmeniObjavu(request: HttpRequest):
@@ -743,6 +756,7 @@ def izmeniObjavu(request: HttpRequest):
         objava.save()
     return redirect("mojProfil")
 
+
 @login_required(login_url="login")
 def obrisiObjavu(request: HttpRequest):
     form = ObjavaDeleteForm(request.POST or None)
@@ -753,25 +767,24 @@ def obrisiObjavu(request: HttpRequest):
     return redirect(request.META.get("HTTP_REFERER"))
 
 
-
 # dodaje knjigu iz forme u bazu
 @login_required(login_url="login")
 def dodajKnjigu(request: HttpRequest):
     form = KnjigaObjavaForm(request.POST or None, request.FILES or None, prefix='novaKnjiga')
-    if form.is_valid():
+    if form.is_valid() and request.user.tip == "I":
         sadrzaj = form.cleaned_data["sadrzaj"]
-        if sadrzaj == '':
-            sadrzaj = "Evo našeg novog izdanja!\n Naziv: " + form.cleaned_data["naziv"] + "\nAutor(i):"
         isbn = generisiISBN()
         naziv = form.cleaned_data["naziv"]
         slika = form.cleaned_data["slika"]
-        print(slika)
         opis = form.cleaned_data["opis"]
         # autori = form.cleaned_data["autori"]
         autori = request.POST.getlist("mojiAutori")
 
-        for a in autori:
-            sadrzaj += a + (", " if a != autori[-1] else "")
+        if sadrzaj == '':
+            sadrzaj = "Evo našeg novog izdanja!\n Naziv: " + form.cleaned_data["naziv"] + "\nAutor(i): "
+            for a in autori:
+                sadrzaj += a + (", " if a != autori[-1] else "")
+
         Knjiga(isbn=isbn, naziv=naziv, slika=slika, opis=opis, prosecnaocena=0, idizdkuca_id=request.user.pk).save()
         for autor in autori:
             Napisao(isbn_id=isbn, idautor_id=autor).save()
@@ -788,7 +801,7 @@ def promeniInfoKnjige(request: HttpRequest):
     knjiga: Knjiga = Knjiga.objects.get(isbn=request.session.get('isbn'))
     autori = Autor.objects.filter(napisao__isbn=knjiga)
     izmenaForm = KnjigaObjavaForm(request.POST or None, request.FILES or None)
-    if izmenaForm.is_valid():
+    if izmenaForm.is_valid() and request.user.tip == "I":
         sadrzaj = izmenaForm.cleaned_data["sadrzaj"]
         slika = izmenaForm.cleaned_data["slika"]
         knjiga.naziv = izmenaForm.cleaned_data["naziv"]
@@ -833,14 +846,14 @@ def licitacije(request: HttpRequest):
     errorTekst = None
     form = LicitacijaPonudaForm(request.POST or None)
 
-    if form.is_valid():
+    if form.is_valid() and request.user.tip == "I":
         iznos = form.cleaned_data['iznos']
         licId = form.cleaned_data['hiddenIdLic']
         licitacija = Licitacija.objects.get(idlicitacija=licId)
-        if (iznos <= licitacija.trenutniiznos):
+        if iznos <= licitacija.trenutniiznos:
             errorTekst = 'Morate uneti iznos veći od trenutnog!'
         else:
-            kuca = IzdavackaKuca.objects.get(username = request.user.username)
+            kuca = IzdavackaKuca.objects.get(username=request.user.username)
             Ponuda(iznos=iznos, idizdkuca=kuca, idlicitacija=licitacija).save()
             licitacija.trenutniiznos = iznos
             licitacija.idpobednik = izd_kuca
@@ -908,7 +921,8 @@ def pretragaAutori(request: HttpRequest):
 @login_required(login_url="login")
 def dodajLicitaciju(request: HttpRequest):
     form = DodajLicitacijuForm(request.POST or None, request.FILES or None)
-    if form.is_valid():
+    print(form.errors)
+    if form.is_valid() and request.user.tip == "A":
         nazivdela = form.cleaned_data["nazivdela"]
         pdf = form.cleaned_data["pdf"]
         datumkraja = form.cleaned_data["datumkraja"]

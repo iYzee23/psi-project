@@ -41,10 +41,12 @@
     <div class="container-fluid" style="margin:0; padding:0;">
             <div id="login">
                 <h1>ADMIN PANEL</h1><br>
-                {% if message %}
-                    <ul>
-                        <li><b>{{ message }}</b></li>
-                    </ul>
+                {% if messages %}
+                    {% for message in messages %}
+                        <ul>
+                            <li><b>{{ message }}</b></li>
+                        </ul>
+                    {% endfor %}
                 {% endif %}
 
                 <form method="POST">

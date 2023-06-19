@@ -109,8 +109,10 @@ class RecenzijaForm(Form):
 class AdminResetForm(Form):
     username = CharField(label='Korisničko ime')
     email = EmailField(label="Email")
-    sifra = CharField(label="Generisana šifra", disabled=True, required=False,
-                      widget=TextInput(attrs={"style": "background-color: lightgray"}))
+    sifra = CharField(
+        label="Generisana šifra", disabled=True, required=False,
+        widget=TextInput(attrs={"style": "background-color: lightgray"})
+    )
 
 
 class AdminBanForm(Form):
