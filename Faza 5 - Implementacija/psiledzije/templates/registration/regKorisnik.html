@@ -12,6 +12,11 @@
     <div class="container-fluid">
        <div id="signin">
             <h1>Registracija korisnika</h1>
+           {% if message %}
+                    <ul>
+                        <li><b>{{ message }}</b></li>
+                    </ul>
+            {% endif %}
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form }}

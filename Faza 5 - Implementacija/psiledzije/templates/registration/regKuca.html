@@ -13,6 +13,11 @@
             <div class="col-sm-12">
                 <div id="signin">
                     <h1>Registracija izdavačke kuće</h1>
+                    {% if message %}
+                            <ul>
+                                <li><b>{{ message }}</b></li>
+                            </ul>
+                    {% endif %}
                     <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form }}

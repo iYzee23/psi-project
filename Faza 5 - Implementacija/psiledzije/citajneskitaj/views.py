@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login, authenticate, update_session_auth_hash
 from django.contrib.auth.models import Group
 from django.db.models import Q, Max
-from django.http import HttpRequest, Http404, HttpResponse, JsonResponse
+from django.http import HttpRequest, Http404, HttpResponse, JsonResponse, HttpResponseServerError
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.mail import send_mail
@@ -10,6 +10,7 @@ from datetime import datetime as dt
 from .forms import *
 import random, string
 from django.utils import timezone
+import os
 
 '''
 Autori: 
@@ -76,17 +77,29 @@ def regKorisnik(request: HttpRequest):
     if request.user.is_authenticated:
         return redirect('home')
     form = KorisnikRegForm(request.POST or None, request.FILES or None)
+    message = None
     if form.is_valid():
         user: Korisnik = form.save(commit=False)
-        user.imeprezime = form.cleaned_data["ime"] + " " + form.cleaned_data["prezime"]
-        user.save()
-        group = Group.objects.get(name='Korisnici')
-        user.groups.add(group)
-        login(request, user)
-        return redirect('home')
+        sve_uloge=Uloga.objects.all()
+        dupli_mejl=False
+
+        for jedna_uloga in sve_uloge:
+            if jedna_uloga.email==user.email:
+                dupli_mejl=True
+                break
+        if dupli_mejl:
+            message="Dati mejl vec postoji u sistemu!"
+        else:
+            user.imeprezime = form.cleaned_data["ime"] + " " + form.cleaned_data["prezime"]
+            user.save()
+            group = Group.objects.get(name='Korisnici')
+            user.groups.add(group)
+            login(request, user)
+            return redirect('home')
     return render(request, 'registration/regKorisnik.html', {
         'form': form,
-        'pretragaForm': SearchForm()
+        'pretragaForm': SearchForm(),
+        'message':message
     })
 
 
@@ -95,18 +108,30 @@ def regAutor(request: HttpRequest):
     if request.user.is_authenticated:
         return redirect('home')
     form = AutorRegForm(request.POST or None, request.FILES or None)
+    message=None
     if form.is_valid():
         user: Autor = form.save(commit=False)
-        user.tip = 'A'
-        user.imeprezime = form.cleaned_data["ime"] + " " + form.cleaned_data["prezime"]
-        user.save()
-        group = Group.objects.get(name='Autori')
-        user.groups.add(group)
-        login(request, user)
-        return redirect('home')
+        sve_uloge = Uloga.objects.all()
+        dupli_mejl = False
+
+        for jedna_uloga in sve_uloge:
+            if jedna_uloga.email == user.email:
+                dupli_mejl = True
+                break
+        if dupli_mejl:
+            message = "Dati mejl vec postoji u sistemu!"
+        else:
+            user.tip = 'A'
+            user.imeprezime = form.cleaned_data["ime"] + " " + form.cleaned_data["prezime"]
+            user.save()
+            group = Group.objects.get(name='Autori')
+            user.groups.add(group)
+            login(request, user)
+            return redirect('home')
     return render(request, 'registration/regAutor.html', {
         'form': form,
-        'pretragaForm': SearchForm()
+        'pretragaForm': SearchForm(),
+        'message': message
     })
 
 
@@ -115,22 +140,34 @@ def regKuca(request: HttpRequest):
     if request.user.is_authenticated:
         return redirect('home')
     form = KucaRegForm(request.POST or None, request.FILES or None)
+    message=None
     if form.is_valid():
         user: IzdavackaKuca = form.save(commit=False)
-        user.tip = 'I'
-        user.save()
-        group = Group.objects.get(name='Kuce')
-        user.groups.add(group)
-        lokacije = form.cleaned_data["lokacije"].split("#")
-        for lok in lokacije:
-            if lok and len(lok) <= 60:
-                instance = ProdajnaMesta(idizdkuca=user, adresa=lok)
-                instance.save()
-        login(request, user)
-        return redirect('home')
+        sve_uloge = Uloga.objects.all()
+        dupli_mejl = False
+
+        for jedna_uloga in sve_uloge:
+            if jedna_uloga.email == user.email:
+                dupli_mejl = True
+                break
+        if dupli_mejl:
+            message = "Dati mejl vec postoji u sistemu!"
+        else:
+            user.tip = 'I'
+            user.save()
+            group = Group.objects.get(name='Kuce')
+            user.groups.add(group)
+            lokacije = form.cleaned_data["lokacije"].split("#")
+            for lok in lokacije:
+                if lok and len(lok) <= 60:
+                    instance = ProdajnaMesta(idizdkuca=user, adresa=lok)
+                    instance.save()
+            login(request, user)
+            return redirect('home')
     return render(request, 'registration/regKuca.html', {
         'form': form,
-        'pretragaForm': SearchForm()
+        'pretragaForm': SearchForm(),
+        'message': message
     })
 
 
@@ -367,7 +404,6 @@ def profil(request: HttpRequest, profil_id: str):
             })
 
         context = {
-            'uloga': uloga,
             'recenzije': recenzije,
             'uloga':uloga,
             'objave': objave,
@@ -452,13 +488,23 @@ def promeniInfo(request: HttpRequest):
         if "datumrodjenja" in form.errors and "datumrodjenja" in form.data:
             dtm = "Datum rođenja mora biti manji od trenutnog datuma."
         if form.is_valid():
-            korisnik.email = form.cleaned_data["email"]
-            korisnik.imeprezime = form.cleaned_data["ime"] + " " + form.cleaned_data["prezime"]
-            korisnik.datumrodjenja = form.cleaned_data["datumrodjenja"]
-            if request.FILES:
-                korisnik.slika = form.cleaned_data["slika"]
-            korisnik.save()
-            return redirect("mojProfil")
+            email = form.cleaned_data["email"]
+            sve_uloge = Uloga.objects.all()
+            dupli_mejl = False
+            for jedna_uloga in sve_uloge:
+                if jedna_uloga.username!=korisnik.username and jedna_uloga.email==email:
+                    dupli_mejl=True
+                    break
+            if dupli_mejl:
+                messages.error(request, "Dati mejl vec postoji u sistemu!")
+            else:
+                korisnik.email=email
+                korisnik.imeprezime = form.cleaned_data["ime"] + " " + form.cleaned_data["prezime"]
+                korisnik.datumrodjenja = form.cleaned_data["datumrodjenja"]
+                if request.FILES:
+                    korisnik.slika = form.cleaned_data["slika"]
+                korisnik.save()
+                return redirect("mojProfil")
         else:
             form = PromenaInfoKorisnikForm(initial={
                 "email": korisnik.email,
@@ -473,14 +519,24 @@ def promeniInfo(request: HttpRequest):
         if "datumrodjenja" in form.errors and "datumrodjenja" in form.data:
             dtm = "Datum rođenja mora biti manji od trenutnog datuma."
         if form.is_valid():
-            autor.email = form.cleaned_data["email"]
-            autor.imeprezime = form.cleaned_data["ime"] + " " + form.cleaned_data["prezime"]
-            autor.datumrodjenja = form.cleaned_data["datumrodjenja"]
-            autor.biografija = form.cleaned_data["biografija"]
-            if request.FILES:
-                autor.slika = form.cleaned_data["slika"]
-            autor.save()
-            return redirect("mojProfil")
+            email = form.cleaned_data["email"]
+            sve_uloge = Uloga.objects.all()
+            dupli_mejl = False
+            for jedna_uloga in sve_uloge:
+                if jedna_uloga.username != autor.username and jedna_uloga.email == email:
+                    dupli_mejl = True
+                    break
+            if dupli_mejl:
+                messages.error(request, "Dati mejl vec postoji u sistemu!")
+            else:
+                autor.email = email
+                autor.imeprezime = form.cleaned_data["ime"] + " " + form.cleaned_data["prezime"]
+                autor.datumrodjenja = form.cleaned_data["datumrodjenja"]
+                autor.biografija = form.cleaned_data["biografija"]
+                if request.FILES:
+                    autor.slika = form.cleaned_data["slika"]
+                autor.save()
+                return redirect("mojProfil")
         else:
             form = PromenaInfoAutorForm(initial={
                 "email": autor.email,
@@ -498,20 +554,30 @@ def promeniInfo(request: HttpRequest):
         lokacije = lokacije[:-1]
         form = PromenaInfoKucaForm(request.POST or None, request.FILES or None)
         if form.is_valid():
-            kuca.email = form.cleaned_data["email"]
-            kuca.naziv = form.cleaned_data["naziv"]
-            kuca.istorija = form.cleaned_data["istorija"]
-            kuca.adresa = form.cleaned_data["adresa"]
-            ProdajnaMesta.objects.filter(idizdkuca=kuca).delete()
-            lokacijes = form.cleaned_data["lokacije"].split("#")
-            for lok in lokacijes:
-                if lok and len(lok) <= 60:
-                    instance = ProdajnaMesta(idizdkuca=kuca, adresa=lok)
-                    instance.save()
-            if request.FILES:
-                kuca.slika = form.cleaned_data["slika"]
-            kuca.save()
-            return redirect("mojProfil")
+            email = form.cleaned_data["email"]
+            sve_uloge = Uloga.objects.all()
+            dupli_mejl = False
+            for jedna_uloga in sve_uloge:
+                if jedna_uloga.username != kuca.username and jedna_uloga.email == email:
+                    dupli_mejl = True
+                    break
+            if dupli_mejl:
+                messages.error(request, "Dati mejl vec postoji u sistemu!")
+            else:
+                kuca.email = email
+                kuca.naziv = form.cleaned_data["naziv"]
+                kuca.istorija = form.cleaned_data["istorija"]
+                kuca.adresa = form.cleaned_data["adresa"]
+                ProdajnaMesta.objects.filter(idizdkuca=kuca).delete()
+                lokacijes = form.cleaned_data["lokacije"].split("#")
+                for lok in lokacijes:
+                    if lok and len(lok) <= 60:
+                        instance = ProdajnaMesta(idizdkuca=kuca, adresa=lok)
+                        instance.save()
+                if request.FILES:
+                    kuca.slika = form.cleaned_data["slika"]
+                kuca.save()
+                return redirect("mojProfil")
         else:
             form = PromenaInfoKucaForm(initial={
                 "email": kuca.email,
@@ -767,6 +833,13 @@ def obrisiObjavu(request: HttpRequest):
     if form.is_valid():
         id=form.cleaned_data["hiddenIdObjave"]
         objava = Objava.objects.get(idobjava=id)
+        if objava.slika:
+            file_path = objava.slika.path
+            if os.path.exists(file_path):
+                try:
+                    os.remove(file_path)
+                except Exception as e:
+                    return HttpResponseServerError(f"Error deleting file: {str(e)}")
         objava.delete()
     return redirect(request.META.get("HTTP_REFERER"))
 
@@ -828,7 +901,11 @@ def promeniInfoKnjige(request: HttpRequest):
             if not Povezani.objects.filter(Q(idautor=novi_autor) & Q(idizdkuca_id=request.user.pk)).exists():
                 Povezani(idautor=novi_autor, idizdkuca_id=request.user.pk).save()
         knjiga.save()
-        Objava(sadrzaj=sadrzaj, datumobjave=timezone.now(), slika=slika, korime=request.user).save()
+        if sadrzaj:
+            if slika:
+                Objava(sadrzaj=sadrzaj, datumobjave=timezone.now(), slika=slika, korime=request.user).save()
+            else:
+                Objava(sadrzaj=sadrzaj, datumobjave=timezone.now(), korime=request.user).save()
         return redirect("knjiga", knjiga_id=knjiga.pk)
     else:
         izmenaForm = KnjigaObjavaForm(initial={
