@@ -367,6 +367,7 @@ def profil(request: HttpRequest, profil_id: str):
             })
 
         context = {
+            'uloga': uloga,
             'recenzije': recenzije,
             'objave': objave,
             'recenzijaFormAdd': RecenzijaForm(prefix='add'),
@@ -384,7 +385,6 @@ def profil(request: HttpRequest, profil_id: str):
 
         if uloga.tip == 'A':
             autor: Autor = Autor.objects.get(pk=profil_id)
-            context['uloga']=autor
             context['profil'] = autor
             context['knjige'] = Knjiga.objects.filter(napisao__idautor=profil_id).order_by('-prosecnaocena')
             context['licna_kolekcija'] = Knjiga.objects.filter(kolekcija__korime=autor)
@@ -393,13 +393,11 @@ def profil(request: HttpRequest, profil_id: str):
             return render(request, 'entities/autor.html', context)
         elif uloga.tip == 'K':
             korisnik: Korisnik = Korisnik.objects.get(pk=profil_id)
-            context['uloga'] = korisnik
             context['profil'] = korisnik
             context['licna_kolekcija'] = Knjiga.objects.filter(kolekcija__korime=korisnik)
             return render(request, 'entities/korisnik.html', context)
         else:
             kuca = IzdavackaKuca.objects.get(pk=profil_id)
-            context['uloga'] = kuca
             context['profil'] = kuca
             context['licna_kolekcija'] = Knjiga.objects.filter(kolekcija__korime=korisnik)
             context['knjige'] = Knjiga.objects.filter(idizdkuca=kuca).order_by('-prosecnaocena')

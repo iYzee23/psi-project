@@ -10476,7 +10476,7 @@
     }]
   }, {
     "id": "da524ea3-0635-45a8-9a0f-ad6386e39b51",
-    "name": "T6.1 ***Neuspeh - korime i email se ne poklapaju",
+    "name": "T6.1 Neuspeh - korime i email se ne poklapaju",
     "commands": [{
       "id": "0156fa8c-d341-44de-8a6e-a9311502d817",
       "comment": "",
@@ -10523,6 +10523,58 @@
         ["xpath=//input[2]", "xpath:position"]
       ],
       "value": "kukimonster"
+    }, {
+      "id": "21d0c559-a895-4805-9643-01b814e1e1f5",
+      "comment": "",
+      "command": "click",
+      "target": "id=id_email",
+      "targets": [
+        ["id=id_email", "id"],
+        ["name=email", "name"],
+        ["css=#id_email", "css:finder"],
+        ["xpath=//input[@id='id_email']", "xpath:attributes"],
+        ["xpath=//div[@id='login']/form/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "751b45a5-a176-4917-91b2-5289ec8be2e1",
+      "comment": "",
+      "command": "type",
+      "target": "id=id_email",
+      "targets": [
+        ["id=id_email", "id"],
+        ["name=email", "name"],
+        ["css=#id_email", "css:finder"],
+        ["xpath=//input[@id='id_email']", "xpath:attributes"],
+        ["xpath=//div[@id='login']/form/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": "ale@mic.rs"
+    }, {
+      "id": "212082cc-aab2-4812-8bd9-9294e16261b7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.loginbtn",
+      "targets": [
+        ["css=.loginbtn", "css:finder"],
+        ["xpath=//div[@id='login']/form/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Potvrdi')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8b28f661-7282-4f19-bf9e-d93788db0946",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=ul:nth-child(3) b",
+      "targets": [
+        ["css=ul:nth-child(3) b", "css:finder"],
+        ["xpath=//div[@id='login']/ul/li/b", "xpath:idRelative"],
+        ["xpath=//b", "xpath:position"],
+        ["xpath=//b[contains(.,'Uneti mejl i korisničko ime se ne podudaraju.')]", "xpath:innerText"]
+      ],
+      "value": "Uneti mejl i korisničko ime se ne podudaraju."
     }, {
       "id": "b0d14841-f752-40c5-862a-f0b3ea9a9172",
       "comment": "",
@@ -11267,6 +11319,18 @@
       ],
       "value": ""
     }, {
+      "id": "8c9b2991-1d6f-45b4-877e-5a5bcdcf15ca",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=ul:nth-child(3) b",
+      "targets": [
+        ["css=ul:nth-child(3) b", "css:finder"],
+        ["xpath=//div[@id='login']/ul/li/b", "xpath:idRelative"],
+        ["xpath=//b", "xpath:position"],
+        ["xpath=//b[contains(.,'Uneti mejl i korisničko ime se ne podudaraju.')]", "xpath:innerText"]
+      ],
+      "value": "Uneti mejl i korisničko ime se ne podudaraju."
+    }, {
       "id": "5754c31b-60d3-4463-981c-d81e4abf6a36",
       "comment": "",
       "command": "assertText",
@@ -11279,6 +11343,10 @@
       ],
       "value": "ADMIN PANEL"
     }]
+  }, {
+    "id": "c699e1e0-96ad-4d3a-bd39-6e8c10fc4041",
+    "name": "F1.1 Datum je danasnji ili kasnije",
+    "commands": []
   }],
   "suites": [{
     "id": "afe097f0-04ee-4385-bc4c-25b3c53495cf",
