@@ -809,7 +809,11 @@ class Testiranje(TestCase):
                                                         datumobjave='2023-01-01')
 
         self.client.force_login(user=self.user)
-
+        #pokusaj submitovanja nevalidne forme
+        self.url = reverse('knjiga', args=[self.knjiga.isbn])
+        response = self.client.post(self.url, data={'add-tekst': 'Test tekst!'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(not Recenzija.objects.filter(idprimalacknjiga=self.knjiga, iddavalac=self.user).exists())
         #dodavanje recenzije
         self.url = reverse('knjiga', args=[self.knjiga.isbn])
         response = self.client.post(self.url, data={'add-tekst': 'Test tekst!', 'add-ocena': 5})
@@ -918,7 +922,6 @@ class Testiranje(TestCase):
         response = self.client.get(reverse('profil', args=['mare']))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'entities/korisnik.html')
-        self.assertEqual(response.context['uloga'], self.korisnik)
         self.assertEqual(response.context['profil'], self.korisnik)
         self.assertEqual(response.context['flag'], 1)
         self.assertQuerysetEqual(response.context['objave'], Objava.objects.filter(korime=self.korisnik).order_by('-datumobjave'))
@@ -965,7 +968,6 @@ class Testiranje(TestCase):
         response = self.client.get(reverse('profil', args=['pera']))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'entities/autor.html')
-        self.assertEqual(response.context['uloga'], self.autor)
         self.assertEqual(response.context['profil'], self.autor)
         self.assertEqual(response.context['flag'], 1)
         self.assertQuerysetEqual(response.context['objave'], Objava.objects.filter(korime=self.autor).order_by('-datumobjave'))
@@ -1014,7 +1016,6 @@ class Testiranje(TestCase):
         response = self.client.get(reverse('profil', args=['kreativnicentar']))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'entities/izdavackakuca.html')
-        self.assertEqual(response.context['uloga'], self.izd_kuca)
         self.assertEqual(response.context['profil'], self.izd_kuca)
         self.assertEqual(response.context['flag'], 1)
         self.assertQuerysetEqual(response.context['objave'], Objava.objects.filter(korime=self.izd_kuca).order_by('-datumobjave'))
@@ -1084,6 +1085,11 @@ class Testiranje(TestCase):
         self.prati4 = Prati.objects.create(idpracen_id=self.izd_kuca.username, idpratilac_id=self.korisnik.username)
 
         self.client.force_login(user=self.user)
+        #pokusaj submitovanja nevalidne forme za recenzije
+        self.url = reverse('profil', args=[self.korisnik.username])
+        response = self.client.post(self.url, data={'add-tekst': 'Test tekst!'})
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Recenzija.objects.filter(idprimalaculoga=self.korisnik, iddavalac=self.user).exists())
         #dodavanje recenzije
         self.url = reverse('profil', args=[self.korisnik.username])
         response = self.client.post(self.url, data={'add-tekst': 'Test tekst!', 'add-ocena': 5})

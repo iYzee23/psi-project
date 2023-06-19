@@ -369,6 +369,7 @@ def profil(request: HttpRequest, profil_id: str):
         context = {
             'uloga': uloga,
             'recenzije': recenzije,
+            'uloga':uloga,
             'objave': objave,
             'recenzijaFormAdd': RecenzijaForm(prefix='add'),
             'recenzijaFormEdit': RecenzijaForm(prefix='edit'),
